@@ -7,8 +7,14 @@ environment:
   sdk: '>=3.1.5 <4.0.0'
 
 dependencies:
+  table_calendar: ^3.0.2 # Use the latest version available on pub.dev
   flutter:
     sdk: flutter
+  flutter_calendar_carousel: ^2.3.0
+  flutter_localizations: # add or update this dependency
+    sdk: flutter
+  google_fonts: ^2.1.0 
+
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +23,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/background.png
