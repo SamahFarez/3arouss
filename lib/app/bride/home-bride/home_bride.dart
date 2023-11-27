@@ -215,18 +215,20 @@ class _BrideHomePageState extends State<BrideHomePage> {
     return Scaffold(
       body: Stack(
         children: [
+          // Your existing background image code
+          // ...body: Stack(
           Image.asset(
             background_image, // Replace with your image path
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
+
           Column(
             children: [
               SizedBox(height: 150),
               Padding(
-                padding: EdgeInsets.all(
-                    10.0), // Add padding of 10 pixels on all sides
+                padding: EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -240,7 +242,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SizedBox(width: 20), // Add 20px margin to the left
+                        SizedBox(width: 20),
                         Text(
                           'قائمة المهام',
                           style: TextStyle(
@@ -256,7 +258,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                 ),
               ),
               SizedBox(
-                height: 150, // Set the desired height for the calendar
+                height: 150,
                 child: Builder(
                   builder: (context) => TableCalendar(
                     focusedDay: DateTime.now(),
@@ -275,7 +277,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                       todayDecoration: BoxDecoration(
                         color: Color(
                           0xFFD8C2FF,
-                        ), // Light purple background for the current day
+                        ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -320,6 +322,21 @@ class _BrideHomePageState extends State<BrideHomePage> {
                   },
                 ),
               ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildButtonBox('List of Food', () {
+                    // Handle the button click for 'List of Food'
+                  }),
+                  _buildButtonBox('List of Guests', () {
+                    // Handle the button click for 'List of Guests'
+                  }),
+                  _buildButtonBox('Expense Tracker', () {
+                    // Handle the button click for 'Expense Tracker'
+                  }),
+                ],
+              ),
             ],
           ),
         ],
@@ -331,7 +348,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
           boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 5)],
         ),
         child: BottomAppBar(
-          color: Colors.white, // Set the bottom navigation bar color to white
+          color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -356,6 +373,35 @@ class _BrideHomePageState extends State<BrideHomePage> {
                 onPressed: () {},
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonBox(String title, VoidCallback onPressed) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
