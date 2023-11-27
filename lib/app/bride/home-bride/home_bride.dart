@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../shared/images.dart';
 
 class TodoItem {
   final String description;
@@ -37,7 +38,7 @@ class TodoListItem extends StatelessWidget {
           width: 2,
           color: Color(0xE5EEF2),
         ),
-        borderRadius: BorderRadius.circular(20.0), // Set border radius
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Card(
         child: ListTile(
@@ -52,7 +53,7 @@ class TodoListItem extends StatelessWidget {
                     todoItem.description,
                     style: TextStyle(
                       color: todoItem.isDone ? Colors.green : null,
-                      fontFamily: 'changa',
+                      fontFamily: 'Changa',
                     ),
                     textAlign: TextAlign.right,
                   ),
@@ -62,7 +63,7 @@ class TodoListItem extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 12,
-                      fontFamily: 'changa',
+                      fontFamily: 'Changa',
                     ),
                     textAlign: TextAlign.right,
                   ),
@@ -104,6 +105,10 @@ class _BrideHomePageState extends State<BrideHomePage> {
 
   TextEditingController _todoController = TextEditingController();
 
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
   void _addTodo() {
     showDialog(
       context: context,
@@ -120,23 +125,33 @@ class _BrideHomePageState extends State<BrideHomePage> {
             ),
             textAlign: TextAlign.center,
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          contentPadding: EdgeInsets.all(10),
           content: Container(
-            height: 150, // Set the desired height
+            height: 200,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextField(
-                  controller: _todoController,
-                  textAlign: TextAlign.right,
-                  decoration: InputDecoration(
-                    hintText: 'أدخل مهمتك',
-                    alignLabelWithHint: true,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 15.0),
-                    hintStyle: TextStyle(),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 2,
+                      color: Color(0xE5EEF2),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                    controller: _todoController,
+                    textAlign: TextAlign.right,
+                    decoration: InputDecoration(
+                      hintText: 'أدخل مهمتك',
+                      alignLabelWithHint: true,
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
-                TextButton(
+                ElevatedButton(
                   onPressed: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -157,32 +172,37 @@ class _BrideHomePageState extends State<BrideHomePage> {
             ),
           ),
           actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('إلغاء'),
-            ),
-            TextButton(
-              onPressed: () {
-                String newTodo = _todoController.text.trim();
-                if (newTodo.isNotEmpty) {
-                  setState(() {
-                    _todoList.insert(
-                      0,
-                      TodoItem(
-                        description: newTodo,
-                        isDone: false,
-                        date: selectedDate,
-                      ),
-                    );
-                    _todoList.sort((a, b) => a.date.compareTo(b.date));
-                  });
-                }
-                _todoController.clear();
-                Navigator.of(context).pop();
-              },
-              child: Text('إضافة'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String newTodo = _todoController.text.trim();
+                    if (newTodo.isNotEmpty) {
+                      setState(() {
+                        _todoList.insert(
+                          0,
+                          TodoItem(
+                            description: newTodo,
+                            isDone: false,
+                            date: selectedDate,
+                          ),
+                        );
+                        _todoList.sort((a, b) => a.date.compareTo(b.date));
+                      });
+                    }
+                    _todoController.clear();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('إضافة'),
+                ),
+              ],
             ),
           ],
         );
@@ -195,44 +215,50 @@ class _BrideHomePageState extends State<BrideHomePage> {
     return Scaffold(
       body: Stack(
         children: [
+          // Your existing background image code
+          // ...body: Stack(
           Image.asset(
-            'assets/background.png', // Replace with your image path
+            background_image, // Replace with your image path
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
+
           Column(
             children: [
               SizedBox(height: 150),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      _addTodo();
-                    },
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(width: 20), // Add 20px margin to the left
-                      Text(
-                        'قائمة المهام',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'ChangaMedium',
-                          color: Color(0xFF334155),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        _addTodo();
+                      },
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(width: 20),
+                        Text(
+                          'قائمة المهام',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Changa',
+                            color: Color(0xFF334155),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
-                height: 150, // Set the desired height for the calendar
+                height: 150,
                 child: Builder(
                   builder: (context) => TableCalendar(
                     focusedDay: DateTime.now(),
@@ -251,7 +277,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                       todayDecoration: BoxDecoration(
                         color: Color(
                           0xFFD8C2FF,
-                        ), // Light purple background for the current day
+                        ),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -296,6 +322,21 @@ class _BrideHomePageState extends State<BrideHomePage> {
                   },
                 ),
               ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildButtonBox('List of Food', () {
+                    // Handle the button click for 'List of Food'
+                  }),
+                  _buildButtonBox('List of Guests', () {
+                    // Handle the button click for 'List of Guests'
+                  }),
+                  _buildButtonBox('Expense Tracker', () {
+                    // Handle the button click for 'Expense Tracker'
+                  }),
+                ],
+              ),
             ],
           ),
         ],
@@ -307,31 +348,60 @@ class _BrideHomePageState extends State<BrideHomePage> {
           boxShadow: [BoxShadow(color: Colors.black54, blurRadius: 5)],
         ),
         child: BottomAppBar(
-          color: Colors.white, // Set the bottom navigation bar color to white
+          color: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home_outlined),
+                icon: ImageIcon(AssetImage(home_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.grid_on_outlined),
+                icon: ImageIcon(AssetImage(categories_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.star_border_rounded),
+                icon: ImageIcon(AssetImage(star_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.favorite_border),
+                icon: ImageIcon(AssetImage(heart_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.person_outlined),
+                icon: ImageIcon(AssetImage(profile_outlined_icon)),
                 onPressed: () {},
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonBox(String title, VoidCallback onPressed) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
