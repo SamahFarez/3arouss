@@ -53,7 +53,7 @@ class TodoListItem extends StatelessWidget {
                     todoItem.description,
                     style: TextStyle(
                       color: todoItem.isDone ? Colors.green : null,
-                      fontFamily: 'changa',
+                      fontFamily: 'Changa',
                     ),
                     textAlign: TextAlign.right,
                   ),
@@ -63,7 +63,7 @@ class TodoListItem extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 12,
-                      fontFamily: 'changa',
+                      fontFamily: 'Changa',
                     ),
                     textAlign: TextAlign.right,
                   ),

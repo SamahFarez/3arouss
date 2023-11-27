@@ -15,7 +15,6 @@ dependencies:
     sdk: flutter
   google_fonts: ^2.1.0 
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,3 +34,7 @@ flutter:
     - assets/star_outlined.png
     - assets/heart_outlined.png
     - assets/profile_outlined.png
+  fonts:
+    - family: Changa
+      fonts:
+        - asset: assets/ChangaFont.ttf
