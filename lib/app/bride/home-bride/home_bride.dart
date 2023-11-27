@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/images.dart';
 
-
 class TodoItem {
   final String description;
   bool isDone;
@@ -175,37 +174,36 @@ class _BrideHomePageState extends State<BrideHomePage> {
           actions: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              children:[
+              children: [
                 TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('إلغاء'),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  String newTodo = _todoController.text.trim();
-                  if (newTodo.isNotEmpty) {
-                    setState(() {
-                      _todoList.insert(
-                        0,
-                        TodoItem(
-                          description: newTodo,
-                          isDone: false,
-                          date: selectedDate,
-                        ),
-                      );
-                      _todoList.sort((a, b) => a.date.compareTo(b.date));
-                    });
-                  }
-                  _todoController.clear();
-                  Navigator.of(context).pop();
-                },
-                child: Text('إضافة'),
-              ),
-          ],),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('إلغاء'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    String newTodo = _todoController.text.trim();
+                    if (newTodo.isNotEmpty) {
+                      setState(() {
+                        _todoList.insert(
+                          0,
+                          TodoItem(
+                            description: newTodo,
+                            isDone: false,
+                            date: selectedDate,
+                          ),
+                        );
+                        _todoList.sort((a, b) => a.date.compareTo(b.date));
+                      });
+                    }
+                    _todoController.clear();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('إضافة'),
+                ),
+              ],
+            ),
           ],
         );
       },
@@ -218,7 +216,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
       body: Stack(
         children: [
           Image.asset(
-           background_image, // Replace with your image path
+            background_image, // Replace with your image path
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -338,23 +336,23 @@ class _BrideHomePageState extends State<BrideHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home_outlined),
+                icon: ImageIcon(AssetImage(home_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.grid_on_outlined),
+                icon: ImageIcon(AssetImage(categories_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.star_border_rounded),
+                icon: ImageIcon(AssetImage(star_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.favorite_border),
+                icon: ImageIcon(AssetImage(heart_outlined_icon)),
                 onPressed: () {},
               ),
               IconButton(
-                icon: Icon(Icons.person_outlined),
+                icon: ImageIcon(AssetImage(profile_outlined_icon)),
                 onPressed: () {},
               ),
             ],

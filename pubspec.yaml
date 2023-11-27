@@ -25,3 +25,13 @@ flutter:
   uses-material-design: true
   assets:
     - assets/background.png
+    - assets/home.png
+    - assets/categories.png
+    - assets/star.png
+    - assets/heart.png
+    - assets/profile.png
+    - assets/home_outlined.png
+    - assets/categories_outlined.png
+    - assets/star_outlined.png
+    - assets/heart_outlined.png
+    - assets/profile_outlined.png
