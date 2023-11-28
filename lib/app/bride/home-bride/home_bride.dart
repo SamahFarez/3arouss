@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import 'guests_list.dart';
 
 class TodoItem {
   final String description;
@@ -411,6 +412,18 @@ class _BrideHomePageState extends State<BrideHomePage> {
                     }),
                     _buildButtonBox('قائمة الحضور', invitation_image, () {
                       // Handle the button click for 'List of Guests'
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  GuestsPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return child; // No transition animation
+                          },
+                        ),
+                      );
                     }),
                     _buildButtonBox('الميزانية ', rings_image, () {
                       // Handle the button click for 'Expense Tracker'
@@ -436,7 +449,20 @@ class _BrideHomePageState extends State<BrideHomePage> {
             children: [
               IconButton(
                 icon: ImageIcon(AssetImage(home_icon)),
-                onPressed: () {},
+                onPressed: () {
+                  // Navigate to BrideHomePage without transition animation
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          BrideHomePage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return child; // No transition animation
+                      },
+                    ),
+                  );
+                },
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(categories_outlined_icon)),
