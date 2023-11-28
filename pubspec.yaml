@@ -38,6 +38,7 @@ flutter:
     - assets/food.png
     - assets/rings.png
     - assets/married.png
+    - assets/success.png
   fonts:
     - family: Changa
       fonts:

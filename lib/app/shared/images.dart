@@ -13,3 +13,4 @@ const invitation_image = "assets/invitation.png";
 const food_image = "assets/food.png";
 const rings_image = "assets/rings.png";
 const married_image = "assets/married.png";
+const success_image = "assets/success.png";
