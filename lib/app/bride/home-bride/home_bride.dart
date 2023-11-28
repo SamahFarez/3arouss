@@ -381,8 +381,8 @@ class _BrideHomePageState extends State<BrideHomePage> {
                         children: [
                           Image.asset(
                             success_image, // Replace with the actual path
-                            width: 170,
-                            height: 185,
+                            width: 180,
+                            height: 190,
                           ),
                           Text("لا توجد مهام لهذا اليوم")
                         ],
