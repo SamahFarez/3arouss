@@ -9,4 +9,7 @@ const profile_icon = "assets/profile.png";
 const profile_outlined_icon = "assets/profile_outlined.png";
 const categories_icon = "assets/categories.png";
 const categories_outlined_icon = "assets/categories_outlined.png";
-
+const invitation_image = "assets/invitation.png";
+const food_image = "assets/food.png";
+const rings_image = "assets/rings.png";
+const married_image = "assets/married.png";
