@@ -34,7 +34,13 @@ flutter:
     - assets/star_outlined.png
     - assets/heart_outlined.png
     - assets/profile_outlined.png
+    - assets/invitation.png
+    - assets/food.png
+    - assets/rings.png
+    - assets/married.png
+    - assets/success.png
   fonts:
     - family: Changa
       fonts:
         - asset: assets/ChangaFont.ttf
+        
