@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-import '../../widgets/bottom_navigation_bar.dart';
+import '../../widgets/bottom_navigation_bar_bride.dart';
 import 'home_bride.dart';
 
 enum FoodCategory {

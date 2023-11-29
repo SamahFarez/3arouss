@@ -1,0 +1,419 @@
+import 'package:flutter/material.dart';
+import '../../shared/images.dart';
+import '../../shared/colors.dart';
+import '../../widgets/bottom_navigation_bar_bride.dart';
+
+enum RequestStatus {
+  newRequest,
+  accepted,
+  refused,
+}
+
+class Request {
+  final String customerName;
+  final String customerWilaya;
+  final String customerPhone;
+  final String customerEmail;
+  final String productName;
+  final String productColor;
+  final String productSize;
+  final bool isBuying;
+  RequestStatus requestStatus;
+
+  Request({
+    required this.customerName,
+    required this.customerWilaya,
+    required this.customerPhone,
+    required this.customerEmail,
+    required this.productName,
+    required this.productColor,
+    required this.productSize,
+    required this.isBuying,
+    required this.requestStatus,
+  });
+}
+
+class RequestsPage extends StatefulWidget {
+  @override
+  _RequestsPageState createState() => _RequestsPageState();
+}
+
+class _RequestsPageState extends State<RequestsPage> {
+  List<Request> _requestList = [];
+  List<Request> _displayedRequestList = [];
+  RequestStatus _selectedStatus = RequestStatus.newRequest; // Add this line
+
+  @override
+  void initState() {
+    super.initState();
+    _displayedRequestList = List.from(_requestList);
+
+    // Add three example new requests with Arabic names, Algerian phone numbers, and emails
+    _requestList.add(
+      Request(
+        customerName: 'عبد الرحمن بن زينب',
+        customerWilaya: 'الجزائر',
+        customerPhone: '0555123456',
+        customerEmail: 'abdelrahman@example.com',
+        productName: 'المنتج أ',
+        productColor: 'أحمر',
+        productSize: 'كبير',
+        isBuying: true,
+        requestStatus: RequestStatus.newRequest,
+      ),
+    );
+
+    _requestList.add(
+      Request(
+        customerName: 'فاطمة بن محمد',
+        customerWilaya: 'وهران',
+        customerPhone: '0777123456',
+        customerEmail: 'fatima@example.com',
+        productName: 'المنتج ب',
+        productColor: 'أزرق',
+        productSize: 'متوسط',
+        isBuying: false,
+        requestStatus: RequestStatus.newRequest,
+      ),
+    );
+
+    _requestList.add(
+      Request(
+        customerName: 'محمد بن عبد الله',
+        customerWilaya: 'البليدة',
+        customerPhone: '0567123456',
+        customerEmail: 'mohamed@example.com',
+        productName: 'المنتج ج',
+        productColor: 'أخضر',
+        productSize: 'صغير',
+        isBuying: true,
+        requestStatus: RequestStatus.newRequest,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            background_image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Column(
+            children: [
+              SizedBox(height: 220),
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildStatusButton(
+                      'تم رفضه',
+                      RequestStatus.refused,
+                    ),
+                    _buildStatusButton(
+                      'تم قبوله',
+                      RequestStatus.accepted,
+                    ),
+                    _buildStatusButton(
+                      'جديد',
+                      RequestStatus.newRequest,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: _displayedRequestList.isEmpty
+                    ? Center(
+                        child: Text(
+                          'لا يوجد طلبات.',
+                          style: TextStyle(color: white_color),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: _displayedRequestList.length,
+                        itemBuilder: (context, index) {
+                          return _buildRequestItem(
+                              _displayedRequestList[index]);
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(),
+      ),
+    );
+  }
+
+  Widget _buildStatusButton(String title, RequestStatus status) {
+    Color backgroundColor = _getButtonBackgroundColor(status);
+    bool isSelected = _selectedStatus == status;
+
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          _displayedRequestList = _filterRequestsByStatus(status);
+          _selectedStatus = status;
+        });
+      },
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return gray_color; // Use the provided color when pressed
+            }
+            return isSelected ? gray_color : backgroundColor;
+          },
+        ),
+        fixedSize: MaterialStateProperty.all(
+          Size(110, 30),
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(color: isSelected ? text_gray_color : text_gray_color),
+      ),
+    );
+  }
+
+  Color _getButtonBackgroundColor(RequestStatus status) {
+    switch (status) {
+      case RequestStatus.newRequest:
+        return white_color;
+      case RequestStatus.accepted:
+        return white_color;
+      case RequestStatus.refused:
+        return white_color;
+    }
+  }
+
+  List<Request> _filterRequestsByStatus(RequestStatus status) {
+    return _requestList
+        .where((request) => request.requestStatus == status)
+        .toList();
+  }
+
+  Widget _buildRequestItem(Request request) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child: ElevatedButton(
+        onPressed: () {
+          _showChangeStatusDialog(context, request);
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(white_color),
+          fixedSize: MaterialStateProperty.all(
+            Size(double.infinity, 100),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Product Name
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      request.productName,
+                      style: TextStyle(color: dark_color),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 10),
+              // User Name
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      request.customerName,
+                      style: TextStyle(color: dark_color),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChangeStatusButton(
+      String title, Color color, RequestStatus status,
+      {required VoidCallback onPressed}) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(color),
+        fixedSize: MaterialStateProperty.all(
+          Size(110, 30),
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(color: white_color),
+      ),
+    );
+  }
+
+  void _changeStatus(Request request, RequestStatus newStatus) {
+    setState(() {
+      request.requestStatus = newStatus;
+    });
+  }
+
+  void _showChangeStatusDialog(BuildContext context, Request request) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            title: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Display User Profile Picture
+                  CircleAvatar(
+                    backgroundImage: AssetImage(bride_image),
+                    radius: 25,
+                  ),
+                  SizedBox(width: 15),
+                  // Display User Name
+                  Text(
+                    request.customerName,
+                    style: TextStyle(
+                      color: dark_color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            content: Container(
+              height: 380, // Adjust the height based on your content
+              width: 300, // Adjust the width based on your content
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 20),
+
+                  // User Details
+                  Text(
+                    'البريد الإلكتروني: ${request.customerEmail}',
+                    style: TextStyle(color: dark_color),
+                  ),
+                  Text(
+                    'رقم الهاتف: ${request.customerPhone}',
+                    style: TextStyle(color: dark_color),
+                  ),
+                  SizedBox(height: 10),
+                  // Product Details
+                  Text(
+                    'اسم المنتج: ${request.productName}',
+                    style: TextStyle(color: dark_color),
+                  ),
+                  // Color Details
+                  Row(
+                    children: [
+                      Text(
+                        'اللون:',
+                        style: TextStyle(color: dark_color),
+                      ),
+                      SizedBox(width: 5),
+                      // Display Color Circle
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: request.productColor.toLowerCase() == 'black'
+                              ? Colors.black
+                              : Colors
+                                  .transparent, // Add more color cases as needed
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'الحجم: ${request.productSize}',
+                    style: TextStyle(color: dark_color),
+                  ),
+                  Text(
+                    'النوع: ${request.isBuying ? 'شراء' : 'إيجار'}',
+                    style: TextStyle(color: dark_color),
+                  ),
+                  SizedBox(height: 10),
+                  // Additional Information
+                  Text(
+                    'معلومات إضافية: ...', // Add any additional information here
+                    style: TextStyle(color: dark_color),
+                  ),
+                  SizedBox(height: 25),
+                  // Buttons for Changing Status
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildChangeStatusButton(
+                        'تأكيد',
+                        blue_color,
+                        RequestStatus.accepted,
+                        onPressed: () {
+                          _changeStatus(request, RequestStatus.accepted);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      _buildChangeStatusButton(
+                        'رفض',
+                        purple_color,
+                        RequestStatus.refused,
+                        onPressed: () {
+                          _changeStatus(request, RequestStatus.refused);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

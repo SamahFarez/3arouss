@@ -4,7 +4,7 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import 'guests_list.dart';
 import 'food_list.dart';
-import '../../widgets/bottom_navigation_bar.dart';
+import '../../widgets/bottom_navigation_bar_bride.dart';
 
 class TodoItem {
   final String description;

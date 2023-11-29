@@ -39,6 +39,10 @@ flutter:
     - assets/rings.png
     - assets/married.png
     - assets/success.png
+    - assets/pfpbride.png
+    - assets/pfpbusiness.png
+    - assets/inbox.png
+    - assets/inbox_outlined.png
   fonts:
     - family: Changa
       fonts:
