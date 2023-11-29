@@ -18,7 +18,8 @@ class Request {
   final String productColor;
   final String productSize;
   final bool isBuying;
-  RequestStatus requestStatus;
+  RequestStatus _requestStatus;
+  final DateTime dueDate;
 
   Request({
     required this.customerName,
@@ -29,8 +30,15 @@ class Request {
     required this.productColor,
     required this.productSize,
     required this.isBuying,
-    required this.requestStatus,
-  });
+    required RequestStatus requestStatus,
+    required this.dueDate,
+  }) : _requestStatus = requestStatus;
+
+  set requestStatus(RequestStatus newStatus) {
+    _requestStatus = newStatus;
+  }
+
+  RequestStatus get requestStatus => _requestStatus;
 }
 
 class RequestsPage extends StatefulWidget {
@@ -42,6 +50,9 @@ class _RequestsPageState extends State<RequestsPage> {
   List<Request> _requestList = [];
   List<Request> _displayedRequestList = [];
   RequestStatus _selectedStatus = RequestStatus.newRequest; // Add this line
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
 
   @override
   void initState() {
@@ -60,6 +71,7 @@ class _RequestsPageState extends State<RequestsPage> {
         productSize: 'كبير',
         isBuying: true,
         requestStatus: RequestStatus.newRequest,
+        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
       ),
     );
 
@@ -74,6 +86,7 @@ class _RequestsPageState extends State<RequestsPage> {
         productSize: 'متوسط',
         isBuying: false,
         requestStatus: RequestStatus.newRequest,
+        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
       ),
     );
 
@@ -88,6 +101,7 @@ class _RequestsPageState extends State<RequestsPage> {
         productSize: 'صغير',
         isBuying: true,
         requestStatus: RequestStatus.newRequest,
+        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
       ),
     );
   }
@@ -305,13 +319,11 @@ class _RequestsPageState extends State<RequestsPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Display User Profile Picture
                   CircleAvatar(
                     backgroundImage: AssetImage(bride_image),
                     radius: 25,
                   ),
                   SizedBox(width: 15),
-                  // Display User Name
                   Text(
                     request.customerName,
                     style: TextStyle(
@@ -325,14 +337,12 @@ class _RequestsPageState extends State<RequestsPage> {
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             content: Container(
-              height: 380, // Adjust the height based on your content
-              width: 300, // Adjust the width based on your content
+              height: 450,
+              width: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 20),
-
-                  // User Details
                   Text(
                     'البريد الإلكتروني: ${request.customerEmail}',
                     style: TextStyle(color: dark_color),
@@ -342,12 +352,10 @@ class _RequestsPageState extends State<RequestsPage> {
                     style: TextStyle(color: dark_color),
                   ),
                   SizedBox(height: 10),
-                  // Product Details
                   Text(
                     'اسم المنتج: ${request.productName}',
                     style: TextStyle(color: dark_color),
                   ),
-                  // Color Details
                   Row(
                     children: [
                       Text(
@@ -355,7 +363,6 @@ class _RequestsPageState extends State<RequestsPage> {
                         style: TextStyle(color: dark_color),
                       ),
                       SizedBox(width: 5),
-                      // Display Color Circle
                       Container(
                         width: 20,
                         height: 20,
@@ -363,8 +370,7 @@ class _RequestsPageState extends State<RequestsPage> {
                           shape: BoxShape.circle,
                           color: request.productColor.toLowerCase() == 'black'
                               ? Colors.black
-                              : Colors
-                                  .transparent, // Add more color cases as needed
+                              : Colors.transparent,
                         ),
                       ),
                     ],
@@ -377,14 +383,11 @@ class _RequestsPageState extends State<RequestsPage> {
                     'النوع: ${request.isBuying ? 'شراء' : 'إيجار'}',
                     style: TextStyle(color: dark_color),
                   ),
-                  SizedBox(height: 10),
-                  // Additional Information
                   Text(
-                    'معلومات إضافية: ...', // Add any additional information here
+                    'تاريخ الاستحقاق: ${_formatDate(request.dueDate)}',
                     style: TextStyle(color: dark_color),
                   ),
                   SizedBox(height: 25),
-                  // Buttons for Changing Status
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
