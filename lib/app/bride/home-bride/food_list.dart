@@ -40,76 +40,69 @@ class _FoodListPageState extends State<FoodListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            background_image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Column(
-            children: [
-              SizedBox(height: 220),
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildCategoryButton(
-                      'تحلية',
-                      purple_color,
-                      FoodCategory.dessert,
-                    ),
-                    _buildCategoryButton(
-                      'طبق رئيسي',
-                      blue_color,
-                      FoodCategory.mainDish,
-                    ),
-                    _buildCategoryButton(
-                      'مقبلات',
-                      gray_color,
-                      FoodCategory.appetizer,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: _displayedFoodList.isEmpty
-                    ? Center(
-                        child: Text(
-                          'لا يوجد عناصر',
-                          style: TextStyle(color: dark_color),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _displayedFoodList.length,
-                        itemBuilder: (context, index) {
-                          return _buildFoodItem(_displayedFoodList[index]);
-                        },
+        body: Stack(
+          children: [
+            Image.asset(
+              background_image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            Column(
+              children: [
+                SizedBox(height: 220),
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildCategoryButton(
+                        'تحلية',
+                        purple_color,
+                        FoodCategory.dessert,
                       ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddFoodDialog(context);
-        },
-        backgroundColor: purple_color, // Change the background color
-        child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-          boxShadow: [BoxShadow(color: dark_color, blurRadius: 5)],
+                      _buildCategoryButton(
+                        'طبق رئيسي',
+                        blue_color,
+                        FoodCategory.mainDish,
+                      ),
+                      _buildCategoryButton(
+                        'مقبلات',
+                        gray_color,
+                        FoodCategory.appetizer,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: _displayedFoodList.isEmpty
+                      ? Center(
+                          child: Text(
+                            'لا يوجد عناصر',
+                            style: TextStyle(color: dark_color),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: _displayedFoodList.length,
+                          itemBuilder: (context, index) {
+                            return _buildFoodItem(_displayedFoodList[index]);
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ],
         ),
-    child: CustomBottomNavigationBar(), 
-
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _showAddFoodDialog(context);
+          },
+          backgroundColor: purple_color, // Change the background color
+          child: Icon(Icons.add),
+        ),
+        bottomNavigationBar: Container(
+          child: CustomBottomNavigationBar(),
+        ));
   }
 
   Widget _buildCategoryButton(

@@ -54,7 +54,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
               ),
             ],
           ),
+          
         ),
+      
     );
+    
   }
 }

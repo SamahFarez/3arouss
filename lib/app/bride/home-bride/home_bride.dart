@@ -6,7 +6,6 @@ import 'guests_list.dart';
 import 'food_list.dart';
 import '../../widgets/bottom_navigation_bar.dart';
 
-
 class TodoItem {
   final String description;
   bool isDone;
@@ -459,13 +458,13 @@ class _BrideHomePageState extends State<BrideHomePage> {
                 ),
               ),
               SizedBox(height: 10), //Bottom screen
-              CustomBottomNavigationBar(), 
-
             ],
           ),
         ],
       ),
-
+      bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(),
+      ),
     );
   }
 

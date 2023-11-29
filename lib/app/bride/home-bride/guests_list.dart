@@ -103,13 +103,7 @@ class _GuestsPageState extends State<GuestsPage> {
         backgroundColor: purple_color,
       ),
       bottomNavigationBar: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-          boxShadow: [BoxShadow(color: dark_color, blurRadius: 5)],
-        ),
-    child: CustomBottomNavigationBar(), 
-
+        child: CustomBottomNavigationBar(),
       ),
     );
   }
