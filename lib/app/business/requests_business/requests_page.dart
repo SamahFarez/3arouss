@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-import '../../widgets/bottom_navigation_bar_bride.dart';
+import '../../widgets/bottom_navigation_bar_business.dart';
 
 enum RequestStatus {
   newRequest,
@@ -20,6 +20,7 @@ class Request {
   final bool isBuying;
   RequestStatus _requestStatus;
   final DateTime dueDate;
+  final String businessRequestDetails; // Additional field for business details
 
   Request({
     required this.customerName,
@@ -32,6 +33,7 @@ class Request {
     required this.isBuying,
     required RequestStatus requestStatus,
     required this.dueDate,
+    required this.businessRequestDetails,
   }) : _requestStatus = requestStatus;
 
   set requestStatus(RequestStatus newStatus) {
@@ -50,6 +52,7 @@ class _RequestsPageState extends State<RequestsPage> {
   List<Request> _requestList = [];
   List<Request> _displayedRequestList = [];
   RequestStatus _selectedStatus = RequestStatus.newRequest; // Add this line
+
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';
   }
@@ -72,6 +75,8 @@ class _RequestsPageState extends State<RequestsPage> {
         isBuying: true,
         requestStatus: RequestStatus.newRequest,
         dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
+        businessRequestDetails:
+            'تفاصيل طلب العميل هنا', // Example business details
       ),
     );
 
@@ -87,6 +92,8 @@ class _RequestsPageState extends State<RequestsPage> {
         isBuying: false,
         requestStatus: RequestStatus.newRequest,
         dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
+        businessRequestDetails:
+            'تفاصيل طلب العميل هنا', // Example business details
       ),
     );
 
@@ -102,6 +109,8 @@ class _RequestsPageState extends State<RequestsPage> {
         isBuying: true,
         requestStatus: RequestStatus.newRequest,
         dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
+        businessRequestDetails:
+            'تفاصيل طلب العميل هنا', // Example business details
       ),
     );
   }

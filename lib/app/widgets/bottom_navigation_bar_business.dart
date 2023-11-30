@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../shared/images.dart'; // Make sure to adjust the path based on your project structure
 import '../shared/colors.dart'; // Make sure to adjust the path based on your project structure
 import '../business/home-business/home_business.dart'; // Make sure to adjust the path based on your project structure
+import '../business/comments_page/comments_page.dart'; // Make sure to adjust the path based on your project structure
 import '../business/requests_business/requests_page.dart'; // Make sure to adjust the path based on your project structure
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -60,7 +61,19 @@ class CustomBottomNavigationBar extends StatelessWidget {
             ),
             IconButton(
               icon: ImageIcon(AssetImage(star_outlined_icon)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        CommentsListPage(),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return child; // No transition animation
+                    },
+                  ),
+                );
+              },
             ),
             IconButton(
               icon: ImageIcon(AssetImage(profile_outlined_icon)),

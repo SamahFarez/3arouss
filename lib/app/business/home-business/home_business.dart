@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import '../requests_business/requests_page.dart';
 import '../../widgets/bottom_navigation_bar_business.dart';
 
 class RequestItem {
@@ -84,6 +85,10 @@ class RequestListItem extends StatelessWidget {
 }
 
 class BusinessHomePage extends StatefulWidget {
+  final Request? acceptedRequest;
+
+  BusinessHomePage({this.acceptedRequest});
+
   @override
   _BusinessHomePageState createState() => _BusinessHomePageState();
 }
@@ -200,6 +205,29 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
         child: CustomBottomNavigationBar(),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Check if there's an accepted request passed from RequestsPage
+    if (widget.acceptedRequest != null) {
+      _addAcceptedRequest(widget.acceptedRequest!);
+    }
+  }
+
+  void _addAcceptedRequest(Request acceptedRequest) {
+    setState(() {
+      _requestList.add(RequestItem(
+        clientName: acceptedRequest.customerName,
+        requestDetails: acceptedRequest.businessRequestDetails,
+        date: acceptedRequest.dueDate,
+      ));
+
+      // Sort the list by date
+      _requestList.sort((a, b) => a.date.compareTo(b.date));
+    });
   }
 
   Widget _buildButtonBox(
