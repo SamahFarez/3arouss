@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import 'categories/categories.dart';
+import 'favorites/favorite_publication.dart';
+import 'requests/requests.dart';
+import 'profile/profile_bride.dart';
 
 class TodoItem {
   final String description;
@@ -440,19 +444,41 @@ class _BrideHomePageState extends State<BrideHomePage> {
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(categories_outlined_icon)),
-                onPressed: () {},
+                onPressed: () {
+                  // Navigate to the CategoriesScreen when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoriesScreen()),
+                  );
+                },
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(star_outlined_icon)),
-                onPressed: () {},
+                 onPressed: () {
+                  // Navigate to the CategoriesScreen when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RequestsScreen()),
+                  );
+                },
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(heart_outlined_icon)),
-                onPressed: () {},
+                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FavoritePublicationScreen()),
+                  );
+                },
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(profile_outlined_icon)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
               ),
             ],
           ),
