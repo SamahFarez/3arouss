@@ -14,11 +14,14 @@ dependencies:
   flutter_localizations: # add or update this dependency
     sdk: flutter
   google_fonts: ^2.1.0 
+ 
+ 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+ 
 
 flutter:
   uses-material-design: true
@@ -39,6 +42,16 @@ flutter:
     - assets/rings.png
     - assets/married.png
     - assets/success.png
+    - assets/dress.png
+    - assets/product_decoration.png
+    - assets/pfpbusiness.png
+    - assets/profile.png
+    - assets/Splash2.png
+    - assets/bride_icon.png
+    - assets/business_icon.png
+
+   
+
   fonts:
     - family: Changa
       fonts:
