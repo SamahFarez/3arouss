@@ -4,6 +4,7 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import 'guests_list.dart';
 import 'food_list.dart';
+import 'expenses.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
 
 class TodoItem {
@@ -34,7 +35,7 @@ class TodoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: 65,
       padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
       margin: EdgeInsets.symmetric(horizontal: 13.0, vertical: 0.0),
       decoration: BoxDecoration(
@@ -98,7 +99,7 @@ class TodoListItem extends StatelessWidget {
                     onTodoToggle();
                   },
                   activeColor: blue_color,
-                  side: BorderSide(color: Colors.blue), // Color of the border
+                  side: BorderSide(color: blue_color), // Color of the border
                 ),
               ),
             ],
@@ -173,6 +174,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                 SizedBox(height: 10),
                 Container(
                   width: 150,
+
                   child: ElevatedButton(
                     onPressed: () async {
                       DateTime? pickedDate = await showDatePicker(
@@ -446,7 +448,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                         PageRouteBuilder(
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  GuestsPage(),
+                                  ExpenseTrackingPage(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             return child; // No transition animation
@@ -462,8 +464,8 @@ class _BrideHomePageState extends State<BrideHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(),
+     bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(currentPageIndex: 0 , parentContext: context),
       ),
     );
   }

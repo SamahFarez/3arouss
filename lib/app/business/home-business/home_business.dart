@@ -202,7 +202,8 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
         ],
       ),
       bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(currentPageIndex: 0 , parentContext: context),
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 0, parentContext: context),
       ),
     );
   }

@@ -191,17 +191,23 @@ class _CommentsListPageState extends State<CommentsListPage> {
                   'تفاصيل التعليق',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                IconButton(
-                  icon: Icon(
-                    isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: isLiked ? Colors.red : null,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isLiked = !isLiked;
-                    });
-                  },
-                ),
+                 IconButton(
+                      icon: isLiked
+                          ? Icon(Icons.favorite, color: Colors.red) // Filled heart icon
+                          : Icon(Icons.favorite_border),
+                      onPressed: () {
+                        setState(() {
+                          isLiked = !isLiked;
+                          // Add logic to handle adding/removing from favorites here
+                          if (isLiked) {
+                           
+                          } else {
+                            // Remove from favorites logic
+                            // ...
+                          }
+                        });
+                      },
+                    ),
               ],
             ),
             content: Container(

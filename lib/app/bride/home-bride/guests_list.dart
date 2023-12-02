@@ -27,11 +27,11 @@ class GuestsPage extends StatefulWidget {
 }
 
 class _GuestsPageState extends State<GuestsPage> {
+  TextEditingController _numberOfFamilyMembersController =
+      TextEditingController();
   List<Guest> _guestList = [];
   List<Guest> _displayedGuestList = [];
   TextEditingController _guestNameController = TextEditingController();
-  TextEditingController _numberOfFamilyMembersController =
-      TextEditingController();
 
   @override
   void initState() {
@@ -52,7 +52,23 @@ class _GuestsPageState extends State<GuestsPage> {
           ),
           Column(
             children: [
-              SizedBox(height: 220),
+             SizedBox(height: 200),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: dark_color),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(width: 120),
+                  Text(
+                    'Guests List ',
+                    style: TextStyle(color: dark_color, fontSize: 18),
+                  ),
+                ],
+              ),
               Padding(
                 padding: EdgeInsets.all(20.0),
                 child: Row(
@@ -100,10 +116,11 @@ class _GuestsPageState extends State<GuestsPage> {
           _showAddGuestDialog(context);
         },
         child: Icon(Icons.add),
-        backgroundColor: purple_color,
+        backgroundColor: blue_color,
       ),
       bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(),
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 0, parentContext: context),
       ),
     );
   }
@@ -208,9 +225,18 @@ class _GuestsPageState extends State<GuestsPage> {
     );
   }
 
+  void _updateDisplayedGuestList() {
+    setState(() {
+      _displayedGuestList = List.from(_guestList);
+    });
+  }
+
   void _changeStatus(Guest guest, AttendanceStatus newStatus) {
     setState(() {
       guest.attendanceStatus = newStatus;
+      _guestList = List.from(_guestList); // Ensure _guestList is updated
+      _displayedGuestList = _filterGuestsByStatus(
+          newStatus); // Update displayed list based on new status
     });
   }
 
@@ -290,7 +316,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
                     border: Border.all(
-                      color: purple_color,
+                      color: blue_color,
                       width: 2.0,
                     ),
                   ),
@@ -305,7 +331,7 @@ class _GuestsPageState extends State<GuestsPage> {
                       ),
                       child: Text(
                         'إلغاء',
-                        style: TextStyle(color: purple_color),
+                        style: TextStyle(color: blue_color),
                       ),
                     ),
                   ),
@@ -314,7 +340,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   margin: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
-                    color: purple_color,
+                    color: blue_color,
                     boxShadow: [
                       BoxShadow(
                         color: dark_color.withOpacity(0.5),
@@ -343,6 +369,7 @@ class _GuestsPageState extends State<GuestsPage> {
                                   AttendanceStatus.notConfirmedYet,
                             ),
                           );
+                          _updateDisplayedGuestList(); // Update _displayedGuestList
                         });
                       }
                       _guestNameController.clear();
@@ -396,6 +423,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   AttendanceStatus.willAttend,
                   onPressed: () {
                     _changeStatus(guest, AttendanceStatus.willAttend);
+                    _updateDisplayedGuestList(); // Update _displayedGuestList
                     Navigator.of(context).pop();
                   },
                 ),
@@ -406,6 +434,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   AttendanceStatus.willNotAttend,
                   onPressed: () {
                     _changeStatus(guest, AttendanceStatus.willNotAttend);
+                    _updateDisplayedGuestList(); // Update _displayedGuestList
                     Navigator.of(context).pop();
                   },
                 ),
@@ -416,6 +445,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   AttendanceStatus.notConfirmedYet,
                   onPressed: () {
                     _changeStatus(guest, AttendanceStatus.notConfirmedYet);
+                    _updateDisplayedGuestList(); // Update _displayedGuestList
                     Navigator.of(context).pop();
                   },
                 ),

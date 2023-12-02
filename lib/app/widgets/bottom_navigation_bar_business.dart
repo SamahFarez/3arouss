@@ -5,6 +5,7 @@ import '../business/home-business/home_business.dart';
 import '../business/comments_page/comments_page.dart';
 import '../business/requests_business/requests_page.dart';
 import '../business/product_page/product_page.dart';
+import '../business/profile/profile_business.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentPageIndex;
@@ -34,7 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             buildIconButton(1, inbox_image, inbox_outlined_image, RequestsPage()),
             buildIconButton(2, add_icon, add_outlined_icon, AddProductPage()),
             buildIconButton(3, star_icon, star_outlined_icon, CommentsListPage()),
-            buildIconButton(4, profile_icon, profile_outlined_icon, null),
+            buildIconButton(4, profile_icon, profile_outlined_icon, BusinessProfileScreen()),
           ],
         ),
       ),

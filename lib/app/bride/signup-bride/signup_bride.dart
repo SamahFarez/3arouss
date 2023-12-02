@@ -3,6 +3,60 @@ import 'marriage_date.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 
+
+
+List<String> wilayasList = [
+  'أدرار',
+  'الشلف',
+  'الأغواط',
+  'أم البواقي',
+  'باتنة',
+  'بجاية',
+  'بسكرة',
+  'بشار',
+  'البليدة',
+  'البويرة',
+  'تمنراست',
+  'تبسة',
+  'تلمسان',
+  'تيارت',
+  'تيزي وزو',
+  'الجزائر',
+  'الجلفة',
+  'جيجل',
+  'سطيف',
+  'سعيدة',
+  'سكيكدة',
+  'سيدي بلعباس',
+  'عنابة',
+  'قالمة',
+  'قسنطينة',
+  'المدية',
+  'مستغانم',
+  'المسيلة',
+  'معسكر',
+  'ورقلة',
+  'وهران',
+  'البيض',
+  'اليزي',
+  'برج بوعريريج',
+  'بومرداس',
+  'الطارف',
+  'تندوف',
+  'تيسمسيلت',
+  'الوادي',
+  'خنشلة',
+  'سوق أهراس',
+  'تيبازة',
+  'ميلة',
+  'عين دفلى',
+  'النعامة',
+  'عين تموشنت',
+  'غرداية',
+  'غليزان',
+];
+
+
 class BrideSignUpPage extends StatefulWidget {
   @override
   _BrideSignUpPageState createState() => _BrideSignUpPageState();
@@ -51,6 +105,8 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
               ),
             ),
             Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -64,8 +120,8 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RoundedInputWithIcon(
-                      labelText: 'الإسم الكامل',
                       icon: Icons.person,
+                      labelText: 'الإسم الكامل',
                       obscureText: false,
                       fontSize: 14.0,
                     ),
@@ -82,26 +138,31 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                       fontSize: 14.0,
                     ),
                     Row(
-                      children: [
-                        Expanded(
-                          child: RoundedDropdownWithIcon(
-                            labelText: 'الولاية',
-                            icon: Icons.location_city,
-                            items: ['خيار 1', 'خيار 2'],
-                            fontSize: 14.0,
+                        children: [
+                          Container(
+                            width: 150, // Set the desired width
+                            child: Expanded(
+                              child: RoundedTextFieldWithIcon(
+                                labelText: 'الرمز البريدي',
+                                icon: Icons.markunread_mailbox,
+                                hintText: 'أدخل الرمز البريدي',
+                                keyboardType: TextInputType.number,
+                                fontSize: 14.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 12.0),
-                        Expanded(
-                          child: RoundedDropdownWithIcon(
-                            labelText: 'الرمز البريدي',
-                            icon: Icons.markunread_mailbox,
-                            items: ['خيار أ', 'خيار ب'],
-                            fontSize: 14.0,
+                          SizedBox(width: 5.0),
+                          Expanded(
+                            child: RoundedDropdownWithIcon(
+                              labelText: 'الولاية',
+                              icon: Icons.location_city,
+                              wilayas: wilayasList,
+                              fontSize: 14.0,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                          
+                        ],
+                      ),
                     RoundedInputWithIcon(
                       labelText: 'كلمة السر',
                       icon: Icons.lock,
@@ -174,9 +235,12 @@ class RoundedInputWithIcon extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+                textDirection: TextDirection.rtl,
+
+        textAlign: TextAlign.right,
         decoration: InputDecoration(
+          suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
-          suffixIcon: Icon(icon, color: purple_color),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -197,13 +261,82 @@ class RoundedInputWithIcon extends StatelessWidget {
 class RoundedDropdownWithIcon extends StatelessWidget {
   final String labelText;
   final IconData icon;
-  final List<String> items;
+  final List<String> wilayas;
   final double fontSize;
 
   RoundedDropdownWithIcon({
     required this.labelText,
     required this.icon,
-    required this.items,
+    required this.wilayas,
+    this.fontSize = 14.0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          
+          
+          labelText: labelText,
+          suffixIcon: Icon(icon, color: blue_color),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Color(0xFFE5EEF2)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: Color(0xFFE5EEF2)),
+          ),
+          labelStyle: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Changa', // Set the 'Changa' font
+          ),
+        ),
+        items: wilayas.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+                      textDirection: TextDirection.rtl,
+
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                fontFamily: 'Changa', // Set the 'Changa' font
+                fontSize: fontSize,
+                color: Colors.black,
+              ),
+            ),
+          );
+        }).toList(),
+        onChanged: (String? value) {
+          // Handle dropdown value change
+        },
+        style: TextStyle(
+          fontSize: fontSize,
+          color: Colors.black,
+          fontFamily: 'Changa', // Set the 'Changa' font
+        ),
+      ),
+    );
+  }
+}
+
+
+class RoundedTextFieldWithIcon extends StatelessWidget {
+  final String labelText;
+  final String hintText;
+  final IconData icon;
+  final TextInputType keyboardType;
+  final double fontSize;
+
+  RoundedTextFieldWithIcon({
+    required this.labelText,
+    required this.hintText,
+    required this.icon,
+    required this.keyboardType,
     this.fontSize = 14.0,
   });
 
@@ -211,10 +344,13 @@ class RoundedDropdownWithIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: DropdownButtonFormField<String>(
+      child: TextField(
+                textAlign: TextAlign.right,
+
         decoration: InputDecoration(
+          suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
-          suffixIcon: Icon(icon, color: purple_color),
+          hintText: hintText,
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -225,15 +361,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
           ),
           labelStyle: TextStyle(color: Colors.black),
         ),
-        items: items.map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (String? value) {
-          // Handle dropdown value change
-        },
+        keyboardType: keyboardType,
         style: TextStyle(fontSize: fontSize, color: Colors.black),
       ),
     );

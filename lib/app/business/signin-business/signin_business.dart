@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../signup-business/signup_business.dart'; // Make sure to import the correct file
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-
+import '../home-business/home_business.dart';
 
 class BusinessSignInPage extends StatefulWidget {
   @override
@@ -35,7 +35,11 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                   children: [
                     Text(
                       'مرحبا بعودتك',
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Changa', color: Colors.black),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Changa',
+                          color: Colors.black),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -52,6 +56,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
               ),
             ),
             Container(
+              height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -75,7 +80,6 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                       icon: Icons.lock,
                       obscureText: true,
                       fontSize: 14.0,
-                      
                     ),
                     SizedBox(height: 16.0),
                     Row(
@@ -96,16 +100,22 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                           onTap: () {
                             // Handle Forget Password
                           },
-                          child: Text('هل نسيت كلمة السر؟', style: TextStyle(fontSize: 14.0, color: Colors.blue)),
+                          child: Text('هل نسيت كلمة السر؟',
+                              style:
+                                  TextStyle(fontSize: 14.0, color: blue_color)),
                         ),
                       ],
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle sign-in logic here without navigation
-                        // For example, validate inputs and perform sign-in actions
-                        // Once signed in, you can navigate to the next screen if needed.
+                        // Navigate to BrideHomePage when the button is pressed
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BusinessHomePage()), // Replace with your actual navigation logic
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         primary: blue_color,
@@ -118,25 +128,35 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                         child: Center(
                           child: Text(
                             'تسجيل الدخول',
-                            style: TextStyle(fontSize: 14.0, fontFamily: 'Changa', color: Colors.black),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Changa',
+                              color: dark_color,
+                            ),
                           ),
                         ),
                       ),
                     ),
+
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('ليس لديك حساب؟', style: TextStyle(fontSize: 14.0)),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => businessSignUpPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => businessSignUpPage()),
                             );
                           },
-                          child: Text('سجلي الآن', style: TextStyle(fontSize: 14.0, color: Colors.blue)),
+                          child: Text('سجل الآن',
+                              style: TextStyle(
+                                  fontSize: 14.0, color: dark_blue_color)),
                         ),
+                        SizedBox(width: 5),
+                        Text('ليس لديك حساب ؟',
+                            style: TextStyle(fontSize: 14.0)),
                       ],
                     ),
                     SizedBox(height: 50.0), // Added space here

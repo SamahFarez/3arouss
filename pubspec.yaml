@@ -57,6 +57,8 @@ flutter:
     - assets/Splash2.png
     - assets/bride_icon.png
     - assets/business_icon.png
+    - assets/Splash.png
+    - assets/logo.png
     
   fonts:
     - family: Changa

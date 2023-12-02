@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-import '../../widgets/bottom_navigation_bar_bride.dart';
+import '../../widgets/bottom_navigation_bar_business.dart';
 
 
 class PublicationPage extends StatefulWidget {
@@ -81,7 +81,6 @@ class _PublicationPageState extends State<PublicationPage> {
                           isLiked = !isLiked;
                           // Add logic to handle adding/removing from favorites here
                           if (isLiked) {
-                            
                           } else {
                             // Remove from favorites logic
                             // ...
@@ -94,7 +93,6 @@ class _PublicationPageState extends State<PublicationPage> {
               ),
             ],
           ),
-
           Expanded(
             child: SingleChildScrollView(
               child: Container(
@@ -330,11 +328,10 @@ class _PublicationPageState extends State<PublicationPage> {
           ),
         ],
       ),
-     bottomNavigationBar: Container(
+         bottomNavigationBar: Container(
         child: CustomBottomNavigationBar(
-            currentPageIndex: 2, parentContext: context),
+            currentPageIndex: 4, parentContext: context),
       ),
-    
     );
   }
 }

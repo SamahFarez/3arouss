@@ -40,69 +40,87 @@ class _FoodListPageState extends State<FoodListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            Image.asset(
-              background_image,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-            Column(
-              children: [
-                SizedBox(height: 220),
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildCategoryButton(
-                        'تحلية',
-                        purple_color,
-                        FoodCategory.dessert,
-                      ),
-                      _buildCategoryButton(
-                        'طبق رئيسي',
-                        blue_color,
-                        FoodCategory.mainDish,
-                      ),
-                      _buildCategoryButton(
-                        'مقبلات',
-                        gray_color,
-                        FoodCategory.appetizer,
-                      ),
-                    ],
+      body: Stack(
+        children: [
+          Image.asset(
+            background_image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Column(
+            children: [
+              SizedBox(height: 200),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: dark_color),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
+                  SizedBox(width: 120),
+                  Text(
+                    'Food List ',
+                    style: TextStyle(color: dark_color, fontSize: 18),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCategoryButton(
+                      'تحلية',
+                      purple_color,
+                      FoodCategory.dessert,
+                    ),
+                    _buildCategoryButton(
+                      'طبق رئيسي',
+                      blue_color,
+                      FoodCategory.mainDish,
+                    ),
+                    _buildCategoryButton(
+                      'مقبلات',
+                      gray_color,
+                      FoodCategory.appetizer,
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: _displayedFoodList.isEmpty
-                      ? Center(
-                          child: Text(
-                            'لا يوجد عناصر',
-                            style: TextStyle(color: dark_color),
-                          ),
-                        )
-                      : ListView.builder(
-                          itemCount: _displayedFoodList.length,
-                          itemBuilder: (context, index) {
-                            return _buildFoodItem(_displayedFoodList[index]);
-                          },
+              ),
+              Expanded(
+                child: _displayedFoodList.isEmpty
+                    ? Center(
+                        child: Text(
+                          'لا يوجد عناصر',
+                          style: TextStyle(color: dark_color),
                         ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _showAddFoodDialog(context);
-          },
-          backgroundColor: purple_color, // Change the background color
-          child: Icon(Icons.add),
-        ),
-        bottomNavigationBar: Container(
-          child: CustomBottomNavigationBar(),
-        ));
+                      )
+                    : ListView.builder(
+                        itemCount: _displayedFoodList.length,
+                        itemBuilder: (context, index) {
+                          return _buildFoodItem(_displayedFoodList[index]);
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddFoodDialog(context);
+        },
+        backgroundColor: blue_color, // Change the background color
+        child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 0, parentContext: context),
+      ),
+    );
   }
 
   Widget _buildCategoryButton(
@@ -324,7 +342,7 @@ class _FoodListPageState extends State<FoodListPage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
                     border: Border.all(
-                      color: purple_color,
+                      color: blue_color,
                       width: 2.0,
                     ),
                   ),
@@ -339,7 +357,7 @@ class _FoodListPageState extends State<FoodListPage> {
                       ),
                       child: Text(
                         'إلغاء',
-                        style: TextStyle(color: purple_color),
+                        style: TextStyle(color: blue_color),
                       ),
                     ),
                   ),
@@ -348,7 +366,7 @@ class _FoodListPageState extends State<FoodListPage> {
                   margin: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
-                    color: purple_color, // Change button color to purple_color
+                    color: blue_color, 
                     boxShadow: [
                       BoxShadow(
                         color: dark_color.withOpacity(0.5),
