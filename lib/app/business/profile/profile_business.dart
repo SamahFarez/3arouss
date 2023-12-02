@@ -6,12 +6,14 @@ import 'publication.dart';
 
 class BusinessProfileScreen extends StatelessWidget {
   final List<String> categoryButtons = [
-    'Clothes',
-    'Food',
-    'Hair',
-    'Electronics',
-    'Accessories',
-    'Shoes',
+    'ملابس',
+    'أحذية',
+    'مجوهرات',
+    'ديكور',
+    'قاعات حفلات',
+    'مصففات الشعر',
+    'حلويات',
+    'فوتوغرافر',
     // Add more categories as needed
   ];
   @override
@@ -174,16 +176,16 @@ class BusinessProfileScreen extends StatelessWidget {
           ),
 
           Positioned(
-            top: 420,
+            top: 440,
             right: 0,
             left: 0,
             bottom: 60, // Adjust the bottom padding as needed
             child: Column(
               children: [
-                SizedBox(height: 10),
                 // Grid of Products
                 Expanded(
                   child: Container(
+                    height: 450,
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
