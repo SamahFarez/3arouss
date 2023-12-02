@@ -4,6 +4,7 @@ import 'package:our_wedding_app/app/shared/colors.dart';
 import 'app/bride/home-bride/home_bride.dart'; 
 import 'app/bride/home-bride/guests_list.dart'; 
 import 'app/business/home-business/home_business.dart'; 
+import 'app/shared/welcome.dart'; 
 
 
 void main() {
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         const Locale('en', 'US'), // English
         const Locale('ar', 'SA'), // Arabic
       ],
-      home: BusinessHomePage(),
+      home: SplashScreen(),
     );
   }
 }

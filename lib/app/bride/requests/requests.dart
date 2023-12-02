@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-import '../../widgets/bottom_navigation_bar_business.dart';
-import '../../widgets/three_buttons.dart';
+import '../home-bride/home_bride.dart';
+import '../categories/categories.dart';
+import '../categories/publication.dart';
+import '../favorites/favorite_publication.dart';
+import '../profile/profile_bride.dart';
 
 enum RequestStatus {
   newRequest,
@@ -44,12 +47,12 @@ class Request {
   RequestStatus get requestStatus => _requestStatus;
 }
 
-class RequestsPage extends StatefulWidget {
+class RequestsScreen extends StatefulWidget {
   @override
   _RequestsPageState createState() => _RequestsPageState();
 }
 
-class _RequestsPageState extends State<RequestsPage> {
+class _RequestsPageState extends State<RequestsScreen> {
   List<Request> _requestList = [];
   List<Request> _displayedRequestList = [];
   RequestStatus _selectedStatus = RequestStatus.newRequest; // Add this line
@@ -61,6 +64,7 @@ class _RequestsPageState extends State<RequestsPage> {
   @override
   void initState() {
     super.initState();
+    _displayedRequestList = List.from(_requestList);
 
     // Add three example new requests with Arabic names, Algerian phone numbers, and emails
     _requestList.add(
@@ -113,7 +117,6 @@ class _RequestsPageState extends State<RequestsPage> {
             'تفاصيل طلب العميل هنا', // Example business details
       ),
     );
-    _displayedRequestList = List.from(_requestList);
   }
 
   @override
@@ -129,17 +132,26 @@ class _RequestsPageState extends State<RequestsPage> {
           ),
           Column(
             children: [
-              SizedBox(height: 220),
-              ToggleButtonsWidget(
-                buttonTitles: ['جديد', 'مقبول', 'مرفوض'], // Customize button texts
-                selectedIndex: _selectedStatus.index,
-                onButtonTapped: (index) {
-                  setState(() {
-                    _selectedStatus = _getStatusFromIndex(index);
-                    _displayedRequestList =
-                        _filterRequestsByStatus(_selectedStatus);
-                  });
-                },
+              SizedBox(height: 180),
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildStatusButton(
+                      'تم رفضه',
+                      RequestStatus.refused,
+                    ),
+                    _buildStatusButton(
+                      'تم قبوله',
+                      RequestStatus.accepted,
+                    ),
+                    _buildStatusButton(
+                      'في الانتظار ',
+                      RequestStatus.newRequest,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: _displayedRequestList.isEmpty
@@ -161,24 +173,67 @@ class _RequestsPageState extends State<RequestsPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(
-            currentPageIndex: 1, parentContext: context),
+       bottomNavigationBar: Container(
+        height: 70,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+          boxShadow: [BoxShadow(color: dark_color, blurRadius: 5)],
+        ),
+        child: BottomAppBar(
+          color: white_color,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: ImageIcon(AssetImage(home_icon)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BrideHomePage()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: ImageIcon(AssetImage(categories_outlined_icon)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CategoriesScreen()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: ImageIcon(AssetImage(star_outlined_icon)),
+                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RequestsScreen()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: ImageIcon(AssetImage(heart_outlined_icon)),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FavoritePublicationScreen()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: ImageIcon(AssetImage(profile_outlined_icon)),
+                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
-  }
-
-  RequestStatus _getStatusFromIndex(int index) {
-    switch (index) {
-      case 0:
-        return RequestStatus.newRequest;
-      case 1:
-        return RequestStatus.accepted;
-      case 2:
-        return RequestStatus.refused;
-      default:
-        throw ArgumentError('Invalid index: $index');
-    }
   }
 
   Widget _buildStatusButton(String title, RequestStatus status) {
@@ -236,21 +291,15 @@ class _RequestsPageState extends State<RequestsPage> {
 
   Widget _buildRequestItem(Request request) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: ElevatedButton(
         onPressed: () {
-          _showChangeStatusDialog(context, request);
+         
         },
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(white_color),
-          side: MaterialStateProperty.all(
-            BorderSide(
-              color: gray_color,
-              width: 1.0,
-            ),
-          ),
           fixedSize: MaterialStateProperty.all(
-            Size(double.infinity, 50),
+            Size(double.infinity, 100),
           ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
@@ -264,10 +313,11 @@ class _RequestsPageState extends State<RequestsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Product Name
               Expanded(
                 flex: 2,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
                       request.productName,
@@ -325,122 +375,8 @@ class _RequestsPageState extends State<RequestsPage> {
   void _changeStatus(Request request, RequestStatus newStatus) {
     setState(() {
       request.requestStatus = newStatus;
-      // Update displayed list based on the selected status
-      _displayedRequestList = _filterRequestsByStatus(_selectedStatus);
     });
   }
 
-  void _showChangeStatusDialog(BuildContext context, Request request) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Directionality(
-          textDirection: TextDirection.rtl,
-          child: AlertDialog(
-            title: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Replace CircleAvatar with Image
-                  Image.asset(
-                    bride_image,
-                    width: 50,
-                    height: 50,
-                  ),
-                  SizedBox(width: 15),
-                  Text(
-                    request.customerName,
-                    style: TextStyle(
-                      color: dark_color,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            content: Container(
-              height: 350,
-              width: 350,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 20),
-                  Text(
-                    'البريد الإلكتروني: ${request.customerEmail}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  Text(
-                    'رقم الهاتف: ${request.customerPhone}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'اسم المنتج: ${request.productName}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'اللون:',
-                        style: TextStyle(color: dark_color),
-                      ),
-                      SizedBox(width: 5),
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: request.productColor.toLowerCase() == 'black'
-                              ? Colors.black
-                              : Colors.transparent,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'الحجم: ${request.productSize}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  Text(
-                    'النوع: ${request.isBuying ? 'شراء' : 'إيجار'}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  Text(
-                    'تاريخ الاستحقاق: ${_formatDate(request.dueDate)}',
-                    style: TextStyle(color: dark_color),
-                  ),
-                  SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildChangeStatusButton(
-                        'تأكيد',
-                        blue_color,
-                        RequestStatus.accepted,
-                        onPressed: () {
-                          _changeStatus(request, RequestStatus.accepted);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      _buildChangeStatusButton(
-                        'رفض',
-                        purple_color,
-                        RequestStatus.refused,
-                        onPressed: () {
-                          _changeStatus(request, RequestStatus.refused);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+
 }

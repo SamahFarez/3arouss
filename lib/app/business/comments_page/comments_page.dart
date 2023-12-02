@@ -40,6 +40,14 @@ class _CommentsListPageState extends State<CommentsListPage> {
       productName: 'المنتج الثاني',
       content:
           'أنا سعيدة بشرائي لهذا المنتج وأنصح الجميع بتجربته بشدة. لقد قام المنتج بتحسين حياتي بشكل كبير. شكراً للشركة المنتجة!',
+    ),    
+    Comment(
+      userProfileImage: 'path_to_image',
+      userName: 'فاطمة محمد',
+      commentDate: DateTime.now().subtract(Duration(days: 1)),
+      productName: 'المنتج الثاني',
+      content:
+          'أنا سعيدة بشرائي لهذا المنتج وأنصح الجميع بتجربته بشدة. لقد قام المنتج بتحسين حياتي بشكل كبير. شكراً للشركة المنتجة!',
     ),
     Comment(
       userProfileImage: 'path_to_image',
@@ -73,7 +81,7 @@ class _CommentsListPageState extends State<CommentsListPage> {
           ),
           Column(
             children: [
-              SizedBox(height: 150),
+              SizedBox(height: 190),
               // You can customize the header as needed
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -105,7 +113,7 @@ class _CommentsListPageState extends State<CommentsListPage> {
         ],
       ),
       bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(),
+        child: CustomBottomNavigationBar(currentPageIndex: 3 , parentContext: context),
       ),
     );
   }

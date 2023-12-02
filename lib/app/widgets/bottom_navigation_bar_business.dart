@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import '../shared/images.dart'; // Make sure to adjust the path based on your project structure
-import '../shared/colors.dart'; // Make sure to adjust the path based on your project structure
-import '../business/home-business/home_business.dart'; // Make sure to adjust the path based on your project structure
-import '../business/comments_page/comments_page.dart'; // Make sure to adjust the path based on your project structure
-import '../business/requests_business/requests_page.dart'; // Make sure to adjust the path based on your project structure
+import '../shared/images.dart';
+import '../shared/colors.dart';
+import '../business/home-business/home_business.dart';
+import '../business/comments_page/comments_page.dart';
+import '../business/requests_business/requests_page.dart';
+import '../business/product_page/product_page.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  final int currentPageIndex;
+  final BuildContext parentContext;
+
+  const CustomBottomNavigationBar({
+    Key? key,
+    required this.currentPageIndex,
+    required this.parentContext,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,73 +25,41 @@ class CustomBottomNavigationBar extends StatelessWidget {
         boxShadow: [BoxShadow(color: dark_color, blurRadius: 5)],
       ),
       child: BottomAppBar(
-        color: white_color, // Center both horizontally and vertically
+        color: white_color,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Vertically center the icons
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconButton(
-              icon: ImageIcon(AssetImage(home_icon)),
-              onPressed: () {
-                // Navigate to BrideHomePage without transition animation
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        BusinessHomePage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return child; // No transition animation
-                    },
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: ImageIcon(AssetImage(inbox_outlined_image)),
-              onPressed: () {
-                // Navigate to BrideHomePage without transition animation
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        RequestsPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return child; // No transition animation
-                    },
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: ImageIcon(AssetImage(heart_outlined_icon)),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: ImageIcon(AssetImage(star_outlined_icon)),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        CommentsListPage(),
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      return child; // No transition animation
-                    },
-                  ),
-                );
-              },
-            ),
-            IconButton(
-              icon: ImageIcon(AssetImage(profile_outlined_icon)),
-              onPressed: () {},
-            ),
+            buildIconButton(0, home_icon, home_outlined_icon, BusinessHomePage()),
+            buildIconButton(1, inbox_image, inbox_outlined_image, RequestsPage()),
+            buildIconButton(2, add_icon, add_outlined_icon, AddProductPage()),
+            buildIconButton(3, star_icon, star_outlined_icon, CommentsListPage()),
+            buildIconButton(4, profile_icon, profile_outlined_icon, null),
           ],
         ),
       ),
+    );
+  }
+
+  IconButton buildIconButton(int index, String iconImage, String outlinedIcon, Widget? page) {
+    return IconButton(
+      icon: ImageIcon(
+        AssetImage(currentPageIndex == index ? iconImage : outlinedIcon),
+        color: currentPageIndex == index ? null : dark_color,
+      ),
+      onPressed: () {
+        if (currentPageIndex != index && page != null) {
+          Navigator.pushReplacement(
+            parentContext,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => page,
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return child;
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
