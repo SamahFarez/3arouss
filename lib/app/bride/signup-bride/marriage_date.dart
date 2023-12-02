@@ -3,7 +3,6 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-bride/home_bride.dart';
 
-
 class MarriageDateScreen extends StatefulWidget {
   @override
   _MarriageDateScreenState createState() => _MarriageDateScreenState();
@@ -74,6 +73,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.66,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -101,6 +101,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
+
                     ),
                     SizedBox(height: 16.0),
                     Row(
@@ -123,12 +124,14 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
+
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
                             keyboardType: TextInputType.number,
                             textDirection: TextDirection.rtl,
                             textAlign: TextAlign.right,
+
                           ),
                         ),
                         Container(
@@ -150,6 +153,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
+
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
@@ -175,6 +179,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
+
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
@@ -195,6 +200,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           MaterialPageRoute(
                               builder: (context) => BrideHomePage()),
                         );
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
@@ -212,6 +218,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               fontFamily: 'Changa',
                               color: Colors.black,
                             ),
+
                           ),
                         ),
                       ),

@@ -5,6 +5,7 @@ import 'images.dart';
 
 
 class AccountType extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +25,7 @@ class AccountType extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end, // Align to the bottom
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -64,6 +66,7 @@ class AccountType extends StatelessWidget {
                 ],
               ),
                                 SizedBox(height: 60),
+
 
             ],
           ),

@@ -56,7 +56,6 @@ List<String> wilayasList = [
   'غليزان',
 ];
 
-
 class BrideSignUpPage extends StatefulWidget {
   @override
   _BrideSignUpPageState createState() => _BrideSignUpPageState();
@@ -107,6 +106,7 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
             Container(
                 height: MediaQuery.of(context).size.height * 0.7,
 
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -122,6 +122,7 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                     RoundedInputWithIcon(
                       icon: Icons.person,
                       labelText: 'الإسم الكامل',
+
                       obscureText: false,
                       fontSize: 14.0,
                     ),
@@ -163,6 +164,7 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                           
                         ],
                       ),
+
                     RoundedInputWithIcon(
                       labelText: 'كلمة السر',
                       icon: Icons.lock,
@@ -241,6 +243,7 @@ class RoundedInputWithIcon extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
+
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -282,6 +285,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
           
           labelText: labelText,
           suffixIcon: Icon(icon, color: blue_color),
+
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -293,7 +297,9 @@ class RoundedDropdownWithIcon extends StatelessWidget {
           labelStyle: TextStyle(
             color: Colors.black,
             fontFamily: 'Changa', // Set the 'Changa' font
+
           ),
+          labelStyle: TextStyle(color: Colors.black),
         ),
         items: wilayas.map((String value) {
           return DropdownMenuItem<String>(

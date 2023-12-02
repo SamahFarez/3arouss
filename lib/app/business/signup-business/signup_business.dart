@@ -212,7 +212,7 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                 ),
               ),
             ],
-          ),
+),
         ),
       ),
     );
@@ -267,12 +267,14 @@ class RoundedDropdownWithIcon extends StatelessWidget {
   final String labelText;
   final IconData icon;
   final List<String> wilayas;
+
   final double fontSize;
 
   RoundedDropdownWithIcon({
     required this.labelText,
     required this.icon,
     required this.wilayas,
+
     this.fontSize = 14.0,
   });
 
@@ -308,6 +310,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
+
           );
         }).toList(),
         onChanged: (String? value) {
@@ -359,6 +362,7 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.black),
         ),
         keyboardType: keyboardType,
+
         style: TextStyle(fontSize: fontSize, color: Colors.black),
       ),
     );

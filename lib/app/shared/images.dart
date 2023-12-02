@@ -29,3 +29,4 @@ const bride_icon = "assets/bride_icon.png";
 const business_icon = "assets/business_icon.png";
 const splash_screen = "assets/Splash.png";
 const logo_image = "assets/logo.png";
+

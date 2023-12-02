@@ -4,6 +4,7 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-business/home_business.dart';
 
+
 class BusinessSignInPage extends StatefulWidget {
   @override
   _BusinessSignInPageState createState() => _BusinessSignInPageState();
@@ -40,6 +41,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Changa',
                           color: Colors.black),
+
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -57,6 +59,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -80,6 +83,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                       icon: Icons.lock,
                       obscureText: true,
                       fontSize: 14.0,
+
                     ),
                     SizedBox(height: 16.0),
                     Row(
@@ -103,6 +107,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                           child: Text('هل نسيت كلمة السر؟',
                               style:
                                   TextStyle(fontSize: 14.0, color: blue_color)),
+
                         ),
                       ],
                     ),
@@ -116,6 +121,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                               builder: (context) =>
                                   BusinessHomePage()), // Replace with your actual navigation logic
                         );
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: blue_color,
@@ -138,6 +144,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                       ),
                     ),
 
+
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,6 +164,7 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                         SizedBox(width: 5),
                         Text('ليس لديك حساب ؟',
                             style: TextStyle(fontSize: 14.0)),
+
                       ],
                     ),
                     SizedBox(height: 50.0), // Added space here

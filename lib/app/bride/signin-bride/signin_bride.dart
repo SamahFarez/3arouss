@@ -4,6 +4,7 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-bride/home_bride.dart';
 
+
 class BrideSignInPage extends StatefulWidget {
   @override
   _BrideSignInPageState createState() => _BrideSignInPageState();
@@ -35,11 +36,12 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                   children: [
                     Text(
                       'مرحبا بعودتك',
-                      style: TextStyle(
+                     style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Changa',
                           color: Colors.black),
+
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -57,6 +59,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -80,7 +83,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                       icon: Icons.lock,
                       obscureText: true,
                       fontSize: 14.0,
-                    ),
+   ),
                     SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,6 +106,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                           child: Text('هل نسيت كلمة السر؟',
                               style:
                                   TextStyle(fontSize: 14.0, color: blue_color)),
+
                         ),
                       ],
                     ),
@@ -116,6 +120,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                               builder: (context) =>
                                   BrideHomePage()), // Replace with your actual navigation logic
                         );
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
@@ -138,6 +143,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                       ),
                     ),
 
+
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,6 +163,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                         SizedBox(width: 10),
                         Text('ليس لديك حساب؟',
                             style: TextStyle(fontSize: 14.0)),
+
                       ],
                     ),
                     SizedBox(height: 50.0), // Added space here

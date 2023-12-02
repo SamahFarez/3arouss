@@ -466,6 +466,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
       ),
      bottomNavigationBar: Container(
         child: CustomBottomNavigationBar(currentPageIndex: 0 , parentContext: context),
+
       ),
     );
   }
