@@ -3,16 +3,9 @@ import '../bride/signin-bride/signin_bride.dart';
 import '../business/signin-business/signin_business.dart';
 import 'images.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen(),
-    );
-  }
-}
 
-class SplashScreen extends StatelessWidget {
+class AccountType extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +25,7 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end, // Align to the bottom
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Row for both icons
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -72,6 +65,9 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ],
               ),
+                                SizedBox(height: 60),
+
+
             ],
           ),
         ],

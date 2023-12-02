@@ -14,8 +14,10 @@ dependencies:
   flutter_localizations: # add or update this dependency
     sdk: flutter
   google_fonts: ^2.1.0 
- 
- 
+  image_picker: ^0.8.2+3
+  flutter_colorpicker: ^0.5.0
+
+
 
 dev_dependencies:
   flutter_test:
@@ -42,15 +44,23 @@ flutter:
     - assets/rings.png
     - assets/married.png
     - assets/success.png
+    - assets/pfpbride.png
+    - assets/pfpbusiness.png
+    - assets/inbox.png
+    - assets/inbox_outlined.png
+    - assets/plus_icon.png
+    - assets/add_icon.png
+    - assets/add_outlined_icon.png
     - assets/dress.png
     - assets/product_decoration.png
     - assets/pfpbusiness.png
-    - assets/profile.png
+    - assets/profile_background.png
     - assets/Splash2.png
     - assets/bride_icon.png
     - assets/business_icon.png
-
-   
+    - assets/Splash.png
+    - assets/logo.png
+    
 
   fonts:
     - family: Changa

@@ -1,75 +1,78 @@
 import 'package:flutter/material.dart';
+import '../shared/images.dart';
+import '../shared/colors.dart';
 
-class ThreeButtonRow extends StatelessWidget {
+class ToggleButtonsWidget extends StatelessWidget {
+  final List<String> buttonTitles;
+  final ValueChanged<int> onButtonTapped;
+  final int selectedIndex;
+
+  ToggleButtonsWidget({
+    required this.buttonTitles,
+    required this.onButtonTapped,
+    required this.selectedIndex,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          BigButton(
-            image: AssetImage('assets/button1.png'), // Replace with your image path
-            text: 'Button 1',
-          ),
-          BigButton(
-            image: AssetImage('assets/button2.png'), // Replace with your image path
-            text: 'Button 2',
-          ),
-          BigButton(
-            image: AssetImage('assets/button3.png'), // Replace with your image path
-            text: 'Button 3',
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Container(
+        width: 450, // Set the width here
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+            buttonTitles.length,
+            (index) => _buildToggleButton(index),
+          ).reversed.toList(), // Reverse the order of buttons
+        ),
       ),
     );
   }
-}
 
-class BigButton extends StatelessWidget {
-  final ImageProvider<Object> image;
-  final String text;
+  Widget _buildToggleButton(int index) {
+    bool isSelected = index == selectedIndex;
 
-  BigButton({required this.image, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        // Add your onTap logic here
+    return ElevatedButton(
+      onPressed: () {
+        onButtonTapped(index);
       },
-      child: Column(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.blue, // You can customize the background color
-              image: DecorationImage(
-                image: image,
-                fit: BoxFit.cover,
-              ),
-            ),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return gray_color; // Use the provided color when pressed
+            }
+            return isSelected ? gray_color : white_color; // Customize as needed
+          },
+        ),
+        fixedSize: MaterialStateProperty.all(
+          Size(115, 30),
+        ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
-          SizedBox(height: 8),
-          Text(
-            text,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
+        ),
+      ),
+      child: Text(
+        buttonTitles[index],
+        style: TextStyle(color: isSelected ? dark_color : dark_color),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: Text('Three Button Row Example'),
-      ),
-      body: ThreeButtonRow(),
-    ),
-  ));
-}
+
+/*to use it, it's like this 
+ ToggleButtonsWidget(
+                buttonTitles: ['One', 'Two', 'Three'], // Customize button texts
+                selectedIndex: _selectedStatus.index,
+                onButtonTapped: (index) {
+                  setState(() {
+                    _displayedRequestList = _filterRequestsByStatus(_statusList[index]);
+                    _selectedStatus = _statusList[index];
+                  });
+                },
+                ),
+*/

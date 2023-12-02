@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../signup-bride/signup_bride.dart'; // Make sure to import the correct file
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import '../home-bride/home_bride.dart';
 
 
 class BrideSignInPage extends StatefulWidget {
@@ -35,7 +36,12 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                   children: [
                     Text(
                       'مرحبا بعودتك',
-                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Changa', color: Colors.black),
+                     style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Changa',
+                          color: Colors.black),
+
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -52,6 +58,8 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
               ),
             ),
             Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -75,8 +83,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                       icon: Icons.lock,
                       obscureText: true,
                       fontSize: 14.0,
-                      
-                    ),
+   ),
                     SizedBox(height: 16.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,16 +103,24 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                           onTap: () {
                             // Handle Forget Password
                           },
-                          child: Text('هل نسيت كلمة السر؟', style: TextStyle(fontSize: 14.0, color: Colors.blue)),
+                          child: Text('هل نسيت كلمة السر؟',
+                              style:
+                                  TextStyle(fontSize: 14.0, color: blue_color)),
+
                         ),
                       ],
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
                       onPressed: () {
-                        // Handle sign-in logic here without navigation
-                        // For example, validate inputs and perform sign-in actions
-                        // Once signed in, you can navigate to the next screen if needed.
+                        // Navigate to BrideHomePage when the button is pressed
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BrideHomePage()), // Replace with your actual navigation logic
+                        );
+
                       },
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
@@ -118,25 +133,37 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                         child: Center(
                           child: Text(
                             'تسجيل الدخول',
-                            style: TextStyle(fontSize: 14.0, fontFamily: 'Changa', color: Colors.black),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontFamily: 'Changa',
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                     ),
+
+
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('ليس لديك حساب؟', style: TextStyle(fontSize: 14.0)),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => BrideSignUpPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => BrideSignUpPage()),
                             );
                           },
-                          child: Text('سجلي الآن', style: TextStyle(fontSize: 14.0, color: Colors.blue)),
+                          child: Text('سجلي الآن',
+                              style: TextStyle(
+                                  fontSize: 14.0, color: dark_purple_color)),
                         ),
+                        SizedBox(width: 10),
+                        Text('ليس لديك حساب؟',
+                            style: TextStyle(fontSize: 14.0)),
+
                       ],
                     ),
                     SizedBox(height: 50.0), // Added space here
