@@ -299,7 +299,6 @@ class RoundedDropdownWithIcon extends StatelessWidget {
             fontFamily: 'Changa', // Set the 'Changa' font
 
           ),
-          labelStyle: TextStyle(color: Colors.black),
         ),
         items: wilayas.map((String value) {
           return DropdownMenuItem<String>(
