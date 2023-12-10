@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:our_wedding_app/app/bride/categories/categories.dart';
-import 'package:our_wedding_app/app/bride/favorites/favorite_publication.dart';
-import 'package:our_wedding_app/app/bride/profile/profile_bride.dart';
-import 'package:our_wedding_app/app/bride/requests/requests.dart';
+import '/app/bride/categories/categories.dart';
+import '/app/bride/favorites/favorite_publication.dart';
+import '/app/bride/profile/profile_bride.dart';
+import '/app/bride/requests/requests.dart';
 import '../shared/images.dart'; // Make sure to adjust the path based on your project structure
 import '../shared/colors.dart'; // Make sure to adjust the path based on your project structure
 import '../bride/home-bride/home_bride.dart'; // Make sure to adjust the path based on your project structure
