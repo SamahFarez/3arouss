@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'marriage_date.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import '../signin-bride/signin_bride.dart';
 
 
 
@@ -85,6 +86,24 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_back, color: dark_color),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BrideSignInPage()),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                        )
+                      ],
+                    ),
                     Text(
                       'أنشئي حسابك وكوني عروسًا',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Changa', color: Colors.black),

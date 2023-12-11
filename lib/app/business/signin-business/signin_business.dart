@@ -3,6 +3,7 @@ import '../signup-business/signup_business.dart'; // Make sure to import the cor
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-business/home_business.dart';
+import '../../shared/welcome.dart';
 
 
 class BusinessSignInPage extends StatefulWidget {
@@ -34,6 +35,24 @@ class _BusinessSignInPageState extends State<BusinessSignInPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.arrow_back, color: dark_color),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AccountType()),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                        )
+                      ],
+                    ),
                     Text(
                       'مرحبا بعودتك',
                       style: TextStyle(
