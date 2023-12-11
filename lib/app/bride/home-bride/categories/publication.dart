@@ -137,7 +137,7 @@ class _PublicationPageState extends State<PublicationPage> {
                             ),
                             SizedBox(width: 8.0),
                             CircleAvatar(
-                              backgroundImage: AssetImage(pfpbusiness_image),
+                              backgroundImage: AssetImage(business_image),
                             ),
                           ],
                         ),
