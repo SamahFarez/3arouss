@@ -5,7 +5,6 @@ import '../../widgets/bottom_navigation_bar_business.dart';
 import '../../widgets/three_buttons.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -34,6 +33,7 @@ class _AddProductPageState extends State<AddProductPage> {
   bool _isRentSelected = false; // Track if "Rent" button is selected
 
   String _selectedImagePath = ''; // To store the path of the selected image
+  String _selectedProductType = 'Clothes'; // Default type, you can change this
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,9 @@ class _AddProductPageState extends State<AddProductPage> {
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Column(
-
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(height: 50),
-
                 Container(
                   width: 350,
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -58,6 +56,31 @@ class _AddProductPageState extends State<AddProductPage> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                SizedBox(height: 20),
+
+                // Product Type Dropdown
+                DropdownButton<String>(
+                  value: _selectedProductType,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedProductType = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'Clothes',
+                    'Hair Styling',
+                    'Shoes',
+                    'Sweets',
+                    'Party Rooms',
+                    // Add other product types as needed
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+
                 SizedBox(height: 20),
 
                 Stack(

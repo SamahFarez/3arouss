@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../bride/signin-bride/signin_bride.dart';
-import '../business/signin-business/signin_business.dart';
 import 'welcome.dart';
 import 'images.dart';
 
