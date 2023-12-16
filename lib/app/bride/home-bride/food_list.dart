@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../databases/db_food.dart';
+import '../../../databases/dbhelper.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
@@ -11,10 +13,12 @@ enum FoodCategory {
 }
 
 class FoodItem {
+  final int id; // Add this line
   final String name;
   final FoodCategory category;
 
   FoodItem({
+    required this.id, // Add this line
     required this.name,
     required this.category,
   });
@@ -29,106 +33,52 @@ class _FoodListPageState extends State<FoodListPage> {
   List<FoodItem> _foodList = [];
   List<FoodItem> _displayedFoodList = [];
   TextEditingController _foodNameController = TextEditingController();
-  FoodCategory _selectedCategory = FoodCategory.mainDish; // Add this line
+  FoodCategory _selectedCategory = FoodCategory.mainDish;
 
   @override
   void initState() {
     super.initState();
-    _displayedFoodList = List.from(_foodList);
+    _loadFoodList(); // Load existing food items from the database
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Image.asset(
-            background_image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Column(
-            children: [
-              SizedBox(height: 200),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back, color: dark_color),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  SizedBox(width: 120),
-                  Text(
-                    'Food List ',
-                    style: TextStyle(color: dark_color, fontSize: 18),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildCategoryButton(
-                      'تحلية',
-                      purple_color,
-                      FoodCategory.dessert,
-                    ),
-                    _buildCategoryButton(
-                      'طبق رئيسي',
-                      blue_color,
-                      FoodCategory.mainDish,
-                    ),
-                    _buildCategoryButton(
-                      'مقبلات',
-                      gray_color,
-                      FoodCategory.appetizer,
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: _displayedFoodList.isEmpty
-                    ? Center(
-                        child: Text(
-                          'لا يوجد عناصر',
-                          style: TextStyle(color: dark_color),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _displayedFoodList.length,
-                        itemBuilder: (context, index) {
-                          return _buildFoodItem(_displayedFoodList[index]);
-                        },
-                      ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _showAddFoodDialog(context);
-        },
-        backgroundColor: blue_color, // Change the background color
-        child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(
-            currentPageIndex: 0, parentContext: context),
-      ),
-    );
+  Future<void> _loadFoodList() async {
+    final foods = await FoodDB.getAllFoods();
+    setState(() {
+      _foodList = foods.map((food) {
+        return FoodItem(
+          id: food['id'], // Add this line
+          name: food['name'],
+          category: _getFoodCategoryFromString(food['type']),
+        );
+      }).toList();
+
+      _displayedFoodList = List.from(_foodList);
+    });
+  }
+
+  FoodCategory _getFoodCategoryFromString(String category) {
+    switch (category) {
+      case 'mainDish':
+        return FoodCategory.mainDish;
+      case 'dessert':
+        return FoodCategory.dessert;
+      case 'appetizer':
+        return FoodCategory.appetizer;
+      default:
+        return FoodCategory.mainDish;
+    }
+  }
+
+  List<FoodItem> _filterFoodByCategory(FoodCategory category) {
+    return _foodList.where((food) => food.category == category).toList();
   }
 
   Widget _buildCategoryButton(
       String title, Color color, FoodCategory category) {
     return ElevatedButton(
       onPressed: () {
-        // Logic to filter and display food items based on the selected category
         setState(() {
+          _selectedCategory = category;
           _displayedFoodList = _filterFoodByCategory(category);
         });
       },
@@ -145,38 +95,37 @@ class _FoodListPageState extends State<FoodListPage> {
       ),
       child: Text(
         title,
-        style: TextStyle(color: white_color),
+        style: TextStyle(color: white_color, fontSize: 12),
       ),
     );
   }
 
-  List<FoodItem> _filterFoodByCategory(FoodCategory category) {
-    return _foodList.where((food) => food.category == category).toList();
-  }
-
   Widget _buildFoodItem(FoodItem food) {
-    return ElevatedButton(
-      onPressed: () {
-        _showChangeCategoryDialog(context, food);
-      },
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(white_color),
-        fixedSize: MaterialStateProperty.all(
-          Size(double.infinity, 50),
-        ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      child:ElevatedButton(
+        onPressed: () {
+          _showChangeCategoryDialog(context, food);
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(white_color),
+          fixedSize: MaterialStateProperty.all(
+            Size(double.infinity, 50),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
-      ),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(food.name, style: TextStyle(color: dark_color)),
-          ],
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(food.name, style: TextStyle(color: dark_color)),
+            ],
+          ),
         ),
       ),
     );
@@ -184,11 +133,15 @@ class _FoodListPageState extends State<FoodListPage> {
 
   void _changeCategory(FoodItem food, FoodCategory newCategory) {
     setState(() {
-      int index = _foodList.indexOf(food);
-      _foodList[index] = FoodItem(
-        name: food.name,
-        category: newCategory,
-      );
+      int index = _foodList.indexWhere((item) => item.id == food.id);
+      if (index != -1) {
+        _foodList[index] = FoodItem(
+          id: food.id,
+          name: food.name,
+          category: newCategory,
+        );
+      }
+      _displayedFoodList = _filterFoodByCategory(_selectedCategory);
     });
   }
 
@@ -310,12 +263,10 @@ class _FoodListPageState extends State<FoodListPage> {
                   child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: DropdownButtonFormField<FoodCategory>(
-                      value:
-                          _selectedCategory, // Use a variable to store the selected category
+                      value: _selectedCategory,
                       onChanged: (FoodCategory? value) {
                         setState(() {
-                          _selectedCategory =
-                              value!; // Update the selected category
+                          _selectedCategory = value!;
                         });
                       },
                       items: FoodCategory.values.map((FoodCategory category) {
@@ -366,7 +317,7 @@ class _FoodListPageState extends State<FoodListPage> {
                   margin: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
-                    color: blue_color, 
+                    color: blue_color,
                     boxShadow: [
                       BoxShadow(
                         color: dark_color.withOpacity(0.5),
@@ -377,18 +328,14 @@ class _FoodListPageState extends State<FoodListPage> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       String foodName = _foodNameController.text.trim();
                       if (foodName.isNotEmpty) {
-                        setState(() {
-                          _foodList.add(
-                            FoodItem(
-                              name: foodName,
-                              category:
-                                  _selectedCategory, // Use the selected category
-                            ),
-                          );
+                        await FoodDB.insertFood({
+                          'name': foodName,
+                          'type': _getCategoryString(_selectedCategory),
                         });
+                        _loadFoodList();
                       }
                       _foodNameController.clear();
                       Navigator.of(context).pop();
@@ -422,5 +369,102 @@ class _FoodListPageState extends State<FoodListPage> {
       case FoodCategory.appetizer:
         return 'مقبلات';
     }
+  }
+
+  String _getCategoryString(FoodCategory category) {
+    switch (category) {
+      case FoodCategory.mainDish:
+        return 'mainDish';
+      case FoodCategory.dessert:
+        return 'dessert';
+      case FoodCategory.appetizer:
+        return 'appetizer';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            background_image,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Column(
+            children: [
+              SizedBox(height: 200),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back, color: dark_color),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(width: 120),
+                  Text(
+                    'Food List ',
+                    style: TextStyle(color: dark_color, fontSize: 18),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCategoryButton(
+                      'تحلية',
+                      purple_color,
+                      FoodCategory.dessert,
+                    ),
+                    _buildCategoryButton(
+                      'طبق رئيسي',
+                      blue_color,
+                      FoodCategory.mainDish,
+                    ),
+                    _buildCategoryButton(
+                      'مقبلات',
+                      gray_color,
+                      FoodCategory.appetizer,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: _displayedFoodList.isEmpty
+                    ? Center(
+                        child: Text(
+                          'لا يوجد عناصر',
+                          style: TextStyle(color: dark_color),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: _displayedFoodList.length,
+                        itemBuilder: (context, index) {
+                          return _buildFoodItem(_displayedFoodList[index]);
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddFoodDialog(context);
+        },
+        backgroundColor: blue_color,
+        child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 0, parentContext: context),
+      ),
+    );
   }
 }

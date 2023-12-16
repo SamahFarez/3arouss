@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import '/app/shared/colors.dart';
 import 'app/bride/home-bride/home_bride.dart';
 import 'app/bride/home-bride/guests_list.dart';
-import 'app/business/home-business/home_business.dart';
+import 'app/shared/colors.dart';
 import 'app/shared/splashscreen.dart';
 
 
@@ -20,6 +19,11 @@ class MyApp extends StatelessWidget {
 
       title: 'To-Do List with Calendar',
       theme: ThemeData(
+         textTheme: TextTheme(
+          bodyText1: TextStyle(fontFamily: 'Changa'), // Set your font family
+          bodyText2: TextStyle(fontFamily: 'Changa'), // Set your font family
+          // Add more text styles as needed
+        ),
         primaryColor: purple_color,
         hoverColor: blue_color,
         focusColor: blue_color,

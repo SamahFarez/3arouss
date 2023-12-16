@@ -6,13 +6,16 @@ import 'guests_list.dart';
 import 'food_list.dart';
 import 'expenses.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
+import '../../../databases/db_todo.dart';
 
 class TodoItem {
+  final int id;
   final String description;
   bool isDone;
   final DateTime date;
 
   TodoItem({
+    required this.id,
     required this.description,
     required this.isDone,
     required this.date,
@@ -35,78 +38,90 @@ class TodoListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65,
-      padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-      margin: EdgeInsets.symmetric(horizontal: 13.0, vertical: 0.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 2,
-          color: white_color,
-        ),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
+        height: 65,
+        padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
         decoration: BoxDecoration(
           border: Border.all(
-            width: 1,
-            color: gray_color,
+            width: 2,
+            color: white_color,
           ),
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(20.0),
         ),
-        child: ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        todoItem.description,
-                        style: TextStyle(
-                          color: todoItem.isDone ? dark_blue_color : null,
-                          fontFamily: 'Changa',
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                    SizedBox(width: 5.0),
-                    Flexible(
-                      child: Text(
-                        '${_formatDate(todoItem.date)}',
-                        style: TextStyle(
-                          color: dark_purple_color,
-                          fontSize: 12,
-                          fontFamily: 'Changa',
-                        ),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                  ],
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Checkbox(
-                  value: todoItem.isDone,
-                  onChanged: (bool? value) {
-                    onTodoToggle();
-                  },
-                  activeColor: blue_color,
-                  side: BorderSide(color: blue_color), // Color of the border
-                ),
-              ),
-            ],
+        child: Container(
+          height: 65,
+          padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+          decoration: BoxDecoration(
+            color: Colors.white, // Background color
+            borderRadius: BorderRadius.circular(20.0),
+            border: Border.all(
+              width: 2,
+              color: Colors.white, // Border color
+            ),
           ),
-        ),
-      ),
-    );
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              border: Border.all(
+                width: 1,
+                color: gray_color, // Border color
+              ),
+            ),
+            child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            todoItem.description,
+                            style: TextStyle(
+                              color: todoItem.isDone ? dark_blue_color : null,
+                              fontFamily: 'Changa',
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                        SizedBox(width: 5.0),
+                        Flexible(
+                          child: Text(
+                            '${_formatDate(todoItem.date)}',
+                            style: TextStyle(
+                              color: dark_purple_color,
+                              fontSize: 12,
+                              fontFamily: 'Changa',
+                            ),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Checkbox(
+                      value: todoItem.isDone,
+                      onChanged: (bool? value) {
+                        onTodoToggle();
+                      },
+                      activeColor: blue_color,
+                      side: BorderSide(color: blue_color),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 
   String _formatDate(DateTime date) {
@@ -129,165 +144,315 @@ class _BrideHomePageState extends State<BrideHomePage> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
-  void _addTodo() {
+  void _addTodoToDB(String description, DateTime selectedDate) async {
+    Map<String, dynamic> todoData = {
+      'title': description,
+      'done': 0,
+      'duedate': selectedDate.toIso8601String(),
+    };
+
+    await TodoDB.insertToDo(todoData);
+
+    _fetchTodos(_selectedDay);
+  }
+
+  void _fetchTodos(DateTime selectedDate) async {
+    List<Map<String, dynamic>> todos = await TodoDB.getAllToDos();
+    List<TodoItem> todoItems = [];
+
+    for (var todo in todos) {
+      DateTime todoDate = DateTime.parse(todo['duedate']);
+      bool isToday = isSameDay(selectedDate, DateTime.now());
+
+      if ((isToday && isSameDay(DateTime.now(), todoDate)) ||
+          (!isToday && isSameDay(selectedDate, todoDate))) {
+        todoItems.add(TodoItem(
+          id: todo['id'],
+          description: todo['title'],
+          isDone: todo['done'] == 1,
+          date: todoDate,
+        ));
+      }
+    }
+
+    setState(() {
+      _todoList = todoItems;
+    });
+  }
+
+  void _addTodo() async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        DateTime selectedDate = DateTime.now();
+        DateTime selectedDate = DateTime.now(); // Initialize selectedDate here
 
-        return AlertDialog(
-          title: Text(
-            'إضافة مهمة ',
-            style: TextStyle(
-              fontFamily: 'Changa',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+        return Theme(
+          data: ThemeData.light(),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            textAlign: TextAlign.center,
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          content: Container(
-            height: 135,
-            width: 320,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  width: 200,
-                  height: 55,
-                  child: TextField(
-                    controller: _todoController,
-                    textAlign: TextAlign.right,
-                    decoration: InputDecoration(
-                      hintText: 'المهمة',
-                      alignLabelWithHint: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(
-                          color: gray_color,
-                          width: 1,
+            title: Text(
+              'إضافة مهمة ',
+              style: TextStyle(
+                fontFamily: 'Changa',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            content: Container(
+              height: 135,
+              width: 320,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    width: 200,
+                    height: 55,
+                    child: TextField(
+                      controller: _todoController,
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        hintText: 'المهمة',
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: gray_color,
+                            width: 1,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  width: 150,
+                  SizedBox(height: 10),
+                  Container(
+                    width: 150,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDate, // Use selectedDate here
+                          firstDate: DateTime(2023, 1, 1),
+                          lastDate: DateTime(2050, 12, 31),
+                        );
 
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2023, 1, 1),
-                        lastDate: DateTime(2050, 12, 31),
-                      );
-
-                      if (pickedDate != null && pickedDate != selectedDate) {
-                        setState(() {
-                          selectedDate = pickedDate;
-                        });
-                      }
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(blue_color),
-                      fixedSize: MaterialStateProperty.all(
-                          Size(80, 40)), // Adjust the size as needed
-                    ),
-                    child: Text(
-                      'اختر تاريخ',
-                      style: TextStyle(color: white_color),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: 0.0,
-                      horizontal: 10.0), // Optional: Adjust margin as needed
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(100.0), // Set rounded corners
-                    border: Border.all(
-                      color: purple_color, // Set the border color
-                      width: 2.0, // Set the border width
-                    ),
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 3.0,
-                          horizontal: 20.0), // Adjust padding as needed
-                      child: Text(
-                        'إلغاء',
-                        style: TextStyle(color: purple_color),
+                        if (pickedDate != null && pickedDate != selectedDate) {
+                          setState(() {
+                            selectedDate =
+                                pickedDate; // Update selectedDate here
+                          });
+                        }
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(blue_color),
+                        fixedSize: MaterialStateProperty.all(Size(80, 40)),
                       ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin:
-                      EdgeInsets.all(10.0), // Optional: Adjust margin as needed
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(100.0), // Set rounded corners
-                    color: purple_color, // Set the background color
-                    boxShadow: [
-                      BoxShadow(
-                        color:
-                            dark_color.withOpacity(0.5), // Set the shadow color
-                        spreadRadius: 1, // Set the spread radius of the shadow
-                        blurRadius: 0.8, // Set the blur radius of the shadow
-                        offset: Offset(0, 1), // Set the offset of the shadow
-                      ),
-                    ],
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      String newTodo = _todoController.text.trim();
-                      if (newTodo.isNotEmpty) {
-                        setState(() {
-                          _todoList.insert(
-                            0,
-                            TodoItem(
-                              description: newTodo,
-                              isDone: false,
-                              date: selectedDate,
-                            ),
-                          );
-                          _todoList.sort((a, b) => a.date.compareTo(b.date));
-                        });
-                      }
-                      _todoController.clear();
-                      Navigator.of(context).pop();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 3.0,
-                          horizontal: 20.0), // Adjust padding as needed
                       child: Text(
-                        'إضافة',
+                        'اختر تاريخ',
                         style: TextStyle(color: white_color),
                       ),
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
-          ],
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      border: Border.all(
+                        color: purple_color,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 20.0),
+                        child: Text(
+                          'إلغاء',
+                          style: TextStyle(color: purple_color),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      color: purple_color,
+                      boxShadow: [
+                        BoxShadow(
+                          color: dark_color.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 0.8,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        String newTodo = _todoController.text.trim();
+                        if (newTodo.isNotEmpty) {
+                          _addTodoToDB(newTodo, selectedDate);
+                        }
+                        _todoController.clear();
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 20.0),
+                        child: Text(
+                          'إضافة',
+                          style: TextStyle(color: white_color),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
+  }
+
+  void _editTodoTitle(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Theme(
+          data: ThemeData.light(),
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            title: Text(
+              'تحديث العنوان',
+              style: TextStyle(
+                fontFamily: 'Changa',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            content: Container(
+              height: 90,
+              width: 250,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    width: 200,
+                    height: 55,
+                    child: TextField(
+                      controller: _todoController,
+                      textAlign: TextAlign.right,
+                      decoration: InputDecoration(
+                        hintText: 'العنوان الجديد',
+                        alignLabelWithHint: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: gray_color,
+                            width: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      border: Border.all(
+                        color: purple_color,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 20.0),
+                        child: Text(
+                          'إلغاء',
+                          style: TextStyle(color: purple_color),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      color: purple_color,
+                      boxShadow: [
+                        BoxShadow(
+                          color: dark_color.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 0.8,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        String newTitle = _todoController.text.trim();
+                        if (newTitle.isNotEmpty) {
+                          TodoDB.updateToDo(_todoList[index].id,
+                              title: newTitle);
+                          _fetchTodos(_selectedDay);
+                        }
+                        _todoController.clear();
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 3.0, horizontal: 20.0),
+                        child: Text(
+                          'تحديث العنوان',
+                          style: TextStyle(color: white_color),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTodos(_selectedDay);
   }
 
   @override
@@ -296,7 +461,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
       body: Stack(
         children: [
           Image.asset(
-            background_image, // Replace with your image path
+            background_image,
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
@@ -322,11 +487,10 @@ class _BrideHomePageState extends State<BrideHomePage> {
                         Text(
                           'قائمة المهام',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Changa',
-                            color: dark_color,
-                          ),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Changa',
+                              color: dark_color),
                         ),
                       ],
                     ),
@@ -337,32 +501,32 @@ class _BrideHomePageState extends State<BrideHomePage> {
                 height: 135,
                 child: Builder(
                   builder: (context) => TableCalendar(
-                    focusedDay: DateTime.now(),
-                    firstDay: DateTime(2023, 1, 1),
-                    lastDay: DateTime(2050, 12, 31),
+                    firstDay: DateTime.now().subtract(Duration(days: 365)),
+                    lastDay: DateTime.now().add(Duration(days: 365)),
+                    focusedDay: _selectedDay,
                     calendarFormat: CalendarFormat.week,
                     availableCalendarFormats: const {
                       CalendarFormat.week: 'أسبوع',
                     },
                     calendarStyle: CalendarStyle(
-                      outsideTextStyle: TextStyle(color: gray_color),
+                      outsideTextStyle: TextStyle(color: text_gray_color),
                       selectedDecoration: BoxDecoration(
+                        shape: BoxShape.circle, // Change the shape to rectangle
                         color: blue_color,
-                        shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
                         color: purple_color,
-                        borderRadius: BorderRadius.circular(10),
+                        shape: BoxShape.circle,
                       ),
                     ),
                     headerStyle: HeaderStyle(
                       formatButtonTextStyle: TextStyle().copyWith(
                         color: white_color,
-                        fontSize: 14.0,
+                        fontSize: 13.0,
                       ),
                       formatButtonDecoration: BoxDecoration(
                         color: gray_color,
-                        borderRadius: BorderRadius.circular(16.0),
+                        shape: BoxShape.circle,
                       ),
                       leftChevronIcon: Icon(Icons.chevron_left_outlined,
                           color: purple_color),
@@ -376,6 +540,9 @@ class _BrideHomePageState extends State<BrideHomePage> {
                       setState(() {
                         _selectedDay = selectedDay;
                       });
+
+                      // Fetch and update the to-do list using the selected day
+                      _fetchTodos(selectedDay);
                     },
                   ),
                 ),
@@ -385,7 +552,7 @@ class _BrideHomePageState extends State<BrideHomePage> {
                     ? Column(
                         children: [
                           Image.asset(
-                            success_image, // Replace with the actual path
+                            success_image,
                             width: 180,
                             height: 190,
                           ),
@@ -400,6 +567,8 @@ class _BrideHomePageState extends State<BrideHomePage> {
                             onTodoToggle: () {
                               setState(() {
                                 _todoList[index].toggleDone();
+                                TodoDB.setDone(_todoList[index].id,
+                                    _todoList[index].isDone);
                               });
                             },
                           );
@@ -412,7 +581,6 @@ class _BrideHomePageState extends State<BrideHomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildButtonBox('قائمة الطعام', food_image, () {
-                      // Handle the button click for 'List of Food'
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -421,13 +589,12 @@ class _BrideHomePageState extends State<BrideHomePage> {
                                   FoodListPage(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            return child; // No transition animation
+                            return child;
                           },
                         ),
                       );
                     }),
                     _buildButtonBox('قائمة الحضور', invitation_image, () {
-                      // Handle the button click for 'List of Guests'
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -436,13 +603,12 @@ class _BrideHomePageState extends State<BrideHomePage> {
                                   GuestsPage(),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
-                            return child; // No transition animation
+                            return child;
                           },
                         ),
                       );
                     }),
                     _buildButtonBox('الميزانية ', rings_image, () {
-                      // Handle the button click for 'Expense Tracker'
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -464,9 +630,9 @@ class _BrideHomePageState extends State<BrideHomePage> {
           ),
         ],
       ),
-     bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(currentPageIndex: 0 , parentContext: context),
-
+      bottomNavigationBar: Container(
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 0, parentContext: context),
       ),
     );
   }

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
+import '../../../databases/dbhelper.dart';
+import '../../../databases/db_guests.dart';
+
+TextEditingController _numberOfFamilyMembersController =
+    TextEditingController();
 
 enum AttendanceStatus {
   willAttend,
@@ -10,11 +15,13 @@ enum AttendanceStatus {
 }
 
 class Guest {
+  final int id; // Add ID for database identification
   final String name;
   final int numberOfFamilyMembers;
   AttendanceStatus attendanceStatus;
 
   Guest({
+    required this.id,
     required this.name,
     required this.numberOfFamilyMembers,
     required this.attendanceStatus,
@@ -27,16 +34,53 @@ class GuestsPage extends StatefulWidget {
 }
 
 class _GuestsPageState extends State<GuestsPage> {
-  TextEditingController _numberOfFamilyMembersController =
-      TextEditingController();
   List<Guest> _guestList = [];
   List<Guest> _displayedGuestList = [];
   TextEditingController _guestNameController = TextEditingController();
 
   @override
+  void dispose() {
+    _numberOfFamilyMembersController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
-    _displayedGuestList = List.from(_guestList);
+    _loadGuests(); // Load guests from the database when the page is initialized
+  }
+
+  Future<void> _loadGuests() async {
+    final database = await GuestDBHelper.getDatabase();
+    final List<Map<String, dynamic>> guestsData =
+        await database.query('guests');
+
+    setState(() {
+      _guestList = guestsData.map((guestData) {
+        return Guest(
+          id: guestData['id'],
+          name: guestData['name'],
+          numberOfFamilyMembers: guestData['numberOfFamilyMembers'],
+          attendanceStatus:
+              AttendanceStatus.values[guestData['attendanceStatus']],
+        );
+      }).toList();
+
+      _updateDisplayedGuestList(); // Update the displayed list if needed
+      _displayedGuestList = List.from(_guestList);
+    });
+  }
+
+// New method to directly update a guest in _guestList
+  void _updateGuestInList(int guestId, AttendanceStatus newStatus) {
+    final index = _guestList.indexWhere((guest) => guest.id == guestId);
+    if (index != -1) {
+      setState(() {
+        _guestList[index].attendanceStatus = newStatus;
+        _updateDisplayedGuestList(); // Update the displayed list if needed
+        _displayedGuestList = List.from(_guestList);
+      });
+    }
   }
 
   @override
@@ -52,7 +96,7 @@ class _GuestsPageState extends State<GuestsPage> {
           ),
           Column(
             children: [
-             SizedBox(height: 200),
+              SizedBox(height: 200),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -93,20 +137,20 @@ class _GuestsPageState extends State<GuestsPage> {
                 ),
               ),
               Expanded(
-                child: _displayedGuestList.isEmpty
-                    ? Center(
-                        child: Text(
-                          'لا يوجد ضيوف.',
-                          style: TextStyle(color: white_color),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _displayedGuestList.length,
-                        itemBuilder: (context, index) {
-                          return _buildGuestItem(_displayedGuestList[index]);
-                        },
-                      ),
-              ),
+                  child: _displayedGuestList.isEmpty
+                      ? Center(
+                          child: Text(
+                            'لا يوجد ضيوف.',
+                            style: TextStyle(color: white_color),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: _displayedGuestList.length,
+                          itemBuilder: (context, index) {
+                            return _buildGuestItem(
+                                context, _displayedGuestList[index]);
+                          },
+                        )),
             ],
           ),
         ],
@@ -158,7 +202,11 @@ class _GuestsPageState extends State<GuestsPage> {
         .toList();
   }
 
-  Widget _buildGuestItem(Guest guest) {
+  Widget _buildGuestItem(BuildContext context, Guest guest) {
+    TextEditingController nameController = TextEditingController();
+
+    nameController.text = guest.name;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: ElevatedButton(
@@ -179,15 +227,134 @@ class _GuestsPageState extends State<GuestsPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(guest.name,
-                  style: TextStyle(color: dark_color),
-                  textAlign: TextAlign.right),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.blue),
+                    onPressed: () {
+                      _showEditGuestDialog(context, guest, nameController);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _showDeleteGuestConfirmationDialog(context, guest);
+                    },
+                  ),
+                ],
+              ),
+              Text(
+                guest.name,
+                style: TextStyle(color: dark_color),
+                textAlign: TextAlign.right,
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _showEditGuestDialog(
+      BuildContext context, Guest guest, TextEditingController nameController) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تعديل الضيف'),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Container(
+            height: 120,
+            width: 350,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: nameController,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    hintText: 'اسم الضيف',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: gray_color,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String updatedName = nameController.text.trim();
+
+                if (updatedName.isNotEmpty) {
+                  // Update the guest name in the database
+                  await GuestDB.updateGuestName(guest.id, updatedName);
+
+                  // Reload guests from the database
+                  // Add your logic to refresh the guest list as needed
+                  _loadGuests(); // <--- Ensure this line is working as expected
+
+                  // Notify the parent widget that an item has changed
+                  _updateGuestInList(guest.id, guest.attendanceStatus);
+                }
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteGuestConfirmationDialog(BuildContext context, Guest guest) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تأكيد الحذف'),
+          content: Text('هل أنت متأكد أنك تريد حذف هذا الضيف؟'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Delete the guest from the database
+                await GuestDB.deleteGuest(guest.id);
+
+                // Reload guests from the database
+                _loadGuests(); // <--- Ensure this line is working as expected
+
+                // Notify the parent widget that an item has changed
+                _updateGuestInList(guest.id, guest.attendanceStatus);
+                // Add your logic to refresh the guest list as needed
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -231,17 +398,22 @@ class _GuestsPageState extends State<GuestsPage> {
     });
   }
 
-  void _changeStatus(Guest guest, AttendanceStatus newStatus) {
-    setState(() {
-      guest.attendanceStatus = newStatus;
-      _guestList = List.from(_guestList); // Ensure _guestList is updated
-      _displayedGuestList = _filterGuestsByStatus(
-          newStatus); // Update displayed list based on new status
-    });
+  void _changeStatus(Guest guest, AttendanceStatus newStatus) async {
+    // Change the status in the database
+    await GuestDB.updateGuest(
+      guest.id,
+      statusValue: newStatus.index,
+    );
+
+    // Update the guest status in the local list
+    _updateGuestInList(guest.id, newStatus);
   }
 
-  void _showAddGuestDialog(BuildContext context) {
-    showDialog(
+  Future<void> _showAddGuestDialog(BuildContext context) async {
+    String guestName = '';
+    String numberOfFamilyMembers = '';
+
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -254,7 +426,7 @@ class _GuestsPageState extends State<GuestsPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           content: Container(
             height: 120,
             width: 320,
@@ -267,6 +439,9 @@ class _GuestsPageState extends State<GuestsPage> {
                   child: TextField(
                     controller: _guestNameController,
                     textAlign: TextAlign.right,
+                    onChanged: (value) {
+                      guestName = value.trim();
+                    },
                     decoration: InputDecoration(
                       hintText: 'اسم الضيف',
                       alignLabelWithHint: true,
@@ -288,6 +463,9 @@ class _GuestsPageState extends State<GuestsPage> {
                     controller: _numberOfFamilyMembersController,
                     textAlign: TextAlign.right,
                     keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      numberOfFamilyMembers = value.trim();
+                    },
                     decoration: InputDecoration(
                       hintText: 'عدد أفراد العائلة',
                       alignLabelWithHint: true,
@@ -311,7 +489,7 @@ class _GuestsPageState extends State<GuestsPage> {
                 Container(
                   margin: EdgeInsets.symmetric(
                     vertical: 0.0,
-                    horizontal: 10.0,
+                    horizontal: 5.0,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
@@ -351,27 +529,23 @@ class _GuestsPageState extends State<GuestsPage> {
                     ],
                   ),
                   child: TextButton(
-                    onPressed: () {
-                      String guestName = _guestNameController.text.trim();
-                      String numberOfFamilyMembers =
-                          _numberOfFamilyMembersController.text.trim();
-
+                    onPressed: () async {
                       if (guestName.isNotEmpty &&
                           numberOfFamilyMembers.isNotEmpty) {
-                        setState(() {
-                          int numberOfMembers =
-                              int.parse(numberOfFamilyMembers);
-                          _guestList.add(
-                            Guest(
-                              name: guestName,
-                              numberOfFamilyMembers: numberOfMembers,
-                              attendanceStatus:
-                                  AttendanceStatus.notConfirmedYet,
-                            ),
-                          );
-                          _updateDisplayedGuestList(); // Update _displayedGuestList
+                        int numberOfMembers = int.parse(numberOfFamilyMembers);
+
+                        // Add guest to the database
+                        await GuestDB.insertGuest({
+                          'name': guestName,
+                          'numberOfFamilyMembers': numberOfMembers,
+                          'attendanceStatus':
+                              AttendanceStatus.notConfirmedYet.index,
                         });
+
+                        // Reload guests after adding a new one
+                        _loadGuests();
                       }
+
                       _guestNameController.clear();
                       _numberOfFamilyMembersController.clear();
                       Navigator.of(context).pop();
@@ -396,8 +570,10 @@ class _GuestsPageState extends State<GuestsPage> {
     );
   }
 
-  void _showChangeStatusDialog(BuildContext context, Guest guest) {
-    showDialog(
+// Modify your _showChangeStatusDialog method
+  Future<void> _showChangeStatusDialog(
+      BuildContext context, Guest guest) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -421,9 +597,16 @@ class _GuestsPageState extends State<GuestsPage> {
                   'سيحضر',
                   blue_color,
                   AttendanceStatus.willAttend,
-                  onPressed: () {
-                    _changeStatus(guest, AttendanceStatus.willAttend);
-                    _updateDisplayedGuestList(); // Update _displayedGuestList
+                  onPressed: () async {
+                    // Change the status in the database
+                    await GuestDB.updateGuest(
+                      guest.id,
+                      statusValue: AttendanceStatus.willAttend.index,
+                    );
+
+                    // Update the guest in the local list
+                    _updateGuestInList(guest.id, AttendanceStatus.willAttend);
+
                     Navigator.of(context).pop();
                   },
                 ),
@@ -432,9 +615,17 @@ class _GuestsPageState extends State<GuestsPage> {
                   'لن يحضر',
                   purple_color,
                   AttendanceStatus.willNotAttend,
-                  onPressed: () {
-                    _changeStatus(guest, AttendanceStatus.willNotAttend);
-                    _updateDisplayedGuestList(); // Update _displayedGuestList
+                  onPressed: () async {
+                    // Change the status in the database
+                    await GuestDB.updateGuest(
+                      guest.id,
+                      statusValue: AttendanceStatus.willNotAttend.index,
+                    );
+
+                    // Update the guest in the local list
+                    _updateGuestInList(
+                        guest.id, AttendanceStatus.willNotAttend);
+
                     Navigator.of(context).pop();
                   },
                 ),
@@ -443,9 +634,17 @@ class _GuestsPageState extends State<GuestsPage> {
                   'لم يتم التأكيد بعد',
                   gray_color,
                   AttendanceStatus.notConfirmedYet,
-                  onPressed: () {
-                    _changeStatus(guest, AttendanceStatus.notConfirmedYet);
-                    _updateDisplayedGuestList(); // Update _displayedGuestList
+                  onPressed: () async {
+                    // Change the status in the database
+                    await GuestDB.updateGuest(
+                      guest.id,
+                      statusValue: AttendanceStatus.notConfirmedYet.index,
+                    );
+
+                    // Update the guest in the local list
+                    _updateGuestInList(
+                        guest.id, AttendanceStatus.notConfirmedYet);
+
                     Navigator.of(context).pop();
                   },
                 ),

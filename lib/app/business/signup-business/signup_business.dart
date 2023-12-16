@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-business/home_business.dart';
-
+import '../signin-business/signin_business.dart';
 
 List<String> wilayasList = [
   'أدرار',
@@ -86,6 +86,24 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.arrow_forward, color: dark_color),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BusinessSignInPage()),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                       Text(
                         'أنشئي حسابك  ',
                         style: TextStyle(
@@ -212,7 +230,7 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                 ),
               ),
             ],
-),
+          ),
         ),
       ),
     );
@@ -274,7 +292,6 @@ class RoundedDropdownWithIcon extends StatelessWidget {
     required this.labelText,
     required this.icon,
     required this.wilayas,
-
     this.fontSize = 14.0,
   });
 
@@ -310,7 +327,6 @@ class RoundedDropdownWithIcon extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-
           );
         }).toList(),
         onChanged: (String? value) {
@@ -325,7 +341,6 @@ class RoundedDropdownWithIcon extends StatelessWidget {
     );
   }
 }
-
 
 class RoundedTextFieldWithIcon extends StatelessWidget {
   final String labelText;
@@ -362,7 +377,6 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.black),
         ),
         keyboardType: keyboardType,
-
         style: TextStyle(fontSize: fontSize, color: Colors.black),
       ),
     );

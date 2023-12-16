@@ -3,7 +3,6 @@ import '../../../shared/images.dart';
 import '../../../shared/colors.dart';
 import '../home_bride.dart';
 import '../categories/categories.dart';
-import '../categories/publication.dart';
 import '../favorites/favorite_publication.dart';
 import '../profile/profile_bride.dart';
 
