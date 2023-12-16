@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
-import '../../../databases/dbhelper.dart';
 import '../../../databases/db_expense.dart';
 
 class Expense {

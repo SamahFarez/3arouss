@@ -40,7 +40,7 @@ class TodoListItem extends StatelessWidget {
     return Container(
         height: 65,
         padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        margin: EdgeInsets.symmetric(horizontal: 13.0, vertical: 0.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
@@ -51,7 +51,7 @@ class TodoListItem extends StatelessWidget {
         child: Container(
           height: 65,
           padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          margin: EdgeInsets.symmetric(horizontal: 13.0, vertical: 0.0),
+          margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
           decoration: BoxDecoration(
             color: Colors.white, // Background color
             borderRadius: BorderRadius.circular(20.0),
@@ -65,11 +65,13 @@ class TodoListItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(5.0),
               border: Border.all(
                 width: 1,
-                color: Colors.grey, // Border color
+                color: gray_color, // Border color
               ),
             ),
-            child: ListTile(
-              title: Row(
+            child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -99,11 +101,9 @@ class TodoListItem extends StatelessWidget {
                             textAlign: TextAlign.right,
                           ),
                         ),
-                        SizedBox(height: 10.0),
                       ],
                     ),
                   ),
-                  SizedBox(width: 10.0),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),

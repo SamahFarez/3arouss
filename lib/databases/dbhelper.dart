@@ -33,7 +33,6 @@ class TodoDBHelper {
   }
 }
 
-
 class ExpenseDBHelper {
   static const _database_name = "ENSIA_MY_EXPENSE_V1.db";
   static const _database_version = 4;
@@ -62,5 +61,64 @@ class ExpenseDBHelper {
       },
     );
     return _database;
+  }
+}
+
+class FoodDBHelper {
+  static const _database_name = "Food_DB.db";
+  static const _database_version = 1;
+  static Database? _database;
+
+  static Future<Database> getDatabase() async {
+    if (_database != null) {
+      return _database!;
+    }
+    _database = await openDatabase(
+      join(await getDatabasesPath(), _database_name),
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE foods (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+              name TEXT, 
+              type TEXT
+            )
+        ''');
+      },
+      version: _database_version,
+      onUpgrade: (db, oldVersion, newVersion) {
+        // Handle database upgrade if needed
+      },
+    );
+    return _database!;
+  }
+}
+
+class GuestDBHelper {
+  static const _database_name = "Guests_DB.db";
+  static const _database_version = 1;
+  static Database? _database;
+
+  static Future<Database> getDatabase() async {
+    if (_database != null) {
+      return _database!;
+    }
+    _database = await openDatabase(
+      join(await getDatabasesPath(), _database_name),
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE guests (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, 
+              name TEXT, 
+              numberOfFamilyMembers INTEGER, 
+              attendanceStatus INTEGER
+            )
+        ''');
+      },
+      version: _database_version,
+      onUpgrade: (db, oldVersion, newVersion) {
+        // Handle database upgrade if needed
+      },
+    );
+    return _database!;
   }
 }
