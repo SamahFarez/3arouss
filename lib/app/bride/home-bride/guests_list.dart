@@ -203,6 +203,10 @@ class _GuestsPageState extends State<GuestsPage> {
   }
 
   Widget _buildGuestItem(BuildContext context, Guest guest) {
+    TextEditingController nameController = TextEditingController();
+
+    nameController.text = guest.name;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       child: ElevatedButton(
@@ -223,15 +227,134 @@ class _GuestsPageState extends State<GuestsPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 2, vertical: 5),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(guest.name,
-                  style: TextStyle(color: dark_color),
-                  textAlign: TextAlign.right),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.blue),
+                    onPressed: () {
+                      _showEditGuestDialog(context, guest, nameController);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _showDeleteGuestConfirmationDialog(context, guest);
+                    },
+                  ),
+                ],
+              ),
+              Text(
+                guest.name,
+                style: TextStyle(color: dark_color),
+                textAlign: TextAlign.right,
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _showEditGuestDialog(
+      BuildContext context, Guest guest, TextEditingController nameController) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تعديل الضيف'),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Container(
+            height: 120,
+            width: 350,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: nameController,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    hintText: 'اسم الضيف',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: gray_color,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String updatedName = nameController.text.trim();
+
+                if (updatedName.isNotEmpty) {
+                  // Update the guest name in the database
+                  await GuestDB.updateGuestName(guest.id, updatedName);
+
+                  // Reload guests from the database
+                  // Add your logic to refresh the guest list as needed
+                  _loadGuests(); // <--- Ensure this line is working as expected
+
+                  // Notify the parent widget that an item has changed
+                  _updateGuestInList(guest.id, guest.attendanceStatus);
+                }
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteGuestConfirmationDialog(BuildContext context, Guest guest) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تأكيد الحذف'),
+          content: Text('هل أنت متأكد أنك تريد حذف هذا الضيف؟'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Delete the guest from the database
+                await GuestDB.deleteGuest(guest.id);
+
+                // Reload guests from the database
+                _loadGuests(); // <--- Ensure this line is working as expected
+
+                // Notify the parent widget that an item has changed
+                _updateGuestInList(guest.id, guest.attendanceStatus);
+                // Add your logic to refresh the guest list as needed
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -303,7 +426,7 @@ class _GuestsPageState extends State<GuestsPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           content: Container(
             height: 120,
             width: 320,
@@ -366,7 +489,7 @@ class _GuestsPageState extends State<GuestsPage> {
                 Container(
                   margin: EdgeInsets.symmetric(
                     vertical: 0.0,
-                    horizontal: 10.0,
+                    horizontal: 5.0,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),

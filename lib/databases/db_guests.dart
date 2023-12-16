@@ -33,17 +33,16 @@ class GuestDB {
   }
 
   static Future<void> deleteGuest(int id) async {
-    final database =
-        await GuestDBHelper.getDatabase(); // Update to GuestDBHelper
+    final database = await GuestDBHelper.getDatabase();
     await database.rawDelete("""DELETE FROM $_tableName WHERE id=?""", [id]);
   }
 
   static Future<void> updateGuestName(int id, String name) async {
-    final database =
-        await GuestDBHelper.getDatabase(); // Update to GuestDBHelper
+    final database = await GuestDBHelper.getDatabase();
     await database
         .rawUpdate("""UPDATE $_tableName SET name=? WHERE id=?""", [name, id]);
   }
+
 
   static Future<void> updateGuestMembersAttending(
       int id, int numMembers) async {

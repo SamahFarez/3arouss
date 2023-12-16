@@ -39,4 +39,14 @@ class ExpenseDB {
     database.rawQuery("""delete from  expenses where id=?""", [id]);
     return true;
   }
+
+  static Future<void> updateExpense(Map<String, dynamic> data) async {
+    final database = await ExpenseDBHelper.getDatabase();
+    await database.update(
+      'expenses',
+      data,
+      where: 'id = ?',
+      whereArgs: [data['id']],
+    );
+  }
 }

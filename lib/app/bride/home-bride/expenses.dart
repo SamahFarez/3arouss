@@ -10,7 +10,11 @@ class Expense {
   final double price;
   final DateTime date;
 
-  Expense({required this.id, required this.itemName, required this.price, required this.date});
+  Expense(
+      {required this.id,
+      required this.itemName,
+      required this.price,
+      required this.date});
 }
 
 class ExpenseTrackingPage extends StatefulWidget {
@@ -50,9 +54,15 @@ class _ExpenseTrackingPageState extends State<ExpenseTrackingPage> {
   }
 
   Widget _buildExpenseItem(Expense expense) {
+    TextEditingController itemNameController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+
+    itemNameController.text = expense.itemName;
+    priceController.text = expense.price.toStringAsFixed(2);
+
     return GestureDetector(
       onTap: () {
-        _showExpenseDetailsDialog(expense);
+        _showEditExpenseDialog(expense, itemNameController, priceController);
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -70,22 +80,166 @@ class _ExpenseTrackingPageState extends State<ExpenseTrackingPage> {
             ),
           ),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Text('دج', style: TextStyle(color: dark_color)),
-                    Text('${expense.price.toStringAsFixed(2)}', style: TextStyle(color: dark_color)),
-                  ],
+                // Delete Icon
+                IconButton(
+                  icon: Icon(Icons.delete, color: dark_color),
+                  onPressed: () {
+                    _showDeleteConfirmationDialog(expense);
+                  },
                 ),
-                Text(expense.itemName, style: TextStyle(color: dark_color)),
+                // Edit Icon
+                IconButton(
+                  icon: Icon(Icons.edit, color: dark_blue_color),
+                  onPressed: () {
+                    _showEditExpenseDialog(
+                        expense, itemNameController, priceController);
+                  },
+                ),
+                // Price and Title
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('دج', style: TextStyle(color: dark_color)),
+                      Text('${expense.price.toStringAsFixed(2)}',
+                          style: TextStyle(color: dark_color)),
+                      SizedBox(width: 100),
+                      Text(
+                        expense.itemName,
+                        style: TextStyle(color: dark_color, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  void _showEditExpenseDialog(
+      Expense expense,
+      TextEditingController itemNameController,
+      TextEditingController priceController) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تعديل العنصر'),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Container(
+            height: 160,
+            width: 350,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: itemNameController,
+                  textAlign: TextAlign.right,
+                  decoration: InputDecoration(
+                    hintText: 'اسم العنصر',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: gray_color,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: priceController,
+                  textAlign: TextAlign.right,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'السعر',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: gray_color,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String itemName = itemNameController.text.trim();
+                String priceText = priceController.text.trim();
+
+                if (itemName.isNotEmpty && priceText.isNotEmpty) {
+                  double price = double.parse(priceText);
+                  final currentDate = DateTime.now();
+
+                  // Update the expense in the database
+                  await ExpenseDB.updateExpense({
+                    'id': expense.id,
+                    'title': itemName,
+                    'price': price,
+                    'date': currentDate.toIso8601String(),
+                  });
+
+                  // Reload expenses from the database
+                  await _loadExpensesFromDatabase();
+                }
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(Expense expense) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('تأكيد الحذف'),
+          content: Text('هل أنت متأكد أنك تريد حذف هذا العنصر؟'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Delete the expense from the database
+                await ExpenseDB.deleteExpense(expense.id);
+
+                // Reload expenses from the database
+                await _loadExpensesFromDatabase();
+
+                Navigator.of(context).pop();
+              },
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -222,7 +376,7 @@ class _ExpenseTrackingPageState extends State<ExpenseTrackingPage> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: 3.0,
-                        horizontal: 20.0,
+                        horizontal: 10.0,
                       ),
                       child: Text(
                         'إضافة نفقة',
