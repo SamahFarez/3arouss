@@ -1,8 +1,6 @@
+import 'package:arouss_app/app/shared/colors.dart';
 import 'package:flutter/material.dart';
-import '../signup-bride/signup_bride.dart'; // Make sure to import the correct file
-import '../../shared/colors.dart';
-import '../../shared/welcome.dart';
-import '../home-bride/home_bride.dart';
+import 'package:http/http.dart' as http;
 
 class BrideSignInPage extends StatefulWidget {
   @override
@@ -16,6 +14,78 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
+  }
+
+  String getEmail() {
+    // Implement logic to get email from text field
+    return 'test@example.com';
+  }
+
+  String getPassword() {
+    // Implement logic to get password from text field
+    return 'password123';
+  }
+
+  ElevatedButton buildLoginButton() {
+    return ElevatedButton(
+      onPressed: () async {
+        String email = getEmail();
+        String password = getPassword();
+
+        bool success = await loginUser(email, password);
+
+        if (success) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => BrideHomePage()),
+          );
+        } else {
+          print('Login failed');
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: purple_color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
+      child: Container(
+        width: double.infinity,
+        child: Center(
+          child: Text(
+            'تسجيل الدخول',
+            style: TextStyle(
+              fontSize: 14.0,
+              fontFamily: 'Changa',
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<bool> loginUser(String email, String password) async {
+    String apiUrl = 'https://3arouss-app-flask.vercel.app/api_users_login';
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: {
+          'email': email,
+          'password': password,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print('Error: $error');
+      return false;
+    }
   }
 
   @override
@@ -37,13 +107,9 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.arrow_back, color: dark_color),
+                          icon: Icon(Icons.arrow_back, color: Colors.black),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AccountType()),
-                            );
+                            Navigator.pop(context);
                           },
                         ),
                         SizedBox(
@@ -119,43 +185,13 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                             // Handle Forget Password
                           },
                           child: Text('هل نسيت كلمة السر؟',
-                              style:
-                                  TextStyle(fontSize: 14.0, color: blue_color)),
+                              style: TextStyle(
+                                  fontSize: 14.0, color: Colors.blue)),
                         ),
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Navigate to BrideHomePage when the button is pressed
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BrideHomePage()), // Replace with your actual navigation logic
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: purple_color,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            'تسجيل الدخول',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontFamily: 'Changa',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
+                    buildLoginButton(),
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -209,13 +245,6 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
         ),
       ),
     );
-  }
-
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 }
 
@@ -282,4 +311,40 @@ class SocialLoginButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class BrideSignUpPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Implement your BrideSignUpPage here
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bride Sign Up Page'),
+      ),
+      body: Center(
+        child: Text('Bride Sign Up Page Content'),
+      ),
+    );
+  }
+}
+
+class BrideHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Implement your BrideHomePage here
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Bride Home Page'),
+      ),
+      body: Center(
+        child: Text('Welcome to the Bride Home Page!'),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: BrideSignInPage(),
+  ));
 }
