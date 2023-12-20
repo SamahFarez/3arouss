@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'marriage_date.dart';
-import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../signin-bride/signin_bride.dart';
-
-
 
 List<String> wilayasList = [
   'أدرار',
@@ -106,7 +103,11 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                     ),
                     Text(
                       'أنشئي حسابك وكوني عروسًا',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Changa', color: Colors.black),
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Changa',
+                          color: dark_color),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -114,7 +115,7 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                       padding: EdgeInsets.only(right: 129),
                       child: Text(
                         'سجلي دخولك لتستمتعي بأفضل تجربة',
-                        style: TextStyle(fontSize: 12, color: Colors.black),
+                        style: TextStyle(fontSize: 12, color: dark_color),
                         textAlign: TextAlign.right,
                       ),
                     ),
@@ -123,9 +124,7 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
               ),
             ),
             Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-
-
+              height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -141,7 +140,6 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                     RoundedInputWithIcon(
                       icon: Icons.person,
                       labelText: 'الإسم الكامل',
-
                       obscureText: false,
                       fontSize: 14.0,
                     ),
@@ -158,32 +156,30 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                       fontSize: 14.0,
                     ),
                     Row(
-                        children: [
-                          Container(
-                            width: 150, // Set the desired width
-                            child: Expanded(
-                              child: RoundedTextFieldWithIcon(
-                                labelText: 'الرمز البريدي',
-                                icon: Icons.markunread_mailbox,
-                                hintText: 'أدخل الرمز البريدي',
-                                keyboardType: TextInputType.number,
-                                fontSize: 14.0,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 5.0),
-                          Expanded(
-                            child: RoundedDropdownWithIcon(
-                              labelText: 'الولاية',
-                              icon: Icons.location_city,
-                              wilayas: wilayasList,
+                      children: [
+                        Container(
+                          width: 150, // Set the desired width
+                          child: Expanded(
+                            child: RoundedTextFieldWithIcon(
+                              labelText: 'الرمز البريدي',
+                              icon: Icons.markunread_mailbox,
+                              hintText: 'أدخل الرمز البريدي',
+                              keyboardType: TextInputType.number,
                               fontSize: 14.0,
                             ),
                           ),
-                          
-                        ],
-                      ),
-
+                        ),
+                        SizedBox(width: 5.0),
+                        Expanded(
+                          child: RoundedDropdownWithIcon(
+                            labelText: 'الولاية',
+                            icon: Icons.location_city,
+                            wilayas: wilayasList,
+                            fontSize: 14.0,
+                          ),
+                        ),
+                      ],
+                    ),
                     RoundedInputWithIcon(
                       labelText: 'كلمة السر',
                       icon: Icons.lock,
@@ -202,7 +198,8 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                         // Handle sign-up button press
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MarriageDateScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => MarriageDateScreen()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -216,7 +213,10 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
                         child: Center(
                           child: Text(
                             'التالي',
-                            style: TextStyle(fontSize: 14.0, fontFamily: 'Changa', color: Colors.black),
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                fontFamily: 'Changa',
+                                color: dark_color),
                           ),
                         ),
                       ),
@@ -256,13 +256,11 @@ class RoundedInputWithIcon extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
-                textDirection: TextDirection.rtl,
-
+        textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
         decoration: InputDecoration(
           suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
-
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -271,10 +269,10 @@ class RoundedInputWithIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: dark_color),
         ),
         obscureText: obscureText,
-        style: TextStyle(fontSize: fontSize, color: Colors.black),
+        style: TextStyle(fontSize: fontSize, color: dark_color),
       ),
     );
   }
@@ -296,15 +294,11 @@ class RoundedDropdownWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          
-          
           labelText: labelText,
           suffixIcon: Icon(icon, color: blue_color),
-
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
@@ -314,23 +308,21 @@ class RoundedDropdownWithIcon extends StatelessWidget {
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
           labelStyle: TextStyle(
-            color: Colors.black,
+            color: dark_color,
             fontFamily: 'Changa', // Set the 'Changa' font
-
           ),
         ),
         items: wilayas.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
-                      textDirection: TextDirection.rtl,
-
+              textDirection: TextDirection.rtl,
               value,
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontFamily: 'Changa', // Set the 'Changa' font
                 fontSize: fontSize,
-                color: Colors.black,
+                color: dark_color,
               ),
             ),
           );
@@ -340,14 +332,13 @@ class RoundedDropdownWithIcon extends StatelessWidget {
         },
         style: TextStyle(
           fontSize: fontSize,
-          color: Colors.black,
+          color: dark_color,
           fontFamily: 'Changa', // Set the 'Changa' font
         ),
       ),
     );
   }
 }
-
 
 class RoundedTextFieldWithIcon extends StatelessWidget {
   final String labelText;
@@ -369,8 +360,7 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
-                textAlign: TextAlign.right,
-
+        textAlign: TextAlign.right,
         decoration: InputDecoration(
           suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
@@ -383,10 +373,10 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: dark_color),
         ),
         keyboardType: keyboardType,
-        style: TextStyle(fontSize: fontSize, color: Colors.black),
+        style: TextStyle(fontSize: fontSize, color: dark_color),
       ),
     );
   }

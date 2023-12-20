@@ -39,7 +39,8 @@ class CategoriesScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CategoryResult(categoryName: category.name),
+                        builder: (context) =>
+                            CategoryResult(categoryName: category.name),
                       ),
                     );
                   },
@@ -88,7 +89,8 @@ class CategoriesScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavoritePublicationScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => FavoritePublicationScreen()),
                   );
                 },
               ),

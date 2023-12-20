@@ -110,7 +110,7 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Changa',
-                            color: Colors.black),
+                            color: dark_color),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.0),
@@ -118,7 +118,7 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                         padding: EdgeInsets.only(right: 129),
                         child: Text(
                           'سجلي دخولك لتستمتعي بأفضل تجربة',
-                          style: TextStyle(fontSize: 12, color: Colors.black),
+                          style: TextStyle(fontSize: 12, color: dark_color),
                           textAlign: TextAlign.right,
                         ),
                       ),
@@ -220,7 +220,7 @@ class _businessSignUpPageState extends State<businessSignUpPage> {
                               style: TextStyle(
                                   fontSize: 14.0,
                                   fontFamily: 'Changa',
-                                  color: Colors.black),
+                                  color: dark_color),
                             ),
                           ),
                         ),
@@ -272,10 +272,10 @@ class RoundedInputWithIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: dark_color),
         ),
         obscureText: obscureText,
-        style: TextStyle(fontSize: fontSize, color: Colors.black),
+        style: TextStyle(fontSize: fontSize, color: dark_color),
       ),
     );
   }
@@ -312,7 +312,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
           labelStyle: TextStyle(
-            color: Colors.black,
+            color: dark_color,
             fontFamily: 'Changa', // Set the 'Changa' font
           ),
         ),
@@ -324,7 +324,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
               style: TextStyle(
                 fontFamily: 'Changa', // Set the 'Changa' font
                 fontSize: fontSize,
-                color: Colors.black,
+                color: dark_color,
               ),
             ),
           );
@@ -334,7 +334,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
         },
         style: TextStyle(
           fontSize: fontSize,
-          color: Colors.black,
+          color: dark_color,
           fontFamily: 'Changa', // Set the 'Changa' font
         ),
       ),
@@ -374,10 +374,10 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: dark_color),
         ),
         keyboardType: keyboardType,
-        style: TextStyle(fontSize: fontSize, color: Colors.black),
+        style: TextStyle(fontSize: fontSize, color: dark_color),
       ),
     );
   }

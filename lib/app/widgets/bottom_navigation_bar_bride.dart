@@ -9,7 +9,6 @@ import '../bride/home-bride/home_bride.dart'; // Make sure to adjust the path ba
 import '../bride/home-bride/guests_list.dart'; // Make sure to adjust the path based on your project structure
 import '../bride/home-bride/food_list.dart'; // Make sure to adjust the path based on your project structure
 
-
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentPageIndex;
   final BuildContext parentContext;
@@ -35,17 +34,22 @@ class CustomBottomNavigationBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildIconButton(0, home_icon, home_outlined_icon, BrideHomePage()),
-            buildIconButton(1, categories_icon, categories_outlined_icon, CategoriesScreen()),
-            buildIconButton(2, inbox_image, inbox_outlined_image, RequestsScreen()),
-            buildIconButton(3, heart_icon, heart_outlined_icon, FavoritePublicationScreen()),
-            buildIconButton(4, profile_icon, profile_outlined_icon, ProfileScreen()),
+            buildIconButton(1, categories_icon, categories_outlined_icon,
+                CategoriesScreen()),
+            buildIconButton(
+                2, inbox_image, inbox_outlined_image, RequestsScreen()),
+            buildIconButton(3, heart_icon, heart_outlined_icon,
+                FavoritePublicationScreen()),
+            buildIconButton(
+                4, profile_icon, profile_outlined_icon, ProfileScreen()),
           ],
         ),
       ),
     );
   }
 
-  IconButton buildIconButton(int index, String iconImage, String outlinedIcon, Widget? page) {
+  IconButton buildIconButton(
+      int index, String iconImage, String outlinedIcon, Widget? page) {
     return IconButton(
       icon: ImageIcon(
         AssetImage(currentPageIndex == index ? iconImage : outlinedIcon),
@@ -57,7 +61,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             parentContext,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => page,
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
                 return child;
               },
             ),
