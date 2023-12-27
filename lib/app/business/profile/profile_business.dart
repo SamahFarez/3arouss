@@ -55,7 +55,7 @@ class BusinessProfileScreen extends StatelessWidget {
                             Text(
                               'أسماء زينب',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: dark_color,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -69,7 +69,7 @@ class BusinessProfileScreen extends StatelessWidget {
                             Text(
                               'Email:', // Add the user's phone number
                               style: TextStyle(
-                                color: Colors.black,
+                                color: dark_color,
                                 fontSize: 16,
                               ),
                             ),
@@ -77,7 +77,7 @@ class BusinessProfileScreen extends StatelessWidget {
                             Text(
                               'zineb.zineb@gmail.com', // Add the user's phone number
                               style: TextStyle(
-                                color: Colors.black,
+                                color: dark_color,
                                 fontSize: 16,
                               ),
                             ),
@@ -89,7 +89,7 @@ class BusinessProfileScreen extends StatelessWidget {
                             Text(
                               'Phone:', // Add the user's phone number
                               style: TextStyle(
-                                color: Colors.black,
+                                color: dark_color,
                                 fontSize: 16,
                               ),
                             ),
@@ -97,7 +97,7 @@ class BusinessProfileScreen extends StatelessWidget {
                             Text(
                               '0566889944', // Add the user's phone number
                               style: TextStyle(
-                                color: Colors.black,
+                                color: dark_color,
                                 fontSize: 16,
                               ),
                             ),
@@ -121,14 +121,14 @@ class BusinessProfileScreen extends StatelessWidget {
                       Text(
                         '... نص لوريم ipum الملء من قبل مصممي', // Add the description text here
                         style: TextStyle(
-                          color: Colors.black,
+                          color: dark_color,
                           fontSize: 16,
                         ),
                       ),
                       Text(
                         '  : الوصف',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: dark_color,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -165,7 +165,7 @@ class BusinessProfileScreen extends StatelessWidget {
                       ),
                       child: Text(
                         categoryButtons[index],
-                        style: TextStyle(fontSize: 16.0, color: Colors.black),
+                        style: TextStyle(fontSize: 16.0, color: dark_color),
                         textAlign: TextAlign.center,
                       ),
                     ),

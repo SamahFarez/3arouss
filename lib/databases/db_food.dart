@@ -29,20 +29,28 @@ class FoodDB {
     return id;
   }
 
-  static Future deleteFood(int id) async {
+  static Future<int> deleteFood(int id) async {
     final database = await FoodDBHelper.getDatabase();
-    database.rawQuery("""DELETE FROM foods WHERE id=?""", [id]);
+    return await database.rawDelete('DELETE FROM foods WHERE id = ?', [id]);
   }
 
-  static Future updateFoodType(int id, FoodCategory newCategory) async {
+  static Future<int> updateFoodType(int id, FoodCategory newCategory) async {
     final database = await FoodDBHelper.getDatabase();
-    await database.rawUpdate(
-      '''UPDATE foods 
-         SET type = ? 
-         WHERE id = ?''',
+    return await database.rawUpdate(
+      'UPDATE foods SET type = ? WHERE id = ?',
       [_getCategoryString(newCategory), id],
     );
   }
+
+    static Future<int> updateFoodName(int id, String newName) async {
+    final database = await FoodDBHelper.getDatabase();
+    return await database.rawUpdate(
+      'UPDATE foods SET name = ? WHERE id = ?',
+      [newName, id],
+    );
+  }
+
+  
 
   static String _getCategoryString(FoodCategory category) {
     switch (category) {

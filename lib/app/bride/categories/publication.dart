@@ -3,7 +3,6 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
 
-
 class PublicationPage extends StatefulWidget {
   final String imagePath;
 
@@ -81,7 +80,6 @@ class _PublicationPageState extends State<PublicationPage> {
                           isLiked = !isLiked;
                           // Add logic to handle adding/removing from favorites here
                           if (isLiked) {
-                            
                           } else {
                             // Remove from favorites logic
                             // ...
@@ -94,7 +92,6 @@ class _PublicationPageState extends State<PublicationPage> {
               ),
             ],
           ),
-
           Expanded(
             child: SingleChildScrollView(
               child: Container(
@@ -330,11 +327,10 @@ class _PublicationPageState extends State<PublicationPage> {
           ),
         ],
       ),
-     bottomNavigationBar: Container(
+      bottomNavigationBar: Container(
         child: CustomBottomNavigationBar(
             currentPageIndex: 2, parentContext: context),
       ),
-    
     );
   }
 }

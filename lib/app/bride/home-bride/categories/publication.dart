@@ -32,7 +32,7 @@ class _PublicationPageState extends State<PublicationPage> {
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
               ),
-             Positioned(
+              Positioned(
                 top: 40.0,
                 left: 20.0,
                 child: Stack(
@@ -76,14 +76,14 @@ class _PublicationPageState extends State<PublicationPage> {
                     // Heart icon
                     IconButton(
                       icon: isLiked
-                          ? Icon(Icons.favorite, color: Colors.red) // Filled heart icon
+                          ? Icon(Icons.favorite,
+                              color: Colors.red) // Filled heart icon
                           : Icon(Icons.favorite_border),
                       onPressed: () {
                         setState(() {
                           isLiked = !isLiked;
                           // Add logic to handle adding/removing from favorites here
                           if (isLiked) {
-                           
                           } else {
                             // Remove from favorites logic
                             // ...
@@ -96,18 +96,18 @@ class _PublicationPageState extends State<PublicationPage> {
               ),
             ],
           ),
-          
           Expanded(
             child: SingleChildScrollView(
-                child: Container(
-      padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0), // Adjust the top padding
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.0), // Adjust the top radius
-          topRight: Radius.circular(10.0), // Adjust the top radius
-        ),
-      ),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(
+                    16.0, 8.0, 16.0, 16.0), // Adjust the top padding
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0), // Adjust the top radius
+                    topRight: Radius.circular(10.0), // Adjust the top radius
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -125,7 +125,7 @@ class _PublicationPageState extends State<PublicationPage> {
                           ),
                           child: Text(
                             'كراء',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: dark_color),
                           ),
                         ),
                         // Right side with the profile picture and username
@@ -153,11 +153,13 @@ class _PublicationPageState extends State<PublicationPage> {
                           children: [
                             Text(
                               '10.000 دج',
-                              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'برنوس لالة',
-                              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -167,7 +169,8 @@ class _PublicationPageState extends State<PublicationPage> {
                           children: [
                             Text(
                               '(15 تعليقات)',
-                              style: TextStyle(fontSize: 16.0, color: blue_color),
+                              style:
+                                  TextStyle(fontSize: 16.0, color: blue_color),
                             ),
                             Icon(
                               Icons.star,
@@ -176,7 +179,8 @@ class _PublicationPageState extends State<PublicationPage> {
                             ),
                             Text(
                               '4.5',
-                              style: TextStyle(fontSize: 16.0, color: blue_color),
+                              style:
+                                  TextStyle(fontSize: 16.0, color: blue_color),
                             ),
                           ],
                         ),
@@ -188,7 +192,9 @@ class _PublicationPageState extends State<PublicationPage> {
                               children: [
                                 Text(
                                   ': الوصف',
-                                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -208,7 +214,9 @@ class _PublicationPageState extends State<PublicationPage> {
                               children: [
                                 Text(
                                   'الألوان المتوفرة:',
-                                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                   textDirection: TextDirection.rtl,
                                 ),
                               ],
@@ -225,7 +233,8 @@ class _PublicationPageState extends State<PublicationPage> {
                               height: 40.0,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 88, 14, 9), // Replace with the actual color
+                                color: Color.fromARGB(255, 88, 14,
+                                    9), // Replace with the actual color
                               ),
                             ),
                             Container(
@@ -234,7 +243,8 @@ class _PublicationPageState extends State<PublicationPage> {
                               height: 40.0,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: const Color.fromARGB(255, 154, 161, 167), // Replace with the actual color
+                                color: const Color.fromARGB(255, 154, 161,
+                                    167), // Replace with the actual color
                               ),
                             ),
                             Container(
@@ -243,7 +253,8 @@ class _PublicationPageState extends State<PublicationPage> {
                               height: 40.0,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: const Color.fromARGB(255, 178, 194, 179), // Replace with the actual color
+                                color: const Color.fromARGB(255, 178, 194,
+                                    179), // Replace with the actual color
                               ),
                             ),
                             // Add more color circles as needed
@@ -257,7 +268,9 @@ class _PublicationPageState extends State<PublicationPage> {
                               children: [
                                 Text(
                                   'القياسات المتوفرة:',
-                                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                   textDirection: TextDirection.rtl,
                                 ),
                               ],
@@ -271,43 +284,42 @@ class _PublicationPageState extends State<PublicationPage> {
                           textDirection: TextDirection.rtl,
                         ),
                         SizedBox(height: 16.0),
-                   Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Container(
-      width: 150,
-      height: 50,
-      decoration: BoxDecoration(
-        color: blue_color,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: blue_color, width: 2),
-      ),
-      child: Center(
-        child: Text(
-          'إرسال طلب',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-    ),
-    Container(
-      width: 150,
-      height: 50,
-      decoration: BoxDecoration(
-        color: white_color,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: blue_color, width: 2),
-      ),
-      child: Center(
-        child: Text(
-          'تعليق',
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-    ),
-  ],
-),
-
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 150,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: blue_color,
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(color: blue_color, width: 2),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'إرسال طلب',
+                                  style: TextStyle(color: dark_color),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 150,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: white_color,
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(color: blue_color, width: 2),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'تعليق',
+                                  style: TextStyle(color: dark_color),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     // Add more details or widgets as needed
                   ],
@@ -348,7 +360,7 @@ class _PublicationPageState extends State<PublicationPage> {
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(star_outlined_icon)),
-               onPressed: () {
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RequestsScreen()),
@@ -360,13 +372,14 @@ class _PublicationPageState extends State<PublicationPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavoritePublicationScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => FavoritePublicationScreen()),
                   );
                 },
               ),
               IconButton(
                 icon: ImageIcon(AssetImage(profile_outlined_icon)),
-                 onPressed: () {
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProfileScreen()),

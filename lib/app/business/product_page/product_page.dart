@@ -179,7 +179,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             backgroundColor: Colors.transparent,
                             child: Icon(
                               Icons.add,
-                              color: Colors.black,
+                              color: dark_color,
                             ),
                           ),
                         ),
@@ -235,7 +235,7 @@ class _AddProductPageState extends State<AddProductPage> {
                             backgroundColor: Colors.transparent,
                             child: Icon(
                               Icons.add,
-                              color: Colors.black,
+                              color: dark_color,
                             ),
                           ),
                         ),
@@ -394,7 +394,7 @@ class _AddProductPageState extends State<AddProductPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        Color pickedColor = Colors.black;
+        Color pickedColor = dark_color;
 
         return AlertDialog(
           title: Text('اختر لونًا'),

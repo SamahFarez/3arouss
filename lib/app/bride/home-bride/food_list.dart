@@ -103,7 +103,8 @@ class _FoodListPageState extends State<FoodListPage> {
   Widget _buildFoodItem(FoodItem food) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      child:ElevatedButton(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      child: ElevatedButton(
         onPressed: () {
           _showChangeCategoryDialog(context, food);
         },
@@ -118,16 +119,132 @@ class _FoodListPageState extends State<FoodListPage> {
             ),
           ),
         ),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(food.name, style: TextStyle(color: dark_color)),
-            ],
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.delete, color: dark_color),
+                    onPressed: () {
+                      _showDeleteConfirmationDialog(context, food);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit, color: dark_blue_color),
+                    onPressed: () {
+                      _showEditFoodDialog(context, food);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              food.name,
+              style: TextStyle(color: dark_color),
+              textAlign: TextAlign.right,
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  void _showEditFoodDialog(BuildContext context, FoodItem food) {
+    TextEditingController _editedFoodNameController =
+        TextEditingController(text: food.name);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'تعديل الطبق',
+            textAlign: TextAlign.center,
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Container(
+            height: 120,
+            width: 320,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  width: 200,
+                  height: 55,
+                  child: TextField(
+                    controller: _editedFoodNameController,
+                    textAlign: TextAlign.right,
+                    decoration: InputDecoration(
+                      hintText: 'اسم الطبق',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                String editedFoodName = _editedFoodNameController.text.trim();
+                if (editedFoodName.isNotEmpty) {
+                  await FoodDB.updateFoodName(food.id, editedFoodName);
+                  _loadFoodList();
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, FoodItem food) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'تأكيد الحذف',
+            style: TextStyle(
+              fontFamily: 'Changa',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          content: Text('هل أنت متأكد أنك تريد حذف ${food.name}؟'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('إلغاء'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await FoodDB.deleteFood(food.id);
+                _loadFoodList();
+                Navigator.of(context).pop();
+              },
+              child: Text('حذف'),
+            ),
+          ],
+        );
+      },
     );
   }
 

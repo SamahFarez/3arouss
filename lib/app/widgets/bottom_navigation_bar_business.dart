@@ -31,18 +31,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            buildIconButton(0, home_icon, home_outlined_icon, BusinessHomePage()),
-            buildIconButton(1, inbox_image, inbox_outlined_image, RequestsPage()),
+            buildIconButton(
+                0, home_icon, home_outlined_icon, BusinessHomePage()),
+            buildIconButton(
+                1, inbox_image, inbox_outlined_image, RequestsPage()),
             buildIconButton(2, add_icon, add_outlined_icon, AddProductPage()),
-            buildIconButton(3, star_icon, star_outlined_icon, CommentsListPage()),
-            buildIconButton(4, profile_icon, profile_outlined_icon, BusinessProfileScreen()),
+            buildIconButton(
+                3, star_icon, star_outlined_icon, CommentsListPage()),
+            buildIconButton(4, profile_icon, profile_outlined_icon,
+                BusinessProfileScreen()),
           ],
         ),
       ),
     );
   }
 
-  IconButton buildIconButton(int index, String iconImage, String outlinedIcon, Widget? page) {
+  IconButton buildIconButton(
+      int index, String iconImage, String outlinedIcon, Widget? page) {
     return IconButton(
       icon: ImageIcon(
         AssetImage(currentPageIndex == index ? iconImage : outlinedIcon),
@@ -54,7 +59,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             parentContext,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => page,
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
                 return child;
               },
             ),

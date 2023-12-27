@@ -4,8 +4,6 @@ import '../../shared/colors.dart';
 import 'category_result.dart'; // Import the CategoryResult widget
 import '../../widgets/bottom_navigation_bar_bride.dart';
 
-
-
 class CategoriesScreen extends StatelessWidget {
   final List<Category> categories = [
     Category(name: 'ملابس'),
@@ -39,7 +37,8 @@ class CategoriesScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CategoryResult(categoryName: category.name),
+                        builder: (context) =>
+                            CategoryResult(categoryName: category.name),
                       ),
                     );
                   },
@@ -52,7 +51,7 @@ class CategoriesScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         child: CustomBottomNavigationBar(
-            currentPageIndex:1 , parentContext: context),
+            currentPageIndex: 1, parentContext: context),
       ),
     );
   }
@@ -83,7 +82,8 @@ class CategoryCard extends StatelessWidget {
         child: Center(
           child: Text(
             category.name,
-            style: TextStyle(color: dark_color,fontSize: 16.0, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: dark_color, fontSize: 16.0, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
         ),

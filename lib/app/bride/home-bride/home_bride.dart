@@ -69,8 +69,7 @@ class TodoListItem extends StatelessWidget {
               ),
             ),
             child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,

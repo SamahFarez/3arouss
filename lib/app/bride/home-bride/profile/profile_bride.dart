@@ -35,7 +35,7 @@ class ProfileScreen extends StatelessWidget {
                         Text(
                           'أسماء زينب',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: dark_color,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -58,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
                     Text(
                       'zineb.asmaa@gmail.com',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: dark_color,
                         fontSize: 16,
                       ),
                     ),
@@ -72,16 +72,15 @@ class ProfileScreen extends StatelessWidget {
                     Text(
                       ' تم استخدام نص لوريم ipum الملء من قبل مصممي', // Add the description text here
                       style: TextStyle(
-                        color: Colors.black,
+                        color: dark_color,
                         fontSize: 16,
-                       
                       ),
                     ),
                     SizedBox(width: 10),
                     Text(
                       '  : الوصف',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: dark_color,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -106,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      onPrimary: Colors.black,
+                      onPrimary: dark_color,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -121,12 +120,13 @@ class ProfileScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => BrideSignInPage()),
+                        MaterialPageRoute(
+                            builder: (context) => BrideSignInPage()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      onPrimary: Colors.black,
+                      onPrimary: dark_color,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -179,7 +179,8 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavoritePublicationScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => FavoritePublicationScreen()),
                   );
                 },
               ),

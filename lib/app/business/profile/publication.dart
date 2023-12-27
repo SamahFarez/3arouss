@@ -3,7 +3,6 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_business.dart';
 
-
 class PublicationPage extends StatefulWidget {
   final String imagePath;
 
@@ -328,7 +327,7 @@ class _PublicationPageState extends State<PublicationPage> {
           ),
         ],
       ),
-         bottomNavigationBar: Container(
+      bottomNavigationBar: Container(
         child: CustomBottomNavigationBar(
             currentPageIndex: 4, parentContext: context),
       ),

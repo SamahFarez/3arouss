@@ -40,7 +40,7 @@ class _CommentsListPageState extends State<CommentsListPage> {
       productName: 'المنتج الثاني',
       content:
           'أنا سعيدة بشرائي لهذا المنتج وأنصح الجميع بتجربته بشدة. لقد قام المنتج بتحسين حياتي بشكل كبير. شكراً للشركة المنتجة!',
-    ),    
+    ),
     Comment(
       userProfileImage: 'path_to_image',
       userName: 'فاطمة محمد',
@@ -113,7 +113,8 @@ class _CommentsListPageState extends State<CommentsListPage> {
         ],
       ),
       bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(currentPageIndex: 3 , parentContext: context),
+        child: CustomBottomNavigationBar(
+            currentPageIndex: 3, parentContext: context),
       ),
     );
   }
@@ -191,23 +192,23 @@ class _CommentsListPageState extends State<CommentsListPage> {
                   'تفاصيل التعليق',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                 IconButton(
-                      icon: isLiked
-                          ? Icon(Icons.favorite, color: Colors.red) // Filled heart icon
-                          : Icon(Icons.favorite_border),
-                      onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                          // Add logic to handle adding/removing from favorites here
-                          if (isLiked) {
-                           
-                          } else {
-                            // Remove from favorites logic
-                            // ...
-                          }
-                        });
-                      },
-                    ),
+                IconButton(
+                  icon: isLiked
+                      ? Icon(Icons.favorite,
+                          color: Colors.red) // Filled heart icon
+                      : Icon(Icons.favorite_border),
+                  onPressed: () {
+                    setState(() {
+                      isLiked = !isLiked;
+                      // Add logic to handle adding/removing from favorites here
+                      if (isLiked) {
+                      } else {
+                        // Remove from favorites logic
+                        // ...
+                      }
+                    });
+                  },
+                ),
               ],
             ),
             content: Container(

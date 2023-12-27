@@ -32,19 +32,19 @@ class ProfileScreen extends StatelessWidget {
                         Text(
                           'أسماء زينب',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: dark_color,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 5),
                         Text(
-                      'zineb.asmaa@gmail.com',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                    ),
+                          'zineb.asmaa@gmail.com',
+                          style: TextStyle(
+                            color: dark_color,
+                            fontSize: 16,
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(width: 10),
@@ -53,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
                       backgroundImage: AssetImage(business_image),
                     ),
                   ],
-                ),                
+                ),
                 SizedBox(height: 30),
                 Container(
                   width: 400,
@@ -64,7 +64,7 @@ class ProfileScreen extends StatelessWidget {
                         textAlign: TextAlign.right,
                         '... نص لوريم ipum الملء من قبل مصممي', // Add the description text here
                         style: TextStyle(
-                          color: Colors.black,
+                          color: dark_color,
                           fontSize: 16,
                         ),
                       ),
@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                         textAlign: TextAlign.right,
                         '  : الوصف',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: dark_color,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -98,7 +98,7 @@ class ProfileScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      onPrimary: Colors.black,
+                      onPrimary: dark_color,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -119,7 +119,7 @@ class ProfileScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
-                      onPrimary: Colors.black,
+                      onPrimary: dark_color,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

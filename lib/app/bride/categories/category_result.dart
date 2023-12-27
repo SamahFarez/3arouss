@@ -215,8 +215,7 @@ class CategoryResult extends StatelessWidget {
                 ),
               ),
             ),
-                        SizedBox(height: 5.0),
-
+            SizedBox(height: 5.0),
           ],
         ),
       ),

@@ -36,7 +36,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.black),
+                      icon: Icon(Icons.arrow_back, color: dark_color),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -52,7 +52,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Changa',
-                            color: Colors.black,
+                            color: dark_color,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -61,7 +61,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           padding: EdgeInsets.only(right: 129.0),
                           child: Text(
                             'سجلي دخولك لتستمتعي بأفضل تجربة',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
+                            style: TextStyle(fontSize: 14, color: dark_color),
                             textAlign: TextAlign.right,
                           ),
                         ),
@@ -73,7 +73,6 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.66,
-
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -100,8 +99,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
-
+                          color: dark_color),
                     ),
                     SizedBox(height: 16.0),
                     Row(
@@ -110,12 +108,11 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                         Container(
                           width: 80.0,
                           child: TextFormField(
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, color: dark_color),
                             decoration: InputDecoration(
                               labelText: 'السنة',
-                              labelStyle: TextStyle(
-                                  fontSize: 12.0, color: Colors.black),
+                              labelStyle:
+                                  TextStyle(fontSize: 12.0, color: dark_color),
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purple_color, width: 2.0),
@@ -124,14 +121,12 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
-
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
                             keyboardType: TextInputType.number,
                             textDirection: TextDirection.rtl,
                             textAlign: TextAlign.right,
-
                           ),
                         ),
                         Container(
@@ -139,12 +134,11 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           child: TextFormField(
                             textDirection: TextDirection.rtl,
                             textAlign: TextAlign.right,
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, color: dark_color),
                             decoration: InputDecoration(
                               labelText: 'الشهر',
-                              labelStyle: TextStyle(
-                                  fontSize: 12.0, color: Colors.black),
+                              labelStyle:
+                                  TextStyle(fontSize: 12.0, color: dark_color),
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purple_color, width: 2.0),
@@ -153,7 +147,6 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
-
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
@@ -165,12 +158,11 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           child: TextFormField(
                             textDirection: TextDirection.rtl,
                             textAlign: TextAlign.right,
-                            style:
-                                TextStyle(fontSize: 16.0, color: Colors.black),
+                            style: TextStyle(fontSize: 16.0, color: dark_color),
                             decoration: InputDecoration(
                               labelText: 'اليوم',
-                              labelStyle: TextStyle(
-                                  fontSize: 12.0, color: Colors.black),
+                              labelStyle:
+                                  TextStyle(fontSize: 12.0, color: dark_color),
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: purple_color, width: 2.0),
@@ -179,7 +171,6 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xFFE5EEF2), width: 1.0),
-
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                             ),
@@ -200,7 +191,6 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                           MaterialPageRoute(
                               builder: (context) => BrideHomePage()),
                         );
-
                       },
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
@@ -216,9 +206,8 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                             style: TextStyle(
                               fontSize: 16.0,
                               fontFamily: 'Changa',
-                              color: Colors.black,
+                              color: dark_color,
                             ),
-
                           ),
                         ),
                       ),

@@ -108,7 +108,7 @@ class _GuestsPageState extends State<GuestsPage> {
                   ),
                   SizedBox(width: 120),
                   Text(
-                    'Guests List ',
+                    'قائمة الضيوف',
                     style: TextStyle(color: dark_color, fontSize: 18),
                   ),
                 ],
@@ -232,15 +232,15 @@ class _GuestsPageState extends State<GuestsPage> {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit, color: Colors.blue),
+                    icon: Icon(Icons.delete, color: dark_color),
                     onPressed: () {
-                      _showEditGuestDialog(context, guest, nameController);
+                      _showDeleteGuestConfirmationDialog(context, guest);
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
+                    icon: Icon(Icons.edit, color: dark_blue_color),
                     onPressed: () {
-                      _showDeleteGuestConfirmationDialog(context, guest);
+                      _showEditGuestDialog(context, guest, nameController);
                     },
                   ),
                 ],

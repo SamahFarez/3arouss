@@ -131,7 +131,11 @@ class _RequestsPageState extends State<RequestsPage> {
             children: [
               SizedBox(height: 220),
               ToggleButtonsWidget(
-                buttonTitles: ['جديد', 'مقبول', 'مرفوض'], // Customize button texts
+                buttonTitles: [
+                  'جديد',
+                  'مقبول',
+                  'مرفوض'
+                ], // Customize button texts
                 selectedIndex: _selectedStatus.index,
                 onButtonTapped: (index) {
                   setState(() {
@@ -393,7 +397,7 @@ class _RequestsPageState extends State<RequestsPage> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: request.productColor.toLowerCase() == 'black'
-                              ? Colors.black
+                              ? dark_color
                               : Colors.transparent,
                         ),
                       ),
