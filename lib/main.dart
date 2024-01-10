@@ -3,7 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app/shared/colors.dart';
 import 'app/shared/splashscreen.dart';
 
-
 void main() {
   runApp(MyApp());
 }

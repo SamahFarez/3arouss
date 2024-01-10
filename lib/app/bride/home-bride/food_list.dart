@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../databases/db_food.dart';
-import '../../../databases/dbhelper.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
-import 'home_bride.dart';
 
 enum FoodCategory {
   mainDish,

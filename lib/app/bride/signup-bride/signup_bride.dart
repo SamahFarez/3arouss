@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'marriage_date.dart';
-import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../signin-bride/signin_bride.dart';
 

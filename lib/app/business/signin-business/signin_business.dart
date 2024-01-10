@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../signup-business/signup_business.dart'; // Make sure to import the correct file
-import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-business/home_business.dart';
 import '../../shared/welcome.dart';

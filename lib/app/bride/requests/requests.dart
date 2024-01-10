@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
-import '../home-bride/home_bride.dart';
-import '../categories/categories.dart';
-import '../categories/publication.dart';
-import '../favorites/favorite_publication.dart';
-import '../profile/profile_bride.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
 
 enum RequestStatus {

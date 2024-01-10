@@ -97,7 +97,6 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
   DateTime _selectedDay = DateTime.now();
   List<RequestItem> _requestList = [];
 
-  TextEditingController _requestDetailsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

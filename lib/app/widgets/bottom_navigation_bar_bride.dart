@@ -6,8 +6,6 @@ import '/app/bride/requests/requests.dart';
 import '../shared/images.dart'; // Make sure to adjust the path based on your project structure
 import '../shared/colors.dart'; // Make sure to adjust the path based on your project structure
 import '../bride/home-bride/home_bride.dart'; // Make sure to adjust the path based on your project structure
-import '../bride/home-bride/guests_list.dart'; // Make sure to adjust the path based on your project structure
-import '../bride/home-bride/food_list.dart'; // Make sure to adjust the path based on your project structure
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentPageIndex;
