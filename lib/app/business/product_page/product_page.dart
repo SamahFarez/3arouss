@@ -54,6 +54,21 @@ class _AddProductPageState extends State<AddProductPage> {
     '44'
   ];
 
+  Map<String, List<String>> subcategories = {
+    'الملابس': [
+      'قفطان',
+      'برنوس',
+      'أحذية',
+      'مجوهرات'
+    ],
+    'تصفيف الشعر': [
+      'برنوس',
+      'أحذية ',
+      'مجوهرات '
+    ],
+    // Add subcategories for other main categories
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,43 +96,54 @@ class _AddProductPageState extends State<AddProductPage> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                   width: MediaQuery.of(context).size.width *
                       0.7, // Set to 70% of screen width
-                  child: DropdownButton<String>(
-                    value: _selectedProductType,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedProductType = newValue!;
-                      });
-                    },
-                    items: <String>[
-                      'الملابس', // Clothes
-                      'تصفيف الشعر', // Hair Styling
-                      'الأحذية', // Shoes
-                      'الحلويات', // Sweets
-                      'صالات الحفلات', // Party Rooms
-                      'الإكسسوارات', // Accessories
-                      'الديكور', // Decor
-                      'المصورين', // Photographers
-                      // Add other product types as needed
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          textAlign: TextAlign.right, // Align text to the right
-                          textDirection: TextDirection
-                              .rtl, // Set text direction to right-to-left
-                          style: TextStyle(
-                              // Add your text style here
-
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      DropdownButton<String>(
+                        value: _selectedProductType,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedProductType = newValue!;
+                          });
+                        },
+                        items: subcategories.keys.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                // Add your text style here
                               ),
-                        ),
-                      );
-                    }).toList(),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButton<String>(
+                        value: subcategories[_selectedProductType]![0],
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            subcategories[_selectedProductType]!
+                                .remove(newValue!);
+                            subcategories[_selectedProductType]!.insert(0, newValue);
+                          });
+                        },
+                        items: subcategories[_selectedProductType]!
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              textAlign: TextAlign.right,
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
                 ),
-
                 SizedBox(height: 20),
-
                 Stack(
                   alignment: Alignment.center,
                   children: [
@@ -321,7 +347,7 @@ class _AddProductPageState extends State<AddProductPage> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         // Implement UI for shoes-specific fields
-        _buildSizeInputFields(), // Change this line
+        // _buildSizeInputFields(), // Change this line
         // Include transaction buttons
         SizedBox(height: 20),
         _buildTransactionButtons(),
@@ -400,9 +426,9 @@ class _AddProductPageState extends State<AddProductPage> {
   Widget _buildClothesFields() {
     return Column(
       children: [
-        _buildColorPicker(),
+        // _buildColorPicker(),
         SizedBox(height: 20),
-        _buildSizeInputFields(), // Change this line
+        // _buildSizeInputFields(), // Change this line
         SizedBox(height: 20),
         _buildTransactionButtons(),
       ],
@@ -440,7 +466,6 @@ class _AddProductPageState extends State<AddProductPage> {
       ],
     );
   }
-
   Widget _buildColorPicker() {
     return Container(
       padding: EdgeInsets.all(8),
@@ -498,53 +523,53 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  Widget _buildSizeInputFields() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          ':اختر الأحجام',
-          style: TextStyle(
-            color: text_gray_color,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10),
-        Wrap(
-          alignment: WrapAlignment.end,
-          children: _availableSizes.map((size) {
-            bool isSelected = _selectedSizes.contains(size);
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (isSelected) {
-                    _selectedSizes.remove(size);
-                  } else {
-                    _selectedSizes.add(size);
-                  }
-                });
-              },
-              child: Container(
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: isSelected ? blue_color : gray_color,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  size,
-                  style: TextStyle(
-                    color: isSelected ? text_gray_color : text_gray_color,
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
+  // Widget _buildSizeInputFields() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.end,
+  //     children: [
+  //       Text(
+  //         ':اختر الأحجام',
+  //         style: TextStyle(
+  //           color: text_gray_color,
+  //           fontSize: 16,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       SizedBox(height: 10),
+  //       Wrap(
+  //         alignment: WrapAlignment.end,
+  //         children: _availableSizes.map((size) {
+  //           bool isSelected = _selectedSizes.contains(size);
+  //           return GestureDetector(
+  //             onTap: () {
+  //               setState(() {
+  //                 if (isSelected) {
+  //                   _selectedSizes.remove(size);
+  //                 } else {
+  //                   _selectedSizes.add(size);
+  //                 }
+  //               });
+  //             },
+  //             child: Container(
+  //               padding: EdgeInsets.all(8),
+  //               margin: EdgeInsets.all(5),
+  //               decoration: BoxDecoration(
+  //                 color: isSelected ? blue_color : gray_color,
+  //                 borderRadius: BorderRadius.circular(8),
+  //               ),
+  //               child: Text(
+  //                 size,
+  //                 style: TextStyle(
+  //                   color: isSelected ? text_gray_color : text_gray_color,
+  //                 ),
+  //               ),
+  //             ),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   void _showColorPickerDialog(BuildContext context) {
     showDialog(

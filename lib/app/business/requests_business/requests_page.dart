@@ -350,20 +350,31 @@ class _RequestsPageState extends State<RequestsPage> {
                 },
               ),
               Expanded(
-                child: _displayedRequestList.isEmpty
-                    ? Center(
-                        child: Text(
-                          'لا يوجد طلبات.',
-                          style: TextStyle(color: white_color),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: _displayedRequestList.length,
-                        itemBuilder: (context, index) {
-                          return _buildRequestItem(
-                              _displayedRequestList[index]);
-                        },
-                      ),
+                child: FutureBuilder<List<Request>>(
+                  future: _fetchRequestsByStatus(_selectedStatus),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      List<Request> requests = snapshot.data ?? [];
+                      return requests.isEmpty
+                          ? Center(
+                              child: Text(
+                                'لا يوجد طلبات.',
+                                style: TextStyle(color: white_color),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: requests.length,
+                              itemBuilder: (context, index) {
+                                return _buildRequestItem(requests[index]);
+                              },
+                            );
+                    }
+                  },
+                ),
               ),
             ],
           ),
@@ -374,6 +385,14 @@ class _RequestsPageState extends State<RequestsPage> {
             currentPageIndex: 1, parentContext: context),
       ),
     );
+  }
+
+  Future<List<Request>> _fetchRequestsByStatus(RequestStatus status) async {
+    // Filter requests based on status
+    List<Request> filteredRequests = _requestList
+        .where((request) => request.requestStatus == status)
+        .toList();
+    return filteredRequests;
   }
 
   RequestStatus _getStatusFromIndex(int index) {

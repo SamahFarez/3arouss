@@ -67,13 +67,13 @@ class BusinessProfileScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              'Email:', // Add the user's phone number
+                              '  Email:', // Add the user's phone number
                               style: TextStyle(
                                 color: dark_color,
                                 fontSize: 16,
                               ),
                             ),
-                            SizedBox(width: 77),
+                            SizedBox(width: 67),
                             Text(
                               'zineb.zineb@gmail.com', // Add the user's phone number
                               style: TextStyle(
@@ -113,29 +113,6 @@ class BusinessProfileScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 30),
-                Container(
-                  width: 400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        '... نص لوريم ipum الملء من قبل مصممي', // Add the description text here
-                        style: TextStyle(
-                          color: dark_color,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        '  : الوصف',
-                        style: TextStyle(
-                          color: dark_color,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
@@ -143,43 +120,10 @@ class BusinessProfileScreen extends StatelessWidget {
           // Row of Category Buttons
           // Row of Category Buttons
           Positioned(
-            top: 400,
-            left: 16.0,
-            right: 16.0,
-            child: Container(
-              height: 30, // Set the desired height for the buttons
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categoryButtons.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle button press for each category
-                        // You can add navigation logic or filter products based on the category
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        minimumSize: Size(100, 30), // Adjust width as needed
-                      ),
-                      child: Text(
-                        categoryButtons[index],
-                        style: TextStyle(fontSize: 16.0, color: dark_color),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 440,
+            top: 320,
             right: 0,
             left: 0,
-            bottom: 60, // Adjust the bottom padding as needed
+            bottom: 20, // Adjust the bottom padding as needed
             child: Column(
               children: [
                 // Grid of Products

@@ -15,6 +15,11 @@ class PublicationPage extends StatefulWidget {
 class _PublicationPageState extends State<PublicationPage> {
   bool isLiked = false;
 
+  // Declare variables to hold input values
+  late String date;
+  late String address;
+  late String description;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +45,7 @@ class _PublicationPageState extends State<PublicationPage> {
                       height: 36.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: white_color,
+                        color: Colors.white,
                       ),
                     ),
                     // Arrow icon to go back
@@ -66,7 +71,7 @@ class _PublicationPageState extends State<PublicationPage> {
                       height: 36.0,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: white_color,
+                        color: Colors.white,
                       ),
                     ),
                     // Heart icon
@@ -98,7 +103,7 @@ class _PublicationPageState extends State<PublicationPage> {
                 padding: EdgeInsets.fromLTRB(
                     16.0, 8.0, 16.0, 16.0), // Adjust the top padding
                 decoration: BoxDecoration(
-                  color: white_color,
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10.0), // Adjust the top radius
                     topRight: Radius.circular(10.0), // Adjust the top radius
@@ -116,7 +121,7 @@ class _PublicationPageState extends State<PublicationPage> {
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: BoxDecoration(
-                            color: blue_color,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Text(
@@ -166,17 +171,17 @@ class _PublicationPageState extends State<PublicationPage> {
                             Text(
                               '(15 تعليقات)',
                               style:
-                                  TextStyle(fontSize: 16.0, color: blue_color),
+                                  TextStyle(fontSize: 16.0, color: Colors.blue),
                             ),
                             Icon(
                               Icons.star,
                               size: 16.0,
-                              color: blue_color,
+                              color: Colors.blue,
                             ),
                             Text(
                               '4.5',
                               style:
-                                  TextStyle(fontSize: 16.0, color: blue_color),
+                                  TextStyle(fontSize: 16.0, color: Colors.blue),
                             ),
                           ],
                         ),
@@ -206,106 +211,31 @@ class _PublicationPageState extends State<PublicationPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 8.0),
-                                  width: 40.0,
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Color.fromARGB(255, 88, 14,
-                                        9), // Replace with the actual color
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(right: 8.0),
-                                  width: 40.0,
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: const Color.fromARGB(255, 154, 161,
-                                        167), // Replace with the actual color
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(right: 8.0),
-                                  width: 40.0,
-                                  height: 40.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: const Color.fromARGB(255, 178, 194,
-                                        179), // Replace with the actual color
-                                  ),
-                                ),
-                                SizedBox(width: 80),
-                                Text(
-                                  'الألوان المتوفرة:',
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
                             // Add more color circles as needed
                           ],
                         ),
                         SizedBox(height: 16.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'S, M, L',
-                                  style: TextStyle(fontSize: 16.0),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                                SizedBox(width: 100.0),
-                                Text(
-                                  'القياسات المتوفرة:',
-                                  style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold),
-                                  textDirection: TextDirection.rtl,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
                         SizedBox(height: 40.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 150,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: blue_color,
-                                borderRadius: BorderRadius.circular(25),
-                                border: Border.all(color: blue_color, width: 2),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'إرسال طلب',
-                                  style: TextStyle(color: dark_color),
-                                ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _showRequestPopup(context);
+                              },
+                              child: Text(
+                                'إرسال طلب',
+                                style: TextStyle(color: dark_color),
                               ),
                             ),
                             Container(
                               width: 150,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: white_color,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(25),
-                                border: Border.all(color: blue_color, width: 2),
+                                border:
+                                    Border.all(color: Colors.blue, width: 2),
                               ),
                               child: Center(
                                 child: Text(
@@ -332,5 +262,56 @@ class _PublicationPageState extends State<PublicationPage> {
             currentPageIndex: 2, parentContext: context),
       ),
     );
+  }
+
+  // Function to show pop-up dialog
+  void _showRequestPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('إرسال طلب'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Date input
+              TextField(
+                onChanged: (value) => date = value,
+                decoration: InputDecoration(labelText: 'التاريخ'),
+              ),
+              // Address input
+              TextField(
+                onChanged: (value) => address = value,
+                decoration: InputDecoration(labelText: 'العنوان'),
+              ),
+              // Description input
+              TextField(
+                onChanged: (value) => description = value,
+                decoration: InputDecoration(labelText: 'الوصف'),
+              ),
+            ],
+          ),
+          actions: [
+            // Button to send request
+            ElevatedButton(
+              onPressed: () {
+                // Handle sending request
+                _sendRequest();
+                Navigator.of(context).pop();
+              },
+              child: Text('إرسال'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Function to handle sending request
+  void _sendRequest() {
+    // Implement logic to send request with input values
+    print('Date: $date');
+    print('Address: $address');
+    print('Description: $description');
   }
 }

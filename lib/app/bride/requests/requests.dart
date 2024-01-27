@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
+import '../home-bride/home_bride.dart';
+import '../categories/categories.dart';
+import '../categories/publication.dart';
+import '../favorites/favorite_publication.dart';
+import '../profile/profile_bride.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
 
 enum RequestStatus {
@@ -128,7 +133,7 @@ class _RequestsPageState extends State<RequestsScreen> {
           ),
           Column(
             children: [
-              SizedBox(height: 180),
+              SizedBox(height: 220),
               Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
@@ -237,7 +242,7 @@ class _RequestsPageState extends State<RequestsScreen> {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(white_color),
           fixedSize: MaterialStateProperty.all(
-            Size(double.infinity, 100),
+            Size(double.infinity, 50),
           ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(

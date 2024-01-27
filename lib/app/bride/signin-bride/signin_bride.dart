@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../signup-bride/signup_bride.dart'; // Make sure to import the correct file
+import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../shared/welcome.dart';
 import '../home-bride/home_bride.dart';

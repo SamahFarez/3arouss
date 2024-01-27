@@ -2,16 +2,146 @@ import 'package:flutter/material.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_business.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
+
+final Dio dio = Dio();
+
+Future<List<Map<String, dynamic>>> getCommentsData() async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_comments.get';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print("Comments data: ${dataList}");
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> getPublicationData(
+    int publication_id) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_publication_using_id/${publication_id.toString()}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print("Publication data: ${dataList}");
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> getBrideData(int bride_id) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_bride_using_id/${bride_id}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Response data: ${response.data}");
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print(dataList);
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
 
 class Comment {
-  final String userProfileImage;
   final String userName;
   final DateTime commentDate;
   final String productName;
   final String content;
 
   Comment({
-    required this.userProfileImage,
     required this.userName,
     required this.commentDate,
     required this.productName,
@@ -25,48 +155,41 @@ class CommentsListPage extends StatefulWidget {
 }
 
 class _CommentsListPageState extends State<CommentsListPage> {
-  List<Comment> _commentsList = [
-    Comment(
-      userProfileImage: 'path_to_image',
-      userName: 'علي أحمد',
-      commentDate: DateTime.now(),
-      productName: 'المنتج الأول',
-      content: 'هذا المنتج رائع!',
-    ),
-    Comment(
-      userProfileImage: 'path_to_image',
-      userName: 'فاطمة محمد',
-      commentDate: DateTime.now().subtract(Duration(days: 1)),
-      productName: 'المنتج الثاني',
-      content:
-          'أنا سعيدة بشرائي لهذا المنتج وأنصح الجميع بتجربته بشدة. لقد قام المنتج بتحسين حياتي بشكل كبير. شكراً للشركة المنتجة!',
-    ),
-    Comment(
-      userProfileImage: 'path_to_image',
-      userName: 'فاطمة محمد',
-      commentDate: DateTime.now().subtract(Duration(days: 1)),
-      productName: 'المنتج الثاني',
-      content:
-          'أنا سعيدة بشرائي لهذا المنتج وأنصح الجميع بتجربته بشدة. لقد قام المنتج بتحسين حياتي بشكل كبير. شكراً للشركة المنتجة!',
-    ),
-    Comment(
-      userProfileImage: 'path_to_image',
-      userName: 'محمد عبد الله',
-      commentDate: DateTime.now().subtract(Duration(days: 2)),
-      productName: 'المنتج الثالث',
-      content:
-          'تجربة رائعة مع هذا المنتج. لا يوجد لدي أي شكوى. أنا سعيد جداً بالشراء. شكرًا للفريق!',
-    ),
-    Comment(
-      userProfileImage: 'path_to_image',
-      userName: 'نورا يوسف',
-      commentDate: DateTime.now().subtract(Duration(days: 3)),
-      productName: 'المنتج الرابع',
-      content:
-          'المنتج يتفوق على توقعاتي بكثير. لقد قمت بشرائه بناءً على توصيات الأصدقاء وأنا سعيدة جدًا أنني قمت بذلك. يستحق كل قرش دفعته.',
-    ),
-    // Add more comments as needed
-  ];
+  List<Comment> _commentsList = [];
+
+  Future<List<Comment>> populateComments() async {
+    List<Map<String, dynamic>>? requestData = await getCommentsData();
+    List<Comment> comments = [];
+
+    if (requestData != null && requestData.isNotEmpty) {
+      for (var data in requestData) {
+        List<Map<String, dynamic>> publicationData =
+            await getPublicationData(data['publication_id']);
+        List<Map<String, dynamic>> brideData =
+            await getBrideData(data["bride_id"]);
+
+        comments.add(
+          Comment(
+            userName: brideData[0]['fullname_bride'] ?? 'N/A',
+            commentDate: DateTime.parse(
+                data['comment_date'] ?? DateTime.now().toString()),
+            productName: publicationData[0]['publication_name'] ?? 'N/A',
+            content: data['comment_content'] ?? '',
+          ),
+        );
+      }
+    } else {
+      print('Error: Request data is null or empty');
+    }
+
+    return comments;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    populateComments();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,14 +223,35 @@ class _CommentsListPageState extends State<CommentsListPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _commentsList.length,
-                  itemBuilder: (context, index) {
-                    return _buildCommentItem(_commentsList[index]);
-                  },
-                ),
-              ),
+              FutureBuilder<List<Comment>>(
+                future:
+                    populateComments(), // Call the function to fetch comment data
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Show a loading indicator while data is being fetched
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    // Show an error message if data fetching fails
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    // Once data is fetched successfully, build the ListView
+                    List<Comment>? comments = snapshot.data;
+                    if (comments != null && comments.isNotEmpty) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: comments.length,
+                          itemBuilder: (context, index) {
+                            return _buildCommentItem(comments[index]);
+                          },
+                        ),
+                      );
+                    } else {
+                      // Show a message if there are no comments
+                      return Text('No comments available.');
+                    }
+                  }
+                },
+              )
             ],
           ),
         ],
@@ -177,8 +321,6 @@ class _CommentsListPageState extends State<CommentsListPage> {
   }
 
   void _showCommentDetails(Comment comment) {
-    bool isLiked = false;
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -191,23 +333,6 @@ class _CommentsListPageState extends State<CommentsListPage> {
                 Text(
                   'تفاصيل التعليق',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: isLiked
-                      ? Icon(Icons.favorite,
-                          color: Colors.red) // Filled heart icon
-                      : Icon(Icons.favorite_border),
-                  onPressed: () {
-                    setState(() {
-                      isLiked = !isLiked;
-                      // Add logic to handle adding/removing from favorites here
-                      if (isLiked) {
-                      } else {
-                        // Remove from favorites logic
-                        // ...
-                      }
-                    });
-                  },
                 ),
               ],
             ),

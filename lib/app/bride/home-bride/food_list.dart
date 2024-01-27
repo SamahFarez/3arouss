@@ -429,7 +429,7 @@ class _FoodListPageState extends State<FoodListPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
                     color: blue_color,

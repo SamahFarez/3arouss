@@ -4,6 +4,51 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../requests_business/requests_page.dart';
 import '../../widgets/bottom_navigation_bar_business.dart';
+import 'package:dio/dio.dart';
+
+final Dio dio = Dio();
+
+Future<List<Map<String, dynamic>>> getAcceptedRequestsData() async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_accepted_requests.get';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print("Requests data: ${dataList}");
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
 
 class RequestItem {
   final String clientName;
@@ -30,18 +75,18 @@ class RequestListItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
       decoration: BoxDecoration(
         border: Border.all(
-          width: 2,
-          color: white_color,
+          width: 1,
+          color: text_gray_color,
         ),
         borderRadius: BorderRadius.circular(20.0),
       ),
-      child: ListTile(
+     child: ListTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Column(
+              child:Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -52,7 +97,18 @@ class RequestListItem extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 5.0),
+                  SizedBox(width: 10), // Adjust spacing between name and details
+            Text(
+              '${_formatDate(requestItem.date)}',
+              style: TextStyle(
+                color: dark_purple_color,
+                fontSize: 12,
+                fontFamily: 'Changa',
+              ),
+            ),
+                ],
+              ),
+            ),
                   Text(
                     requestItem.requestDetails,
                     style: TextStyle(
@@ -61,18 +117,6 @@ class RequestListItem extends StatelessWidget {
                       fontFamily: 'Changa',
                     ),
                   ),
-                  SizedBox(height: 5.0),
-                  Text(
-                    '${_formatDate(requestItem.date)}',
-                    style: TextStyle(
-                      color: dark_purple_color,
-                      fontSize: 12,
-                      fontFamily: 'Changa',
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
@@ -92,11 +136,48 @@ class BusinessHomePage extends StatefulWidget {
   @override
   _BusinessHomePageState createState() => _BusinessHomePageState();
 }
-
 class _BusinessHomePageState extends State<BusinessHomePage> {
   DateTime _selectedDay = DateTime.now();
   List<RequestItem> _requestList = [];
 
+  // Populate requests and sort by due date
+  Future<void> populateRequests() async {
+    List<Map<String, dynamic>>? requestData = await getRequestsData();
+
+    if (requestData != null && requestData.isNotEmpty) {
+      for (var data in requestData) {
+        List<Map<String, dynamic>> publicationData =
+            await getPublicationData(data['publication_id']);
+        List<Map<String, dynamic>> brideData =
+            await getBrideData(data["bride_id"]);
+
+        _requestList.add(
+          RequestItem(
+            clientName: brideData[0]['fullname_bride'] ?? 'N/A',
+            requestDetails: publicationData[0]['publication_name'] ?? 'N/A',
+            date: DateTime.parse(
+                data['request_due_date'] ?? DateTime.now().toString()),
+          ),
+        );
+      }
+
+      // Sort by due date
+      _requestList.sort((a, b) => a.date.compareTo(b.date));
+    } else {
+      print('Error: Request data is null or empty');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    populateRequests();
+
+    // Check if there's an accepted request passed from RequestsPage
+    if (widget.acceptedRequest != null) {
+      _addAcceptedRequest(widget.acceptedRequest!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,36 +208,36 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                   ),
                 ),
               ),
-              Container(
+                  Container(
                 height: 135,
                 child: Builder(
                   builder: (context) => TableCalendar(
-                    focusedDay: DateTime.now(),
-                    firstDay: DateTime(2023, 1, 1),
-                    lastDay: DateTime(2050, 12, 31),
+                    firstDay: DateTime.now().subtract(Duration(days: 365)),
+                    lastDay: DateTime.now().add(Duration(days: 365)),
+                    focusedDay: _selectedDay,
                     calendarFormat: CalendarFormat.week,
                     availableCalendarFormats: const {
                       CalendarFormat.week: 'أسبوع',
                     },
                     calendarStyle: CalendarStyle(
-                      outsideTextStyle: TextStyle(color: gray_color),
+                      outsideTextStyle: TextStyle(color: text_gray_color),
                       selectedDecoration: BoxDecoration(
+                        shape: BoxShape.circle, // Change the shape to rectangle
                         color: blue_color,
-                        shape: BoxShape.circle,
                       ),
                       todayDecoration: BoxDecoration(
                         color: purple_color,
-                        borderRadius: BorderRadius.circular(10),
+                        shape: BoxShape.circle,
                       ),
                     ),
                     headerStyle: HeaderStyle(
                       formatButtonTextStyle: TextStyle().copyWith(
                         color: white_color,
-                        fontSize: 14.0,
+                        fontSize: 13.0,
                       ),
                       formatButtonDecoration: BoxDecoration(
                         color: gray_color,
-                        borderRadius: BorderRadius.circular(16.0),
+                        shape: BoxShape.circle,
                       ),
                       leftChevronIcon: Icon(Icons.chevron_left_outlined,
                           color: purple_color),
@@ -170,6 +251,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                       setState(() {
                         _selectedDay = selectedDay;
                       });
+
                     },
                   ),
                 ),
@@ -187,13 +269,13 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                         ],
                       )
                     : ListView.builder(
-                        itemCount: _requestList.length,
-                        itemBuilder: (context, index) {
-                          return RequestListItem(
-                            requestItem: _requestList[index],
-                          );
-                        },
-                      ),
+                    itemCount: _requestList.length,
+                    itemBuilder: (context, index) {
+                      return RequestListItem(
+                        requestItem: _requestList[index],
+                      );
+                    },
+                  ),
               ),
               SizedBox(height: 10), //Bottom screen
             ],
@@ -205,16 +287,6 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
             currentPageIndex: 0, parentContext: context),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Check if there's an accepted request passed from RequestsPage
-    if (widget.acceptedRequest != null) {
-      _addAcceptedRequest(widget.acceptedRequest!);
-    }
   }
 
   void _addAcceptedRequest(Request acceptedRequest) {

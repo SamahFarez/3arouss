@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           // Your content goes here
           Positioned(
-            top: 190,
+            top: 250,
             right: 20,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          'zineb.asmaa@gmail.com',
+                          'kiki@gmail.com',
                           style: TextStyle(
                             color: dark_color,
                             fontSize: 16,
@@ -47,7 +47,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: 20),
                     CircleAvatar(
                       radius: 30,
                       backgroundImage: AssetImage(business_image),
@@ -55,57 +55,16 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 30),
-                Container(
-                  width: 400,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        textAlign: TextAlign.right,
-                        '... نص لوريم ipum الملء من قبل مصممي', // Add the description text here
-                        style: TextStyle(
-                          color: dark_color,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        textAlign: TextAlign.right,
-                        '  : الوصف',
-                        style: TextStyle(
-                          color: dark_color,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),
           // Circular buttons at the top
           Positioned(
-            top: 550,
+            top: 600,
             right: 10,
             left: 10,
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle settings button press
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: dark_color,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    child: Text('الإعدادات'),
-                  ),
-                ),
                 SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
