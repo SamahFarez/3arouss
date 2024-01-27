@@ -3,6 +3,215 @@ import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_business.dart';
 import '../../widgets/three_buttons.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
+
+final Dio dio = Dio();
+
+Future<List<Map<String, dynamic>>> getRequestsData() async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_requests.get';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print("Requests data: ${dataList}");
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> getPublicationData(
+    int publication_id) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_publication_using_id/${publication_id.toString()}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print("Publication data: ${dataList}");
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> getBrideData(int bride_id) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_bride_using_id/${bride_id}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Response data: ${response.data}");
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print(dataList);
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<List<Map<String, dynamic>>> getAddressData(int address_id) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_address_using_id/${address_id}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Response data: ${response.data}");
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print(dataList);
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+Future<String> getRequestStateName(int requestId) async {
+  print("getting request state name....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/retrieve_request_state_using_id/$requestId';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Response data: ${response.data}");
+      Map<String, dynamic> responseData =
+          Map<String, dynamic>.from(jsonDecode(response.data));
+
+      if (responseData.isNotEmpty) {
+        // Use the first entry in the list
+        Map<String, dynamic> firstEntry = responseData;
+        String stateName = firstEntry['state_name'];
+        return stateName;
+      } else {
+        print("Error: Empty response data");
+      }
+    } else {
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    print("Error: $error");
+  }
+
+  return ""; // or throw an exception indicating an error
+}
 
 enum RequestStatus {
   newRequest,
@@ -11,6 +220,7 @@ enum RequestStatus {
 }
 
 class Request {
+  final int requestId;
   final String customerName;
   final String customerWilaya;
   final String customerPhone;
@@ -19,11 +229,12 @@ class Request {
   final String productColor;
   final String productSize;
   final bool isBuying;
-  RequestStatus _requestStatus;
+  final RequestStatus requestStatus; // Updated type
   final DateTime dueDate;
-  final String businessRequestDetails; // Additional field for business details
+  final String businessRequestDetails;
 
   Request({
+    required this.requestId,
     required this.customerName,
     required this.customerWilaya,
     required this.customerPhone,
@@ -32,16 +243,10 @@ class Request {
     required this.productColor,
     required this.productSize,
     required this.isBuying,
-    required RequestStatus requestStatus,
+    required this.requestStatus, // Updated parameter
     required this.dueDate,
     required this.businessRequestDetails,
-  }) : _requestStatus = requestStatus;
-
-  set requestStatus(RequestStatus newStatus) {
-    _requestStatus = newStatus;
-  }
-
-  RequestStatus get requestStatus => _requestStatus;
+  });
 }
 
 class RequestsPage extends StatefulWidget {
@@ -58,62 +263,61 @@ class _RequestsPageState extends State<RequestsPage> {
     return '${date.day}/${date.month}/${date.year}';
   }
 
+  Future<void> populateRequests() async {
+    List<Map<String, dynamic>>? requestData = await getRequestsData();
+
+    if (requestData != null && requestData.isNotEmpty) {
+      List<Map<String, dynamic>> dataList = requestData;
+      for (var data in dataList) {
+        List<Map<String, dynamic>> publicationData =
+            await getPublicationData(data['publication_id']);
+        List<Map<String, dynamic>> brideData =
+            await getBrideData(data["bride_id"]);
+
+        _requestList.add(
+          Request(
+            requestId: data['request_id'] ?? 'N/A',
+            customerName: brideData[0]['fullname_bride'] ?? 'N/A',
+            customerWilaya: data['request_address'] ?? 'N/A',
+            customerPhone: brideData[0]['phonenumber_bride'] ?? 'N/A',
+            customerEmail: brideData[0]['email_bride'] ?? 'N/A',
+            productName: publicationData.isNotEmpty
+                ? publicationData[0]['publication_name'] ?? 'N/A'
+                : 'N/A',
+            productColor: data['productColor'] ?? 'N/A',
+            productSize: data['productSize'] ?? 'N/A',
+            isBuying: data['isBuying'] ?? false,
+            requestStatus: _getRequestStatus(data['request_state']), // Updated
+            dueDate: DateTime.parse(
+                data['request_due_date'] ?? DateTime.now().toString()),
+            businessRequestDetails: data['businessRequestDetails'] ?? '',
+          ),
+        );
+      }
+    } else {
+      print('Error: Request data is null or empty');
+    }
+
+    _displayedRequestList = List.from(_requestList);
+  }
+
+  RequestStatus _getRequestStatus(int status) {
+    switch (status) {
+      case 0:
+        return RequestStatus.newRequest;
+      case 1:
+        return RequestStatus.accepted;
+      case 2:
+        return RequestStatus.refused;
+      default:
+        throw ArgumentError('Invalid status: $status');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
-    // Add three example new requests with Arabic names, Algerian phone numbers, and emails
-    _requestList.add(
-      Request(
-        customerName: 'عبد الرحمن بن زينب',
-        customerWilaya: 'الجزائر',
-        customerPhone: '0555123456',
-        customerEmail: 'abdelrahman@example.com',
-        productName: 'المنتج أ',
-        productColor: 'أحمر',
-        productSize: 'كبير',
-        isBuying: true,
-        requestStatus: RequestStatus.newRequest,
-        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
-        businessRequestDetails:
-            'تفاصيل طلب العميل هنا', // Example business details
-      ),
-    );
-
-    _requestList.add(
-      Request(
-        customerName: 'فاطمة بن محمد',
-        customerWilaya: 'وهران',
-        customerPhone: '0777123456',
-        customerEmail: 'fatima@example.com',
-        productName: 'المنتج ب',
-        productColor: 'أزرق',
-        productSize: 'متوسط',
-        isBuying: false,
-        requestStatus: RequestStatus.newRequest,
-        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
-        businessRequestDetails:
-            'تفاصيل طلب العميل هنا', // Example business details
-      ),
-    );
-
-    _requestList.add(
-      Request(
-        customerName: 'محمد بن عبد الله',
-        customerWilaya: 'البليدة',
-        customerPhone: '0567123456',
-        customerEmail: 'mohamed@example.com',
-        productName: 'المنتج ج',
-        productColor: 'أخضر',
-        productSize: 'صغير',
-        isBuying: true,
-        requestStatus: RequestStatus.newRequest,
-        dueDate: DateTime.now().add(Duration(days: 7)), // Example due date
-        businessRequestDetails:
-            'تفاصيل طلب العميل هنا', // Example business details
-      ),
-    );
-    _displayedRequestList = List.from(_requestList);
+    populateRequests();
   }
 
   @override
@@ -275,7 +479,7 @@ class _RequestsPageState extends State<RequestsPage> {
                   children: [
                     Text(
                       request.productName,
-                      style: TextStyle(color: dark_color),
+                      style: TextStyle(color: dark_purple_color),
                       textAlign: TextAlign.end,
                     ),
                   ],
@@ -326,12 +530,33 @@ class _RequestsPageState extends State<RequestsPage> {
     );
   }
 
-  void _changeStatus(Request request, RequestStatus newStatus) {
-    setState(() {
-      request.requestStatus = newStatus;
-      // Update displayed list based on the selected status
-      _displayedRequestList = _filterRequestsByStatus(_selectedStatus);
-    });
+  void _changeStatus(Request request, int newStatus) async {
+    // Prepare the request data
+    Map<String, dynamic> requestData = {
+      'request_id': request.requestId.toString(), // Convert requestId to String
+      'new_status': newStatus,
+    };
+
+    // Send the PUT request to update the status
+    try {
+      var response = await dio.put(
+        'https://3arouss-app-flask.vercel.app/update_request_status',
+        data: requestData,
+      );
+
+      if (response.statusCode == 200) {
+        // Update the status locally if the request was successful
+        setState(() {
+          // Update displayed list based on the selected status
+          _displayedRequestList = _filterRequestsByStatus(_selectedStatus);
+        });
+      } else {
+        print(
+            'Failed to update status. Server responded with status code ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error updating status: $error');
+    }
   }
 
   void _showChangeStatusDialog(BuildContext context, Request request) {
@@ -424,7 +649,7 @@ class _RequestsPageState extends State<RequestsPage> {
                         blue_color,
                         RequestStatus.accepted,
                         onPressed: () {
-                          _changeStatus(request, RequestStatus.accepted);
+                          _changeStatus(request, 1);
                           Navigator.of(context).pop();
                         },
                       ),
@@ -433,7 +658,7 @@ class _RequestsPageState extends State<RequestsPage> {
                         purple_color,
                         RequestStatus.refused,
                         onPressed: () {
-                          _changeStatus(request, RequestStatus.refused);
+                          _changeStatus(request, 2);
                           Navigator.of(context).pop();
                         },
                       ),

@@ -108,6 +108,7 @@ class _AddProductPageState extends State<AddProductPage> {
                               .rtl, // Set text direction to right-to-left
                           style: TextStyle(
                               // Add your text style here
+
                               ),
                         ),
                       );
@@ -604,7 +605,8 @@ class _AddProductPageState extends State<AddProductPage> {
       'publication_price': _priceController.text,
       'business_id': 'YOUR_BUSINESS_ID', // Replace with your business ID
       'publication_content': _descriptionController.text,
-      'publication_image_url': 'URL_TO_YOUR_IMAGE', // Replace with image URL or path
+      'publication_image_url':
+          'URL_TO_YOUR_IMAGE', // Replace with image URL or path
       'publication_date': DateTime.now().toString(),
       // Add other fields as needed
     };
