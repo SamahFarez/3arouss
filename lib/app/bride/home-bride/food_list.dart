@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../databases/db_food.dart';
-import '../../../databases/dbhelper.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
-import 'home_bride.dart';
 
 enum FoodCategory {
   mainDish,
@@ -431,7 +429,7 @@ class _FoodListPageState extends State<FoodListPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.all(5.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100.0),
                     color: blue_color,

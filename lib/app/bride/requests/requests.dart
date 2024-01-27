@@ -133,7 +133,7 @@ class _RequestsPageState extends State<RequestsScreen> {
           ),
           Column(
             children: [
-              SizedBox(height: 180),
+              SizedBox(height: 220),
               Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Row(
@@ -242,7 +242,7 @@ class _RequestsPageState extends State<RequestsScreen> {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(white_color),
           fixedSize: MaterialStateProperty.all(
-            Size(double.infinity, 100),
+            Size(double.infinity, 50),
           ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
