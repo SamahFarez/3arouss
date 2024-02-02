@@ -71,6 +71,10 @@ flutter:
     - assets/business_icon.png
     - assets/Splash.png
     - assets/logo.png
+    - assets/dress2.jpg
+    - assets/caftan.jpg
+    - assets/Sign_up_bride.png
+    
     
 
   fonts:

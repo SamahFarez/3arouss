@@ -1,21 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../home-bride/home_bride.dart';
+import 'dart:convert';
 
 class MarriageDateScreen extends StatefulWidget {
+  final String emailBride;
+
+  MarriageDateScreen(this.emailBride);
+
   @override
   _MarriageDateScreenState createState() => _MarriageDateScreenState();
 }
 
 class _MarriageDateScreenState extends State<MarriageDateScreen> {
-  late PageController _pageController;
+  late TextEditingController dateController;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 0);
+    dateController = TextEditingController();
   }
+
+Future<void> _submitForm() async {
+  try {
+    // Validate that the dateController is not empty
+    if (dateController.text.isEmpty) {
+      print('Please enter a valid date.');
+      return;
+    }
+
+    String apiUrl =
+        'https://3arouss-app-flask.vercel.app/bride_marriagedate.get/${widget.emailBride}';
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'date': dateController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Data sent successfully');
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BrideHomePage()),
+        );
+      // Handle success
+    } else {
+      print('Failed to send data. Status code: ${response.statusCode}');
+      // Handle failure
+    }
+  } catch (e) {
+    print('Error sending data: $e');
+    // Handle error
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +133,8 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                     SizedBox(height: 16.0),
                     Center(
                       child: Image.asset(
-                        married_image, // Adjust the path accordingly
-                        height: 180.0, // Adjust the height as needed
+                        married_image,
+                        height: 180.0,
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -97,101 +142,57 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
                     Text(
                       'أدخلي تاريخ حفل زفافك',
                       style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: dark_color),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: dark_color,
+                      ),
                     ),
                     SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          width: 80.0,
-                          child: TextFormField(
-                            style: TextStyle(fontSize: 16.0, color: dark_color),
-                            decoration: InputDecoration(
-                              labelText: 'السنة',
-                              labelStyle:
-                                  TextStyle(fontSize: 12.0, color: dark_color),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: purple_color, width: 2.0),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFFE5EEF2), width: 1.0),
-                                borderRadius: BorderRadius.circular(16.0),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 15.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xFFE5EEF2),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              'تاريخ الزفاف:',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: dark_color,
                               ),
                             ),
-                            keyboardType: TextInputType.number,
-                            textDirection: TextDirection.rtl,
-                            textAlign: TextAlign.right,
                           ),
-                        ),
-                        Container(
-                          width: 80.0,
-                          child: TextFormField(
-                            textDirection: TextDirection.rtl,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(fontSize: 16.0, color: dark_color),
-                            decoration: InputDecoration(
-                              labelText: 'الشهر',
-                              labelStyle:
-                                  TextStyle(fontSize: 12.0, color: dark_color),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: purple_color, width: 2.0),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFFE5EEF2), width: 1.0),
-                                borderRadius: BorderRadius.circular(16.0),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: SizedBox(
+                              width: 120.0,
+                              child: TextField(
+                                controller: dateController,
+                                decoration: InputDecoration(
+                                  hintText: 'YYYY-MM-DD',
+                                ),
+                                keyboardType: TextInputType.datetime,
+                                onChanged: (value) {
+                                  // You can add validation or additional logic here
+                                },
                               ),
                             ),
-                            keyboardType: TextInputType.number,
                           ),
-                        ),
-                        Container(
-                          width: 80.0,
-                          child: TextFormField(
-                            textDirection: TextDirection.rtl,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(fontSize: 16.0, color: dark_color),
-                            decoration: InputDecoration(
-                              labelText: 'اليوم',
-                              labelStyle:
-                                  TextStyle(fontSize: 12.0, color: dark_color),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: purple_color, width: 2.0),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Color(0xFFE5EEF2), width: 1.0),
-                                borderRadius: BorderRadius.circular(16.0),
-                              ),
-                            ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
-                      onPressed: () {
-                        // Handle button press
-                        // You can add the logic here
-
-                        // Navigate to BrideHmePage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BrideHomePage()),
-                        );
-                      },
+                      onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
                         shape: RoundedRectangleBorder(
@@ -224,7 +225,7 @@ class _MarriageDateScreenState extends State<MarriageDateScreen> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    dateController.dispose();
     super.dispose();
   }
 }
