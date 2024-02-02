@@ -5,8 +5,21 @@ import '../../widgets/bottom_navigation_bar_bride.dart';
 
 class PublicationPage extends StatefulWidget {
   final String imagePath;
+  final String publicationName;
+  final int publicationPrice;
+  final int publicationId;
+  final int publicationtype;
+  final String publicationcontent;
 
-  PublicationPage({required this.imagePath});
+
+  PublicationPage({
+    required this.imagePath,
+    required this.publicationName,
+    required this.publicationPrice,
+    required this.publicationId,
+    required this.publicationtype,
+     required this.publicationcontent,
+  });
 
   @override
   _PublicationPageState createState() => _PublicationPageState();
@@ -124,9 +137,9 @@ class _PublicationPageState extends State<PublicationPage> {
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: Text(
-                            'كراء',
-                            style: TextStyle(color: dark_color),
+                           child: Text(
+                           widget.publicationtype == 1 ? 'كراء' : 'بيع', 
+                           style: TextStyle(color: dark_color),
                           ),
                         ),
                         // Right side with the profile picture and username
@@ -153,12 +166,12 @@ class _PublicationPageState extends State<PublicationPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '10.000 دج',
+                              '${widget.publicationPrice.toString()} دج',
                               style: TextStyle(
                                   fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'برنوس لالة',
+                              widget.publicationName,
                               style: TextStyle(
                                   fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
@@ -203,7 +216,7 @@ class _PublicationPageState extends State<PublicationPage> {
                         ),
                         SizedBox(height: 8.0),
                         Text(
-                          'يحتوي Lorem ipsum على المحارف الأكثر استخدامًا ،',
+                          widget.publicationcontent,
                           style: TextStyle(fontSize: 16.0),
                           textDirection: TextDirection.rtl,
                         ),

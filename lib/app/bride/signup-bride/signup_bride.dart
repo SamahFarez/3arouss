@@ -6,7 +6,13 @@ import 'marriage_date.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+class ApiEndpoints {
+  static const String baseUrl = 'https://3arouss-app-flask.vercel.app';
 
+  static String getSignupEndpoint() {
+    return '$baseUrl/bride.signup';
+  }
+}
 
 List<String> wilayasList = [
   'أدرار',
@@ -66,12 +72,12 @@ class BrideSignUpPage extends StatefulWidget {
 
 class _BrideSignUpPageState extends State<BrideSignUpPage> {
   late PageController _pageController;
-   String fullnameBride = '';
+  String fullnameBride = '';
   String emailBride = '';
-  String phoneNumberBride = '';
+  String phoneNumberBride = '023425876';
   String postalCode = '';
   String wilaya = '';
-  String password = '';
+  String password = 'coucou';
   String confirm_password = '';
 
   @override
@@ -79,222 +85,237 @@ class _BrideSignUpPageState extends State<BrideSignUpPage> {
     super.initState();
     _pageController = PageController(initialPage: 0);
   }
-  Future<void> _signup() async {
-
-     // Check if passwords match
+Future<void> _signup() async {
   if (password != confirm_password) {
     print('Passwords do not match');
-   
     return;
   }
-    final String apiUrl = 'http://10.0.2.2:5000/bride.signup';
 
-try {
-  final response = await http.post(
-    Uri.parse(apiUrl),
-    headers: <String, String>{
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode({
-      'fullname_bride': fullnameBride,
-      'email_bride': emailBride,
-      'phoneNumber_bride': phoneNumberBride,
-      'password': password,
-      'wilaya': wilaya,
-      'postal_code': postalCode,
-    }),
-  );
+  final String apiUrl = 'https://3arouss-app-flask.vercel.app/bride.signup';
 
-  // Handle the response based on the status code
-  if (response.statusCode == 200) {
-    // Signup successful
-    print('Signup successful');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MarriageDateScreen()),
+  try {
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+       
+        'wilaya': wilaya,
+        'postal_code': postalCode,
+        'fullname_bride': fullnameBride,
+        'email_bride': emailBride,
+        'phoneNumber_bride': phoneNumberBride,
+        'password': password,
+      }),
     );
-  } else {
-    // Handle errors
-    print('Signup failed: ${response.statusCode}');
-    // You can show an error message to the user
+
+    if (response.statusCode == 200) {
+      print('Signup successful');
+      print('Response data: ${response.body}');
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MarriageDateScreen(emailBride)),
+        );
+      // Handle success
+    } else {
+      print('Signup failed: ${response.statusCode}');
+      // Handle failure
+    }
+  } catch (error) {
+    print('Error during signup: $error');
+    // Handle error
   }
-} catch (error) {
-  // Handle exceptions
-  print('Error during signup: $error');
-  // You can show an error message to the user
 }
 
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: purple_color,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              color: Colors.transparent,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.arrow_back, color: dark_color),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BrideSignInPage()),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                        )
-                      ],
-                    ),
-                    Text(
-                      'أنشئي حسابك وكوني عروسًا',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Changa', color: Colors.black),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 8.0),
-                    Padding(
-                      padding: EdgeInsets.only(right: 129),
-                      child: Text(
-                        'سجلي دخولك لتستمتعي بأفضل تجربة',
-                        style: TextStyle(fontSize: 12, color: Colors.black),
-                        textAlign: TextAlign.right,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-                height: MediaQuery.of(context).size.height * 0.7,
-
-
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                        RoundedInputWithIcon(
-      icon: Icons.person,
-      labelText: 'الإسم الكامل',
-      obscureText: false,
-      fontSize: 14.0,
-      onChanged: (value) {
-        fullnameBride = value;
-      },
-    ),
-    RoundedInputWithIcon(
-      labelText: 'الإيمايل',
-      icon: Icons.email,
-      obscureText: false,
-      fontSize: 14.0,
-      onChanged: (value) {
-        emailBride = value;
-      },
-    ),
-    RoundedInputWithIcon(
-      labelText: 'رقم الهاتف',
-      icon: Icons.phone,
-      obscureText: false,
-      fontSize: 14.0,
-      onChanged: (value) {
-        phoneNumberBride = value;
-      },
-    ),
-    Row(
-      children: [
-        Container(
-          width: 150, // Set the desired width
-          child: Expanded(
-            child: RoundedTextFieldWithIcon(
-                  labelText: 'الرمز البريدي',
-                  icon: Icons.markunread_mailbox,
-                  hintText: 'أدخل الرمز البريدي',
-                  keyboardType: TextInputType.number,
-                  fontSize: 14.0,
-                  onChanged: (value) {
-                  postalCode = value;
-                  },
-             ),
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Image.asset(
+            signup_img,
+            fit: BoxFit.cover,
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
           ),
-        ),
-        SizedBox(width: 5.0),
-        Expanded(
-          child: RoundedDropdownWithIcon(
-          labelText: 'الولاية',
-          icon: Icons.location_city,
-          wilayas: wilayasList,
-          fontSize: 14.0,
-          onChanged: (value) {
-          wilaya = value ?? ''; // Ensure that wilaya is not null
-          },
-          ),
-
-        ),
-      ],
-    ),
-    RoundedInputWithIcon(
-      labelText: 'كلمة السر',
-      icon: Icons.lock,
-      obscureText: true,
-      fontSize: 14.0,
-      onChanged: (value) {
-        password = value;
-      },
-    ),
-                    RoundedInputWithIcon(
-                      labelText: 'تأكيد كلمة السر',
-                      icon: Icons.lock,
-                      obscureText: true,
-                      fontSize: 14.0,
-                       onChanged: (value) {
-                      confirm_password = value;
-                      },
-                    ),
-                    SizedBox(height: 16.0),
-                    ElevatedButton(
-                      onPressed:  _signup,
-                     
-                      style: ElevatedButton.styleFrom(
-                        primary: purple_color,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        child: Center(
-                          child: Text(
-                            'التالي',
-                            style: TextStyle(fontSize: 14.0, fontFamily: 'Changa', color: Colors.black),
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.arrow_back, color: dark_color),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BrideSignInPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                              )
+                            ],
                           ),
-                        ),
+                          Text(
+                            'أنشئي حسابك وكوني عروسًا',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Changa',
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 8.0),
+                          Padding(
+                            padding: EdgeInsets.only(right: 129),
+                            child: Text(
+                              'سجلي دخولك لتستمتعي بأفضل تجربة',
+                              style: TextStyle(fontSize: 12, color: Colors.black),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RoundedInputWithIcon(
+                            icon: Icons.person,
+                            labelText: 'الإسم الكامل',
+                            obscureText: false,
+                            fontSize: 14.0,
+                            onChanged: (value) {
+                              fullnameBride = value;
+                            },
+                          ),
+                          RoundedInputWithIcon(
+                            labelText: 'الإيمايل',
+                            icon: Icons.email,
+                            obscureText: false,
+                            fontSize: 14.0,
+                            onChanged: (value) {
+                              emailBride = value;
+                            },
+                          ),
+                          RoundedInputWithIcon(
+                            labelText: 'رقم الهاتف',
+                            icon: Icons.phone,
+                            obscureText: false,
+                            fontSize: 14.0,
+                                    onChanged: (value) {
+                                    setState(() {
+                                      phoneNumberBride = value;
+                                    });
+                                  },
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                width: 150,
+                                child: Expanded(
+                                  child: RoundedTextFieldWithIcon(
+                                    labelText: 'الرمز البريدي',
+                                    icon: Icons.markunread_mailbox,
+                                    hintText: 'أدخل الرمز البريدي',
+                                    keyboardType: TextInputType.number,
+                                    fontSize: 14.0,
+                                    onChanged: (value) {
+                                      postalCode = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5.0),
+                              Expanded(
+                                child: RoundedDropdownWithIcon(
+                                  labelText: 'الولاية',
+                                  icon: Icons.location_city,
+                                  wilayas: wilayasList,
+                                  fontSize: 14.0,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      wilaya = value ?? '';
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          RoundedInputWithIcon(
+                            labelText: 'كلمة السر',
+                            icon: Icons.lock,
+                            obscureText: true,
+                            fontSize: 14.0,
+                            onChanged: (value) {
+                              password = value;
+                            },
+                          ),
+                          RoundedInputWithIcon(
+                            labelText: 'تأكيد كلمة السر',
+                            icon: Icons.lock,
+                            obscureText: true,
+                            fontSize: 14.0,
+                            onChanged: (value) {
+                              confirm_password = value;
+                            },
+                          ),
+                          SizedBox(height: 16.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              _signup();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: purple_color,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              child: Center(
+                                child: Text(
+                                  'التالي',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontFamily: 'Changa',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -324,7 +345,7 @@ class RoundedInputWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: EdgeInsets.symmetric(vertical: 6.0),
       child: TextField(
         textDirection: TextDirection.rtl,
         textAlign: TextAlign.right,
@@ -332,11 +353,11 @@ class RoundedInputWithIcon extends StatelessWidget {
           suffixIcon: Icon(icon, color: blue_color),
           labelText: labelText,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(14.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: BorderRadius.circular(14.0),
             borderSide: BorderSide(color: Color(0xFFE5EEF2)),
           ),
           labelStyle: TextStyle(color: Colors.black),
@@ -348,7 +369,6 @@ class RoundedInputWithIcon extends StatelessWidget {
     );
   }
 }
-
 
 class RoundedTextFieldWithIcon extends StatelessWidget {
   final String labelText;
@@ -394,6 +414,7 @@ class RoundedTextFieldWithIcon extends StatelessWidget {
     );
   }
 }
+
 class RoundedDropdownWithIcon extends StatelessWidget {
   final String labelText;
   final IconData icon;
@@ -414,6 +435,7 @@ class RoundedDropdownWithIcon extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: DropdownButtonFormField<String>(
+        value: null, // Set an initial value, it can be null or an empty string
         decoration: InputDecoration(
           labelText: labelText,
           suffixIcon: Icon(icon, color: blue_color),

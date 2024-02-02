@@ -7,18 +7,156 @@ import 'publication.dart';
 import '../favorites/favorite_publication.dart';
 import '../requests/requests.dart';
 import '../profile/profile_bride.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
-class CategoryResult extends StatelessWidget {
+final Dio dio = Dio();
+
+Future<List<Map<String, dynamic>>> getSubcategory(categoryId) async {
+  print("getting data....");
+
+  String endpoint =
+      'https://3arouss-app-flask.vercel.app/bride_subcategories.get/${categoryId}';
+
+  print("Endpoint: $endpoint");
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Response data: ${response.data}");
+      List<Map<String, dynamic>> dataList = [];
+
+      // Check if the response is a Map
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        // Check if the 'data' key exists and is a list
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          dataList = List<Map<String, dynamic>>.from(jsonData['data']);
+          print(dataList);
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Response is not a Map");
+      }
+
+      return dataList;
+    } else {
+      // Handle HTTP error
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    // Handle other errors
+    print("Error: $error");
+  }
+
+  return [];
+}
+
+class CategoryResult extends StatefulWidget {
   final String categoryName;
-  final List<String> buttonTexts = [
-    'برنوس',
-    'كاراكو',
-    'قفطان',
-    'قبايلي',
-    'قسنطينية'
-  ];
+  final int categoryId;
 
-  CategoryResult({required this.categoryName});
+  CategoryResult({
+    required this.categoryName,
+    required this.categoryId,
+  });
+
+  @override
+  _CategoryResultState createState() => _CategoryResultState();
+}
+
+class _CategoryResultState extends State<CategoryResult> {
+  List<String> buttonTexts = [];
+  List<Map<String, dynamic>>? publicationsData;
+
+  @override
+  void initState() {
+    super.initState();
+    _populateCategory();
+    _fetchPublications();
+  }
+
+  Future<void> _populateCategory() async {
+    List<Map<String, dynamic>>? requestData =
+        await getSubcategory(widget.categoryId);
+    buttonTexts = [];
+
+    if (requestData != null && requestData.isNotEmpty) {
+      for (var data in requestData) {
+        buttonTexts.add(data['subcategory_name'] ?? 'N/A');
+      }
+    } else {
+      print('Error: Request data is null or empty');
+    }
+
+    setState(() {}); // Trigger a rebuild after updating buttonTexts
+  }
+
+  Future<void> _fetchPublications() async {
+    String endpoint =
+        'https://3arouss-app-flask.vercel.app/retrieve_publications.get';
+
+    try {
+      var response = await dio.get(endpoint);
+
+      if (response.statusCode == 200) {
+        print("Publications Response data: ${response.data}");
+        if (response.data is Map<String, dynamic>) {
+          Map<String, dynamic> jsonData = response.data;
+
+          if (jsonData.containsKey('data') && jsonData['data'] is List) {
+            publicationsData =
+                List<Map<String, dynamic>>.from(jsonData['data']);
+            print(publicationsData);
+          } else {
+            print("Error: 'data' key not found or not a list");
+          }
+        } else {
+          print("Error: Publications Response is not a Map");
+        }
+      } else {
+        print("Error: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error fetching publications: $error");
+    }
+  }
+
+Future<List<Map<String, dynamic>>> _filterPublicationsBySubcategory(String subcategoryName) async {
+  String endpoint =
+'https://3arouss-app-flask.vercel.app/get_publications_by_subcategory.get/$subcategoryName';
+
+
+
+  try {
+    var response = await dio.get(endpoint);
+
+    if (response.statusCode == 200) {
+      print("Filtered Publications Response data: ${response.data}");
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> jsonData = response.data;
+
+        if (jsonData.containsKey('data') && jsonData['data'] is List) {
+          return List<Map<String, dynamic>>.from(jsonData['data']);
+        } else {
+          print("Error: 'data' key not found or not a list");
+        }
+      } else {
+        print("Error: Filtered Publications Response is not a Map");
+      }
+    } else {
+      print("Error: ${response.statusCode}");
+    }
+  } catch (error) {
+    print("Error fetching filtered publications: $error");
+  }
+
+  return [];
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,30 +184,37 @@ class CategoryResult extends StatelessWidget {
                 ),
                 SizedBox(width: 140),
                 Text(
-                  categoryName,
+                  widget.categoryName,
                   style: TextStyle(fontSize: 24.0, color: dark_color),
                 ),
               ],
             ),
             SizedBox(height: 20.0),
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: buttonTexts.map((text) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        primary: white_color,
-                      ),
-                      child: Text(
-                        text,
-                        style: TextStyle(fontSize: 16.0, color: dark_color),
-                      ),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: buttonTexts.map((text) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      _filterPublicationsBySubcategory(text).then((filteredPublications) {
+                        setState(() {
+                          publicationsData = filteredPublications;
+                        });
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: white_color,
                     ),
-                  );
+                    child: Text(
+                      text,
+                      style: TextStyle(fontSize: 16.0, color: dark_color),
+                    ),
+                  )
+
+              );
                 }).toList(),
               ),
             ),
@@ -126,7 +271,7 @@ class CategoryResult extends StatelessWidget {
                       ),
                       value: null,
                       onChanged: (String? newValue) {},
-                      items: <String>['معالمة', 'خيار2', 'خير3']
+                      items: <String>['معالمة', 'زرالدة', 'دويرة']
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -148,19 +293,29 @@ class CategoryResult extends StatelessWidget {
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
                   ),
-                  itemCount: 10,
+                  itemCount: publicationsData?.length ?? 0,
                   itemBuilder: (context, index) {
+                    var publication = publicationsData![index];
+                    var img = publication['publication_image_url'];
+
                     return GestureDetector(
                       onTap: () {
-                        // Navigate to the PublicationPage with the selected card's image
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                PublicationPage(imagePath: dress_image),
+                            builder: (context) => PublicationPage(
+                              imagePath: "assets/${publication['publication_image_url']}.jpg" ?? '',
+                              publicationName: publication['publication_name'] ?? '',
+                              publicationPrice: publication['publication_price'] ?? '',
+                              publicationId: publication['publication_id'] ?? '',
+                              publicationtype: publication['transaction_type_id'] ?? '',
+                              publicationcontent: publication['publication_content'] ?? '',
+
+                            ),
                           ),
                         );
                       },
+              
                       child: Card(
                         elevation: 8.0,
                         shape: RoundedRectangleBorder(
@@ -170,9 +325,9 @@ class CategoryResult extends StatelessWidget {
                           fit: StackFit.expand,
                           children: [
                             Image.asset(
-                              dress_image,
-                              fit: BoxFit.cover,
-                            ),
+                            "assets/${publication['publication_image_url']}.jpg" ?? '',
+                            fit: BoxFit.cover,
+                          ),
                             Positioned.fill(
                               child: Transform.scale(
                                 scale: 1.1, // Adjust the scale factor as needed
@@ -189,19 +344,21 @@ class CategoryResult extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'برنوس ',
+                                    publication['publication_name'] ?? '',
                                     style: TextStyle(
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: dark_color),
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: dark_color,
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
-                                    '25000 دج',
+                                    '${publication['publication_price'] ?? ''} دج',
                                     style: TextStyle(
-                                        fontSize: 9.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: dark_blue_color),
+                                      fontSize: 9.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: dark_blue_color,
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],

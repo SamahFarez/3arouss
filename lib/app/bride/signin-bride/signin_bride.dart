@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import '../signup-bride/signup_bride.dart'; // Make sure to import the correct file
+import '../signup-bride/signup_bride.dart';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../shared/welcome.dart';
 import '../home-bride/home_bride.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class BrideSignInPage extends StatefulWidget {
   @override
@@ -12,12 +14,51 @@ class BrideSignInPage extends StatefulWidget {
 
 class _BrideSignInPageState extends State<BrideSignInPage> {
   late PageController _pageController;
+  late TextEditingController emailController ;
+  late TextEditingController passwordController;
 
-  @override
+ @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: 0);
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
   }
+Future<void> _signIn() async {
+  try {
+    String apiUrl = 'https://3arouss-app-flask.vercel.app/bride_signin';
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'email': emailController.text,
+        'password': passwordController.text,
+      }),
+    );
+
+     final responseData = jsonDecode(response.body);
+    if (responseData['message'] == 'Sign-in successful') {
+     
+      print('Sign-in successful: ${responseData['message']}');
+      // Handle success, you may navigate to the home page or perform other actions
+       Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => BrideHomePage()),
+        );
+    } else {
+      
+      print('Failed to sign in. Status code: ${response.statusCode}, Message: ${responseData['message']}');
+      // Handle failure, show an error message to the user, etc.
+    }
+  } catch (e) {
+    print('Error signing in: $e');
+    // Handle error
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +84,8 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AccountType()),
+                                builder: (context) => AccountType(),
+                              ),
                             );
                           },
                         ),
@@ -55,10 +97,11 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                     Text(
                       'مرحبا بعودتك',
                       style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Changa',
-                          color: Colors.black),
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Changa',
+                        color: Colors.black,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 8.0),
@@ -89,12 +132,14 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RoundedInputWithIcon(
+                      controller: emailController,
                       labelText: 'الإيمايل',
                       icon: Icons.email,
                       obscureText: false,
                       fontSize: 14.0,
                     ),
                     RoundedInputWithIcon(
+                      controller: passwordController,
                       labelText: 'كلمة السر',
                       icon: Icons.lock,
                       obscureText: true,
@@ -127,15 +172,7 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                     ),
                     SizedBox(height: 16.0),
                     ElevatedButton(
-                      onPressed: () {
-                        // Navigate to BrideHomePage when the button is pressed
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BrideHomePage()), // Replace with your actual navigation logic
-                        );
-                      },
+                      onPressed: _signIn,
                       style: ElevatedButton.styleFrom(
                         primary: purple_color,
                         shape: RoundedRectangleBorder(
@@ -156,7 +193,6 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 8.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +202,8 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BrideSignUpPage()),
+                                builder: (context) => BrideSignUpPage(),
+                              ),
                             );
                           },
                           child: Text('سجلي الآن',
@@ -215,17 +252,21 @@ class _BrideSignInPageState extends State<BrideSignInPage> {
   @override
   void dispose() {
     _pageController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 }
 
 class RoundedInputWithIcon extends StatelessWidget {
+  final TextEditingController controller;
   final String labelText;
   final IconData icon;
   final bool obscureText;
   final double fontSize;
 
   RoundedInputWithIcon({
+    required this.controller,
     required this.labelText,
     required this.icon,
     this.obscureText = false,
@@ -237,6 +278,7 @@ class RoundedInputWithIcon extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
+        controller: controller,
         decoration: InputDecoration(
           labelText: labelText,
           suffixIcon: Icon(icon, color: purple_color),

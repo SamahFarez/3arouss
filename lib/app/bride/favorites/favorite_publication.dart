@@ -60,13 +60,13 @@ class FavoritePublicationScreen extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Navigate to the PublicationPage with the selected card's image
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PublicationPage(imagePath: dress_image),
-                            ),
-                          );
+                        //  Navigator.push(
+                            //context,
+                            //MaterialPageRoute(
+                             // builder: (context) =>
+                                // PublicationPage(imagePath: dress_image),
+                           // ),
+                         // );
                         },
                         child: Card(
                           elevation: 8.0,
@@ -77,7 +77,7 @@ class FavoritePublicationScreen extends StatelessWidget {
                             fit: StackFit.expand,
                             children: [
                               Image.asset(
-                                dress_image,
+                                dress,
                                 fit: BoxFit.cover,
                               ),
                               Positioned.fill(
