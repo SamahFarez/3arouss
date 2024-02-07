@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../../shared/images.dart';
 import '../../shared/colors.dart';
 import '../../widgets/bottom_navigation_bar_bride.dart';
@@ -11,14 +13,13 @@ class PublicationPage extends StatefulWidget {
   final int publicationtype;
   final String publicationcontent;
 
-
   PublicationPage({
     required this.imagePath,
     required this.publicationName,
     required this.publicationPrice,
     required this.publicationId,
     required this.publicationtype,
-     required this.publicationcontent,
+    required this.publicationcontent,
   });
 
   @override
@@ -32,6 +33,7 @@ class _PublicationPageState extends State<PublicationPage> {
   late String date;
   late String address;
   late String description;
+  late String commentContent;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,6 @@ class _PublicationPageState extends State<PublicationPage> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // White circle background for the arrow
                     Container(
                       width: 36.0,
                       height: 36.0,
@@ -61,11 +62,9 @@ class _PublicationPageState extends State<PublicationPage> {
                         color: Colors.white,
                       ),
                     ),
-                    // Arrow icon to go back
                     IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
-                        // Navigate back to CategoryResult screen
                         Navigator.pop(context);
                       },
                     ),
@@ -78,7 +77,6 @@ class _PublicationPageState extends State<PublicationPage> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // White circle background for the heart
                     Container(
                       width: 36.0,
                       height: 36.0,
@@ -87,24 +85,14 @@ class _PublicationPageState extends State<PublicationPage> {
                         color: Colors.white,
                       ),
                     ),
-                    // Heart icon
-                    IconButton(
-                      icon: isLiked
-                          ? Icon(Icons.favorite,
-                              color: Colors.red) // Filled heart icon
-                          : Icon(Icons.favorite_border),
-                      onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                          // Add logic to handle adding/removing from favorites here
-                          if (isLiked) {
-                          } else {
-                            // Remove from favorites logic
-                            // ...
-                          }
-                        });
-                      },
-                    ),
+                   IconButton(
+                        icon: isLiked
+                            ? Icon(Icons.favorite, color: Colors.red)
+                            : Icon(Icons.favorite_border),
+                        onPressed: () {
+                          _toggleLike();
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -113,36 +101,32 @@ class _PublicationPageState extends State<PublicationPage> {
           Expanded(
             child: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.fromLTRB(
-                    16.0, 8.0, 16.0, 16.0), // Adjust the top padding
+                padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0), // Adjust the top radius
-                    topRight: Radius.circular(10.0), // Adjust the top radius
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
                   ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 10.0),
-                    // Username and profile picture row
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Left side with the box and text
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                           child: Text(
-                           widget.publicationtype == 1 ? 'كراء' : 'بيع', 
-                           style: TextStyle(color: dark_color),
+                          child: Text(
+                            widget.publicationtype == 1 ? 'كراء' : 'بيع',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        // Right side with the profile picture and username
                         Row(
                           children: [
                             Text(
@@ -151,14 +135,13 @@ class _PublicationPageState extends State<PublicationPage> {
                             ),
                             SizedBox(width: 8.0),
                             CircleAvatar(
-                              backgroundImage: AssetImage(business_image),
+                              backgroundImage: AssetImage('assets/business_image.jpg'),
                             ),
                           ],
                         ),
                       ],
                     ),
                     SizedBox(height: 10.0),
-                    // Additional details or widgets
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -168,12 +151,16 @@ class _PublicationPageState extends State<PublicationPage> {
                             Text(
                               '${widget.publicationPrice.toString()} دج',
                               style: TextStyle(
-                                  fontSize: 24.0, fontWeight: FontWeight.bold),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             Text(
                               widget.publicationName,
                               style: TextStyle(
-                                  fontSize: 24.0, fontWeight: FontWeight.bold),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -183,8 +170,7 @@ class _PublicationPageState extends State<PublicationPage> {
                           children: [
                             Text(
                               '(15 تعليقات)',
-                              style:
-                                  TextStyle(fontSize: 16.0, color: Colors.blue),
+                              style: TextStyle(fontSize: 16.0, color: Colors.blue),
                             ),
                             Icon(
                               Icons.star,
@@ -193,8 +179,7 @@ class _PublicationPageState extends State<PublicationPage> {
                             ),
                             Text(
                               '4.5',
-                              style:
-                                  TextStyle(fontSize: 16.0, color: Colors.blue),
+                              style: TextStyle(fontSize: 16.0, color: Colors.blue),
                             ),
                           ],
                         ),
@@ -207,8 +192,9 @@ class _PublicationPageState extends State<PublicationPage> {
                                 Text(
                                   ': الوصف',
                                   style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
@@ -223,9 +209,7 @@ class _PublicationPageState extends State<PublicationPage> {
                         SizedBox(height: 16.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // Add more color circles as needed
-                          ],
+                          children: [],
                         ),
                         SizedBox(height: 16.0),
                         SizedBox(height: 40.0),
@@ -238,23 +222,16 @@ class _PublicationPageState extends State<PublicationPage> {
                               },
                               child: Text(
                                 'إرسال طلب',
-                                style: TextStyle(color: dark_color),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
-                            Container(
-                              width: 150,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(25),
-                                border:
-                                    Border.all(color: Colors.blue, width: 2),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'تعليق',
-                                  style: TextStyle(color: dark_color),
-                                ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _showCommentPopup(context);
+                              },
+                              child: Text(
+                                'تعليق',
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ],
@@ -262,7 +239,6 @@ class _PublicationPageState extends State<PublicationPage> {
                         SizedBox(height: 30),
                       ],
                     ),
-                    // Add more details or widgets as needed
                   ],
                 ),
               ),
@@ -270,14 +246,123 @@ class _PublicationPageState extends State<PublicationPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        child: CustomBottomNavigationBar(
-            currentPageIndex: 2, parentContext: context),
-      ),
     );
   }
 
-  // Function to show pop-up dialog
+void _toggleLike() async {
+  try {
+    int brideId = 7; // Replace with your logic to get the bride_id
+    int publicationId = widget.publicationId;
+
+    String endpoint;
+
+    if (isLiked) {
+      endpoint = 'https://3arouss-app-flask.vercel.app/api/add-like';
+    } else {
+      endpoint = 'https://3arouss-app-flask.vercel.app/api/delete-like';
+    }
+
+    final response = await http.post(
+      Uri.parse('$endpoint'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'bride_id': brideId,
+        'publication_id': publicationId,
+      }),
+    );
+
+    print('Server Response: ${response.body}');
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+
+      setState(() {
+        isLiked = !isLiked;
+      });
+
+      if (isLiked) {
+        print('Publication removed from favoritepub successfully');
+      } else {
+        print('Publication added to favoritepub successfully');
+      }
+
+      print('Like status toggled successfully');
+    } else {
+      print('Error toggling like: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error toggling like: $e');
+  }
+}
+
+  void _submitComment() async {
+    try {
+      int brideId = 7; // Replace with your logic to get the bride_id
+      int publicationId = widget.publicationId;
+      String content = commentContent ?? '';
+
+      String apiUrl = 'https://3arouss-app-flask.vercel.app/add-comment';
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'bride_id': brideId,
+          'publication_id': publicationId,
+          'comment_content': content,
+        }),
+      );
+       
+       final supabase_response = jsonDecode(response.body);
+       
+      if (supabase_response['message'] =='Comment added successfully') {
+        print('Comment added successfully');
+      } else {
+        print('Error adding comment: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error submitting comment: $e');
+    }
+  }
+
+  void _showCommentPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('إضافة تعليق'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Comment content input
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    commentContent = value;
+                  });
+                },
+                decoration: InputDecoration(labelText: 'التعليق'),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                _submitComment();
+                Navigator.of(context).pop();
+              },
+              child: Text('إرسال'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showRequestPopup(BuildContext context) {
     showDialog(
       context: context,
@@ -289,26 +374,36 @@ class _PublicationPageState extends State<PublicationPage> {
             children: [
               // Date input
               TextField(
-                onChanged: (value) => date = value,
+                onChanged: (value) {
+                  setState(() {
+                    date = value;
+                  });
+                },
                 decoration: InputDecoration(labelText: 'التاريخ'),
               ),
               // Address input
               TextField(
-                onChanged: (value) => address = value,
+                onChanged: (value) {
+                  setState(() {
+                    address = value;
+                  });
+                },
                 decoration: InputDecoration(labelText: 'العنوان'),
               ),
               // Description input
               TextField(
-                onChanged: (value) => description = value,
-                decoration: InputDecoration(labelText: 'الوصف'),
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+                decoration: InputDecoration(labelText: 'الكمية'),
               ),
             ],
           ),
           actions: [
-            // Button to send request
             ElevatedButton(
               onPressed: () {
-                // Handle sending request
                 _sendRequest();
                 Navigator.of(context).pop();
               },
@@ -320,11 +415,37 @@ class _PublicationPageState extends State<PublicationPage> {
     );
   }
 
-  // Function to handle sending request
-  void _sendRequest() {
-    // Implement logic to send request with input values
-    print('Date: $date');
-    print('Address: $address');
-    print('Description: $description');
+  void _sendRequest() async {
+    int brideId = 7; // Replace with your logic to get the bride_id
+    int publicationId = widget.publicationId;
+    String date = this.date ?? '';
+    String address = this.address ?? '';
+    String description = this.description ?? '';
+
+    try {
+      String apiUrl = 'https://3arouss-app-flask.vercel.app/bride.request';
+
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'request_due_date': date,
+          'request_address': address,
+          'bride_id': brideId,
+          'publication_id': publicationId,
+          'quantity': 1, // Assuming a default quantity
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Request submitted successfully');
+      } else {
+        print('Error submitting the request');
+      }
+    } catch (e) {
+      print('Error sending request: $e');
+    }
   }
 }
