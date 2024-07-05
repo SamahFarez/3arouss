@@ -15,10 +15,11 @@ Welcome to the Wedding Planner mobile application! This app is designed to help 
 
 ## Screenshots
 
-![Screenshot 1](screenshots/Screenshot1.jpg)
-![Screenshot 2](screenshots/Screenshot2.jpg)
-![Screenshot 3](screenshots/Screenshot3.jpg)
-
+<p align="center">
+  <img src="screenshots/Screenshot1.jpg" alt="Screenshot 1" width="200" />
+  <img src="screenshots/Screenshot2.jpg" alt="Screenshot 2" width="200" />
+  <img src="screenshots/Screenshot3.jpg" alt="Screenshot 3" width="200" />
+</p>
 ## Installation
 
 To run this project, ensure you have Flutter installed. Clone the repository and run the following commands:
