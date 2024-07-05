@@ -4,7 +4,7 @@ Welcome to the Wedding Planner mobile application! This app is designed to help 
 
 ## Features
 
-- **Task Management**: Create, assign, and track wedding planning tasks to ensure everything is on schedule.
+- **Task Management**: Create and track wedding planning tasks to ensure everything is on schedule.
 - **Guest List Management**: Manage your guest list, send invitations, and track RSVPs all in one place.
 - **Budget Tracker**: Keep track of your wedding expenses and manage your budget efficiently.
 - **Food List Management**: Manage your food list, and track the menu all in one place.
