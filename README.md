@@ -22,6 +22,7 @@ Welcome to the Wedding Planner mobile application! This app is designed to help 
   <img src="screenshots/Screenshot5.jpg" alt="Screenshot 5" width="180" />
   <img src="screenshots/Screenshot6.jpg" alt="Screenshot 6" width="180" />
 </p>
+
 ## Installation
 
 To run this project, ensure you have Flutter installed. Clone the repository and run the following commands:
