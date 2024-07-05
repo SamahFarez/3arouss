@@ -45,6 +45,16 @@ We welcome contributions to enhance the Wedding Planner app! If you have suggest
 
 Please ensure your code follows the project's coding standards and includes appropriate tests.
 
+
+## Contributors
+
+We would like to thank the following people who have contributed to this project:
+
+- **Farez Samah Ikram** - Project Leader, UI/UX Designer & Full Stack Developer
+- **Nihal Hocine** - Full Stack Developer, QA Tester & Content Writer
+  
+Your contributions are greatly appreciated! If you'd like to join us, feel free to reach out or make a pull request.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
