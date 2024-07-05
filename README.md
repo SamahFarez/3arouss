@@ -19,6 +19,9 @@ Welcome to the Wedding Planner mobile application! This app is designed to help 
   <img src="screenshots/Screenshot1.jpg" alt="Screenshot 1" width="200" />
   <img src="screenshots/Screenshot2.jpg" alt="Screenshot 2" width="200" />
   <img src="screenshots/Screenshot3.jpg" alt="Screenshot 3" width="200" />
+  <img src="screenshots/Screenshot4.jpg" alt="Screenshot 4" width="200" />
+  <img src="screenshots/Screenshot5.jpg" alt="Screenshot 5" width="200" />
+  <img src="screenshots/Screenshot6.jpg" alt="Screenshot 6" width="200" />
 </p>
 ## Installation
 
