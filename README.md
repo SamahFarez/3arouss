@@ -7,9 +7,9 @@ Welcome to the Wedding Planner mobile application! This app is designed to help 
 - **Task Management**: Create, assign, and track wedding planning tasks to ensure everything is on schedule.
 - **Guest List Management**: Manage your guest list, send invitations, and track RSVPs all in one place.
 - **Budget Tracker**: Keep track of your wedding expenses and manage your budget efficiently.
-- **Integrated Shop**: Browse and purchase wedding essentials directly from the app.
-- **Vendor Management**: Find and manage vendors for your wedding needs, from venues to florists.
-- **Customizable Checklists**: Use pre-made checklists or create your own to keep track of every detail.
+- **Food List Management**: Manage your food list, and track the menu all in one place.
+- **Integrated Shop**: Browse and purchase wedding essentials using the app.
+- **Vendor Management**: Find vendors for your wedding needs, from venues to florists.
 - **Reminders and Notifications**: Set reminders for important dates and receive notifications to stay on top of your planning.
 - **User-friendly Interface**: Enjoy a smooth and intuitive user experience with Flutter’s beautiful and responsive design.
 
