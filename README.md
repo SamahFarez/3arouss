@@ -13,6 +13,13 @@ Welcome to 3arouss mobile application! This app is designed to help couples plan
 - **Reminders and Notifications**: Set reminders for important dates and receive notifications to stay on top of your planning.
 - **User-friendly Interface**: Enjoy a smooth and intuitive user experience with Flutter’s beautiful and responsive design.
 
+## Mockups
+
+<p align="center">
+  <img src="screenshots/mockup1.jpg" alt="Screenshot 1" width="180" />
+  <img src="screenshots/mockup2.jpg" alt="Screenshot 2" width="180" />
+</p>
+
 ## Screenshots
 
 <p align="center">
