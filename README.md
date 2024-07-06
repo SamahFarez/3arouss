@@ -1,6 +1,9 @@
 # Wedding Planner and Management Mobile Application Project
 
 Welcome to 3arouss mobile application! This app is designed to help couples plan their perfect wedding with ease and convenience. Built using Flutter, the app offers a comprehensive set of features to manage wedding tasks, guest lists, budgets, and more. Additionally, it includes an integrated shop for all wedding-related purchases.
+<p align="center">
+  <img src="screenshots/mockup.jpg" alt="Screenshot 1" width="500" />
+</p>
 
 ## Features
 
@@ -12,12 +15,6 @@ Welcome to 3arouss mobile application! This app is designed to help couples plan
 - **Vendor Management**: Find vendors for your wedding needs, from venues to florists.
 - **Reminders and Notifications**: Set reminders for important dates and receive notifications to stay on top of your planning.
 - **User-friendly Interface**: Enjoy a smooth and intuitive user experience with Flutter’s beautiful and responsive design.
-
-## Mockups
-
-<p align="center">
-  <img src="screenshots/mockup.jpg" alt="Screenshot 1" width="500" />
-</p>
 
 ## Screenshots
 
