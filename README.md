@@ -16,7 +16,7 @@ Welcome to 3arouss mobile application! This app is designed to help couples plan
 ## Mockups
 
 <p align="center">
-  <img src="screenshots/mockup.png" alt="Screenshot 1" width="180" />
+  <img src="screenshots/mockup.jpg" alt="Screenshot 1" width="180" />
 </p>
 
 ## Screenshots
